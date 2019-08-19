@@ -2,11 +2,13 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 $baseIntroBkgd: url("./assets/backgrounds/mobile/bckgrnd-1.png");
-$baseIntroSignIn: url("./assets/backgrounds/mobile/bckgrnd-2.png");
+$baseInputBkgd: url("./assets/backgrounds/mobile/bckgrnd-2.png");
+$baseUIBkgd: url("./assets/backgrounds/mobile/bckgrnd-3.png");
+// $baseIntroSignIn: url("./assets/backgrounds/mobile/bckgrnd-2.png");
 
 :root, html, body, * {
   font-family: 'Exo 2', sans-serif, Roboto, "Helvetica Neue";
-  font-size: 12px;
+  // font-size: 12px;
 }
 
 body {
@@ -188,76 +190,86 @@ input.mat-input-element {
   background-position: center center;
   background-repeat: no-repeat;*/
 
-  overflow: hidden;
+    overflow: hidden;
 
-  /*.darkBackground {
-    background-color: #12131b;
-    background: #12131b $baseIntroBkgd top center no-repeat;
-    background-color: #2A2E43;
-  }*/
+    /*.darkBackground {
+      background-color: #12131b;
+      background: #12131b $baseIntroBkgd top center no-repeat;
+      background-color: #2A2E43;
+    }*/
 
-  .fixedCenter {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    clear: both;
-  }
-
-  .logo_icon {
-    border-radius: 50%;
-    width: 125px;
-    height: 125px;
-    box-shadow: -1px 5px 11px 4px;
-  }
-
-  #CTA_div {
-    position: fixed;
-    top: 65%;
-    left: 50%;
-
-    z-index: 5;
-
-    text-align: center;
-    -webkit-transform: translate(-50%, -15%);
-    -moz-transform: translate(-50%, -15%);
-    -ms-transform: translate(-50%, -15%);
-    -o-transform: translate(-50%, -15%);
-    transform: translate(-50%, -15%);
-
-    button {
-      margin-top: 50%;
-      min-width: 2%;
+    .fixedCenter {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        clear: both;
     }
 
-    #loginOptns {
-      position: absolute;
-      left: 50%;
-      width: 250px;
-      height: auto;
-      margin-top: 50%;
-
-      -webkit-transform: translate(-50%, -50%);
-      -moz-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-      -o-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
-
-      a {
-        margin: 1%;
-      }
-
+    .logo_icon {
+        border-radius: 50%;
+        width: 125px;
+        height: 125px;
+        box-shadow: -1px 5px 11px 4px;
     }
 
-    mat-error {
-      font-weight: bold;
-      padding-bottom: 20px;
+    #CTA_div {
+        position: fixed;
+        /*top: 50%;*/
+        left: 50%;
+
+        z-index: 5;
+
+        text-align: center;
+        -webkit-transform: translate(-50%, -15%);
+        -moz-transform: translate(-50%, -15%);
+        -ms-transform: translate(-50%, -15%);
+        -o-transform: translate(-50%, -15%);
+        transform: translate(-50%, -15%);
+
+        button {
+            margin-top: 25%;
+            min-width: 2%;
+        }
+
+        #loginOptns {
+            position: absolute;
+            left: 50%;
+            width: 250px;
+            height: auto;
+            margin-top: 25%;
+
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+
+            a {
+                margin: 1%;
+            }
+
+        }
+
+        mat-error {
+            font-weight: bold;
+            padding-bottom: 20px;
+        }
     }
-  }
 }
 
 .introBackground {
-  background: #1b579f $baseIntroBkgd center center no-repeat;
+    background: #1b579f $baseIntroBkgd center center no-repeat;
+    #CTA_div { top: 65%; }
+}
+
+.inputBackground {
+    background: #1b579f $baseInputBkgd center center no-repeat;
+    #CTA_div { top: 50%; }
+}
+
+.uiBackground {
+  background: #1b579f $baseUIBkgd center center no-repeat;
 }
 
 .signInForm_border{

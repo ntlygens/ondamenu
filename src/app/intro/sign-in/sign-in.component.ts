@@ -12,9 +12,9 @@ import {
 @Component({
     selector: 'app-sign-in',
     template: `
-            <!--<img class='splashImg fixedCenter' src='../../../assets/imgs/Login_Cntnr.svg' alt='background_image' />-->
-            <form [formGroup]='submitForm' [ngClass]='this.clientType === "m" ? "signInForm_border": ""' id='CTA_div' novalidate>
-                <article>Welcome to Biota <br> sign in</article>
+        <div id="ntroCntnr" class="inputBackground">
+            <form [formGroup]='submitForm' [ngClass]='this.clientType === "m" ? "": ""' id='CTA_div' novalidate>
+                <h3> sign in</h3>
                 <div formGroupName='userLoginData'>
                     <mat-form-field>
                         <input matInput (blur)='validateEmail()' placeholder='email' type='email' formControlName='email' name='email' [errorStateMatcher]='confirmValidEmailMatcher' />
@@ -37,27 +37,28 @@ import {
                     <a href='#' (click)='$event.preventDefault(); gotoReset()' routerLinkActive='true' id='reset' name='reset'>Reset</a>
                 </div>
             </form>
-
+        </div>
   `,
     styles: [`
-      .splashImg {
-        width: 100%;
-        height: auto;
-      }
+        .splashImg {
+            width: 100%;
+            height: auto;
+        }
+
+        h3 {
+            text-transform: uppercase;
+        }
     `],
     providers: [
       LoginService,
-      // LocalAuthService,
     ],
 })
 export class SignInComponent implements OnInit {
     confirmValidEmailMatcher = new ConfirmValidEmailMatcher();
     errors = errorMessages;
-    validator: Validator;
 
     emailErrInst: string;
     passErrInst: string;
-    emailPwdLock: boolean;
     submitForm: FormGroup;
     clientType: any;
     merchantID: any;
@@ -65,67 +66,21 @@ export class SignInComponent implements OnInit {
     clientID: any;
     code: any;
 
-    isProfileCompleted: boolean;
-    isTourComplete: boolean;
     constructor(
         private fb: FormBuilder,
         private als: LoginService,
-        // private las: LocalAuthService,
         private router: Router,
         private route: ActivatedRoute,
-        // private bottomSheetRef: MatBottomSheetRef<SignInComponent>,
     ) {
         this.emailErrInst = 'email';
         this.passErrInst = 'password';
         this.createForm();
 
-        // let urlSnap = this.route.snapshot.pathFromRoot.map(o => o.url[0]).join('/');
-        // let params = (new URL(document.location.href)).searchParams;
-        // console.log('params: ', params);
-        // console.log('url: ', urlSnap);
-        // let searchParams = new URLSearchParams(params);
-        // console.log('param count, ', $(searchParams).length);
-        /*if ( searchParams.has('mId')) {
-          this.merchantID = searchParams.get('auth');
-          this.clientType = 'm';
-          console.log( 'merchant' );
-        } else {
-          this.clientType = 'u';
-          console.log( 'user' );
-        }*/
-
-        /*if ( urlSnap.indexOf('auth') > 0 ) {
-
-        } else {
-          this.clientType = 'u';
-          console.log( 'user' );
-        }*/
     }
 
     ngOnInit() {
       const params = (new URL(document.location.href)).searchParams;
-      // console.log('params: ', params);
-      // console.log('url: ', urlSnap);
       const searchParams = new URLSearchParams(params);
-      // let urlSnap = this.route.snapshot.pathFromRoot.map(o => o.url[0]).join('/');
-      // console.log('urlsnap: ', urlSnap);
-
-      /*this.las.get_url_path().subscribe( (data) => {
-        this.clientType = data.urlpath;
-        // console.log('path: ', murl);
-      });
-      this.las.get_mid_param().subscribe( (data) => {
-        this.merchantID = data.m_ID;
-        // console.log('path: ', murl);
-      });*/
-
-      /*if ( urlSnap.indexOf('auth') > 0 ) {
-        this.clientType = 'm';
-        console.log( 'merchant mmm' );
-      } else {
-        this.clientType = 'u';
-        console.log( 'client ccc' );
-      }*/
 
       switch ( true ) {
         case searchParams.has('merchant_id'):
@@ -202,22 +157,6 @@ export class SignInComponent implements OnInit {
                         case usrValidRes === 1:
                             if ( this.clientType === 'm' ) {
                               console.log('being accesed by merchant');
-                                /*this.als.getToken(this.merchantID, this.employeeID, this.code).subscribe(
-                                  (Res) => {
-                                    // this.las.set_mid_param({m_ID: mID});
-                                    // this.router.navigate(['/auth'], {queryParams: { 'mId': mID}});
-
-                                    console.log('being accesed by merchant');
-                                    console.log('token returned: ', Res);
-                                  },
-                                  (err) => {
-                                    console.log( 'there was an error getting token: ', err);
-                                  },
-                                  () => {
-                                    console.log( 'complete' );
-                                    this.router.navigate(['/m'], {relativeTo: this.route, queryParams: {'mID': merchant} });
-                                  }
-                                );*/
                               this.als.isProfileComplete(merchant).subscribe( resp => {
                                   // console.log('resp: ', resp);
                                   const isProfileCompleted = resp.profile_complete;

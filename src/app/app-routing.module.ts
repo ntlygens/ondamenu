@@ -5,7 +5,7 @@ import {AppRouteInterface} from './app.enum';
 
 const MAINROUTES: AppRouteInterface[] = [
   { path: '', loadChildren: './intro/intro.module#IntroModule'},
-  // { path: '**', redirectTo: ''  },
+  { path: 'u', loadChildren: ''  },
 
 ];
 

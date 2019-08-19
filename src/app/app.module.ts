@@ -11,12 +11,10 @@ import { NgMatModule } from './ng-mat/ng-mat.module';
 import { IntroModule } from './intro/intro.module';
 
 import { AppComponent } from './app.component';
-// import { SplashComponent } from './intro/splash/splash.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    // plashComponent
   ],
   imports: [
     BrowserModule,
