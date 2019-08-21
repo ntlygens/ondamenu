@@ -10,7 +10,7 @@ import {
 
 
 @Component({
-    selector: 'app-sign-in',
+    selector: 'amm-sign-in',
     template: `
         <div id="ntroCntnr" class="inputBackground">
             <form [formGroup]='submitForm' [ngClass]='this.clientType === "m" ? "": ""' id='CTA_div' novalidate>

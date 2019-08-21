@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-intro',
+  selector: 'amm-intro',
   template: `
       <div id='ntroCntnr' class=''>
           <router-outlet name='mainRO' id='mainRO'></router-outlet>

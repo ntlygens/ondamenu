@@ -10,7 +10,7 @@ import {
 } from '../../core-func/errors/custom-validation/custom-validation.component';
 
 @Component({
-    selector: 'app-sign-up',
+    selector: 'amm-sign-up',
     template: `
           <div id="ntroCntnr" class="inputBackground">
               <form [formGroup]='submitForm' id='signUpForm' novalidate>

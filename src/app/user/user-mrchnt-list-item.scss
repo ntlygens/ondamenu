@@ -1,0 +1,214 @@
+@media screen and (max-width: 375px) {
+    :host.odd .cardTxt {
+        position: relative;
+        left: -2%;
+    }
+
+    :host.even .itemData {
+        /*margin-right: -5%;*/
+    }
+}
+
+
+/* HOST CSS STYLES */
+/* =============== */
+
+:host {
+    width: 100%;
+
+}
+
+:host.first .statuses {
+    /*margin-left: 23%;*/
+}
+
+/*// --- host odd --- //*/
+/* -------------------- */
+
+:host.odd .odd {
+    display: block;
+    height: 100%;
+
+}
+
+:host.odd .gradient {
+    background-image: linear-gradient(to bottom right, lightcyan, aliceblue);
+}
+
+:host.odd .iteminfo {
+    box-shadow: -2px -2px 10px 0px;
+}
+
+:host.odd .cardTxt {
+    /*left: -2%;*/
+    text-align: left;
+}
+
+:host.odd .imgStngs {
+    margin-top: -1%;
+    margin-left: 14%;
+    box-shadow: 0px -2px 5px 0px;
+}
+
+:host.odd .itemData {
+    text-align: left;
+    /*margin-left: -40px;*/
+}
+
+:host.odd .statuses {
+    /*right: -170px;*/
+}
+
+/*// ---------- //*/
+
+:host.even .even {
+    display: block;
+    height: 100%;
+}
+
+:host.even .gradient {
+    background-image: linear-gradient(to bottom left, lightcyan, aliceblue);
+}
+
+:host.even .iteminfo {
+    box-shadow: 2px -2px 10px 0px;
+}
+
+:host.even .cardTxt {
+    text-align: right;
+}
+
+:host.even .imgStngs {
+    margin-top: 1%;
+    margin-left: -14%;
+    box-shadow: 0px -2px 5px 0px;
+    /*box-shadow: #666 1px -1px 5px 0px;*/
+}
+
+:host.even .itemData {
+    text-align: right;
+}
+
+:host.even .statuses {
+    /*left: -170px;*/
+}
+
+:host.even .resType {
+    text-align: left;
+    margin-left: 3%;
+}
+
+/*// ---------- //*/
+
+p {
+    margin: 0;
+}
+
+button {
+    z-index: 3;
+}
+
+.imgPnl {
+    display: none;
+}
+
+.statuses {
+    display: inline-flex;
+    position: relative;
+    font-size: 10px;
+}
+
+.status {
+    width: fit-content;
+    color: #333;
+    font-style: oblique;
+    padding: 1px 4px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    text-transform: capitalize;
+}
+
+.open {
+    background: #0ea00e;
+    color: #eee;
+}
+
+.closed {
+    background: #ddd;
+    color: #333;
+    text-decoration: line-through;
+}
+
+.delivery {
+    background: #1e7bf8;
+    color: #eee;
+
+}
+
+.no-delivery {
+    background: #ddd;
+    color: #333;
+    text-decoration: line-through;
+}
+
+
+/*// ------------- //*/
+
+.iteminfo {
+    padding: 10px;
+    width: 100%;
+    margin: auto;
+    justify-content: space-between;
+    border-radius: 0.25rem;
+}
+
+.imgStngs {
+    width: 130px;
+    height: 80px;
+    border-radius: 0.3rem;
+    overflow: hidden;
+    object-fit: contain;
+    background-size: contain;
+}
+
+.logo {
+    height: 100%;
+    width: 100%;
+}
+
+.cardTxt {
+    position: relative;
+    color: slategrey;
+    margin: 0 3%;
+    line-height: 21px;
+}
+
+
+/*// ---------- //*/
+
+.card-name {
+    margin-bottom: 0px;
+    color: #2c2d38;
+}
+
+.card-slogan {
+    font-variant: all-small-caps;
+    margin-bottom: 0;
+}
+
+.card-phone {
+    color: #333;
+}
+
+.display-4 {
+    color: #E04946;
+}
+
+h4 {
+    color: slategray;
+}
+
+.btn::after {
+    content: '...';
+}

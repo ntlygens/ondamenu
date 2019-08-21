@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
 
 @Component({
-  selector: 'app-splash',
+  selector: 'amm-splash',
   template: `
       <div id='ntroCntnr' class="introBackground">
           <div id='CTA_div'>

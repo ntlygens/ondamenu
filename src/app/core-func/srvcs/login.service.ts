@@ -12,6 +12,7 @@ export class LoginService {
   newUser;
   clientType;
   CloverAuth;
+  allMrchntsURL = 'https://smashradio1fm.com/php/';
 
   readonly profileStatus$: any;
 
@@ -96,5 +97,12 @@ export class LoginService {
 
   setProfileStatus(prfl: any) {
     this.setPrflStatus.next(prfl);
+  }
+
+  getAllMerchants() {
+      const userGetAllMerchants = new HttpParams()
+          .set('clientType', 'user');
+
+      return this.http.get(`${this.allMrchntsURL}`, {params: userGetAllMerchants});
   }
 }
