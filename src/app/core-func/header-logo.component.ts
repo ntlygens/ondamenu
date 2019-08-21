@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
     styles: [`
         .headerlogo {
             position: relative;
-            left: 3px;
+            left: 8px;
             box-shadow: 0px 2px 4px #333;
         }
         .logoImg {

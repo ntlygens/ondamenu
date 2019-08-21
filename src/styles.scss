@@ -209,7 +209,7 @@ body {
     background-color: #333333;
 }
 
-#navigationBar { position: sticky; top: 0; z-index: 99 }
+#navigationBar { position: absolute; top: 0; z-index: 99 }
 
 .mat-sort-header-container {
     justify-content: center !important;

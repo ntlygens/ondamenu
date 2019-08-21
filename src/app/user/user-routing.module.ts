@@ -14,7 +14,6 @@ const routes: Routes = [
             {
                 path: '',
                 component: UserMrchntListComponent,
-                data: { state: 'uSlctMrchntPg2' },
                 outlet: 'userRO'
             },
         ]
@@ -27,7 +26,6 @@ const routes: Routes = [
           {
             path: '',
             component: UserMrchntListItemComponent,
-              data: { state: 'uSlctMenuPg2' },
               outlet: 'userRO'
           }
         ]

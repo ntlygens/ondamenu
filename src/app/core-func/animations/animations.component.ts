@@ -6,7 +6,7 @@ import {
 } from '@angular/animations';
 const query = (s, a, o = { optional: true }) => q(s, a, o );
 
-export const routeTransition = animation ([
+export const routeAnimations = animation ([
     query( ':enter, :leave',
         style({position: 'fixed', width: '100%'})),
 

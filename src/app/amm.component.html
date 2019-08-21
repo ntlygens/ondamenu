@@ -4,6 +4,8 @@
         <amm-header-logo></amm-header-logo>
     </div>
 
-    <router-outlet #mainAppRO id="mainAppRO"></router-outlet>
+    <div [@routeAnimations]="prepareRoute(mainAppRO)">
+        <router-outlet #mainAppRO="outlet" id="mainAppRO"></router-outlet>
+    </div>
 </div>
 

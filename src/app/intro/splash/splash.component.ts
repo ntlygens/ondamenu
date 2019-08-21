@@ -57,7 +57,7 @@ export class SplashComponent implements OnInit {
   }
 
   startUserXp() {
-    this.router.navigate(['u/b'], {relativeTo: this.route});
+    this.router.navigate(['u'], {relativeTo: this.route});
   }
 
   startMrchntXp() {
