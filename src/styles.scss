@@ -206,7 +206,13 @@ $baseBlankBkgd-LG: url("./assets/backgrounds/mobile/Screen_Background@2x.png");
 body {
     margin: 0;
     padding: 0;
-    background-color: #333333;
+}
+
+#mainAppDiv {
+    background: #1b579f $baseBlankBkgd-LG center center no-repeat;
+    -webkit-background-size: cover;
+    background-size: cover;
+    height: -webkit-fill-available;
 }
 
 #navigationBar { position: absolute; top: 0; z-index: 99 }
@@ -328,7 +334,7 @@ input.mat-input-element {
     pointer-events: none;
 }
 .off {
-    display: none;
+    display: none !important;
 }
 
 .price::before, .priceAdded::before, .cartSumTotal::before {

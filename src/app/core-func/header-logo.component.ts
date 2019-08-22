@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { StorageService } from './srvcs/storage.service';
 
 @Component({
     selector: 'amm-header-logo',
@@ -20,6 +21,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class HeaderLogoComponent implements OnInit {
 
     constructor(
+        private strgSrvc: StorageService,
         private router: Router,
         private route: ActivatedRoute
     ) { }
@@ -28,7 +30,8 @@ export class HeaderLogoComponent implements OnInit {
     }
 
     goHome() {
-        this.router.navigate(['/'], {});
+        this.strgSrvc.setPageRoute({s: true});
+        this.router.navigate([''], {});
     }
 
 }

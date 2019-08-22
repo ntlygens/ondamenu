@@ -1,5 +1,5 @@
 <div #mainAppDiv id="mainAppDiv" >
-    <div id="navigationBar" class="d-flex justify-content-between">
+    <div [ngClass]="isSplash ? 'off' : ''" id="navigationBar" class="d-flex justify-content-between">
         <amm-header-bar></amm-header-bar>
         <amm-header-logo></amm-header-logo>
     </div>
