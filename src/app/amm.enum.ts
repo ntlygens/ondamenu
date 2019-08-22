@@ -4,8 +4,10 @@ export enum AmmStateType {
   USER = 'user' as any,
   CLIENT = 'client' as any,
 }
-export enum LocSrveType {
+
+export enum LocSrvcType {
     FASTFOOD = 'fast-food' as any,
+    FOODTRUCK = 'food-truck' as any,
     EATIN = 'eat-in' as any,
     OUTDOOR = 'outdoor' as any,
     LOUNGE = 'lounge' as any,
@@ -46,9 +48,9 @@ export interface MerchantInfoData {
     logo?: string;
     username: string;
     slogan?: string;
+    phone: string;
     bio?: string;
     price?: string;
-    phone: string;
     address: string;
     state: string;
     zip: number;
@@ -62,14 +64,8 @@ export interface MerchantInfoData {
         zip: string;
       };
     };*/
-    prep?: {
-        vegan: boolean;
-        vegetarian: boolean;
-        pescatarian: boolean;
-        kosher: boolean;
-        halal: boolean;
-    };
     delivery: boolean;
-    type: LocSrveType;
-    status: LocSrvcStatus;
+    srvcType: LocSrvcType;
+    srvcStatus: LocSrvcStatus;
+    foodType: LocFoodType;
 }

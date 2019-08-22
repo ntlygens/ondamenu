@@ -11,6 +11,8 @@ $baseUIBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-3@2x.png");
 $baseBlankBkgd: url("./assets/backgrounds/mobile/Screen_Background.png");
 $baseBlankBkgd-LG: url("./assets/backgrounds/mobile/Screen_Background@2x.png");
 // $baseIntroSignIn: url("./assets/backgrounds/mobile/bckgrnd-2.png");
+$blankIntroBkgd: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd.png");
+$blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png");
 
 @media screen and (max-width: 321px) {
     #ntroCntnr {
@@ -80,7 +82,7 @@ $baseBlankBkgd-LG: url("./assets/backgrounds/mobile/Screen_Background@2x.png");
 
 @media only screen and (width: 375px) {
     .introBackground {
-        background: #1b579f $baseIntroBkgd center center no-repeat;
+        background: transparent $blankIntroBkgd center center no-repeat;
         -webkit-background-size: cover;
         background-size: cover;
         #CTA_div { top: 65%; }
@@ -131,16 +133,18 @@ $baseBlankBkgd-LG: url("./assets/backgrounds/mobile/Screen_Background@2x.png");
         left: -38%;
 
     }
-
     #ntroCntnr {
         min-height: 670px;
+    }
+    .imgStngs {
+        width: 363px;
     }
 
 }
 
 @media only screen and (min-width: 376px) and (max-width: 765px) {
     .introBackground {
-        background: #1b579f $baseIntroBkgd-LG center center no-repeat;
+        background: transparent $blankIntroBkgd-LG center center no-repeat;
         -webkit-background-size: cover;
         background-size: cover;
         #CTA_div { top: 65%; }
@@ -195,6 +199,9 @@ $baseBlankBkgd-LG: url("./assets/backgrounds/mobile/Screen_Background@2x.png");
     #navbar .btn-sm:not(first-child) {
         margin-left: 3px;
     }
+    .imgStngs {
+        width: 400px;
+    }
 }
 
 
@@ -209,13 +216,13 @@ body {
 }
 
 #mainAppDiv {
-    background: #1b579f $baseBlankBkgd-LG center center no-repeat;
+    background: #1b579f $baseBlankBkgd-LG center center repeat-y;
     -webkit-background-size: cover;
     background-size: cover;
-    height: -webkit-fill-available;
+    min-height: -webkit-fill-available;
 }
 
-#navigationBar { position: absolute; top: 0; z-index: 99 }
+#navigationBar { position: fixed; top: 0; z-index: 99 }
 
 .mat-sort-header-container {
     justify-content: center !important;
@@ -224,7 +231,7 @@ body {
 .mat-dialog-container {
     border-radius: .35rem !important;
 }
-
+.mat-list-item-content { padding: 0 6px !important; }
 input.mat-input-element {
     /*color: transparent;*/
     background-color: transparent;

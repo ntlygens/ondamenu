@@ -6,8 +6,7 @@ import { LoginService } from '../core-func/srvcs/login.service';
 @Component({
     selector: 'amm-user-mrchnt-list',
     template: `
-        <div>this works</div>
-        <!--<mat-list>
+        <mat-list>
             <mat-list-item
                 *ngFor="let merchant of merchants | slice:0:6;
                 let idx = index; let even = even; let odd = odd;
@@ -20,21 +19,22 @@ import { LoginService } from '../core-func/srvcs/login.service';
                     [itemTitle]='merchant.username'
                     [itemSlogan]='merchant.slogan'
                     [itemPhone]='merchant.phone'
+                    [itemBio]="merchant.bio"
                     [itemLocSt]='merchant.address'
                     [itemLocState]='merchant.state'
                     [itemLocZip]='merchant.zip'
-                    [itemPrep]='merchant.prep'
-                    [itemSrvcType]='merchant.type'
-                    [itemSrvcStat]='merchant.status'
+                    [itemSrvcType]='merchant.srvcType'
+                    [itemSrvcStat]='merchant.srvcStatus'
+                    [itemFoodType]='merchant.foodType'
                     [itemDelivery]='merchant.delivery'
                     (click)='getMerchantMenu(merchant.client_id, merchant.username)'
                 ></amm-user-mrchnt-list-item>
 
             </mat-list-item>
-        </mat-list>-->
+        </mat-list>
     `,
     styles: [`
-        /*:host {
+        :host {
             width: 100%;
             max-width: 420px;
         }
@@ -60,17 +60,17 @@ import { LoginService } from '../core-func/srvcs/login.service';
             background-color: blue;
         }
 
-        .example-header-image {
+        /*.example-header-image {
             background-image: url('../../biota/assets/imgs/default_user.jpg');
             background-size: cover;
-        }
+        }*/
 
         .mat-list {
-            padding: 0.75rem;
+            /*padding: 0.75rem;*/
         }
 
         .mat-list .mat-list-item {
-            min-height: 90px;
+            min-height: 60px;
             height: auto;
         }
 
@@ -92,7 +92,7 @@ import { LoginService } from '../core-func/srvcs/login.service';
             overflow: hidden;
             object-fit: contain;
             background-size: contain;
-        }*/
+        }
     `]
 })
 export class UserMrchntListComponent implements OnInit {
@@ -112,7 +112,7 @@ export class UserMrchntListComponent implements OnInit {
         this.ls.getAllMerchants().subscribe(
             (res: MerchantInfoData) => {
                 this.merchants = res;
-                console.log('load eg: ', JSON.stringify(this.merchants[0].address));
+                console.log('load eg: ', JSON.stringify(this.merchants[0]));
             },
             (err) => {
                 console.log('userMrchntList_Error: ', err);
