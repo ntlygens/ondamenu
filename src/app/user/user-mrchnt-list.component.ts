@@ -23,9 +23,9 @@ import { LoginService } from '../core-func/srvcs/login.service';
                     [itemLocSt]='merchant.address'
                     [itemLocState]='merchant.state'
                     [itemLocZip]='merchant.zip'
-                    [itemSrvcType]='merchant.srvcType'
+                    [itemSrvcType]='merchant.concept'
                     [itemSrvcStat]='merchant.srvcStatus'
-                    [itemFoodType]='merchant.foodType'
+                    [itemFoodType]='merchant.food'
                     [itemDelivery]='merchant.delivery'
                     (click)='getMerchantMenu(merchant.client_id, merchant.username)'
                 ></amm-user-mrchnt-list-item>

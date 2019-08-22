@@ -36,7 +36,7 @@ import { Component, OnInit, Input } from '@angular/core';
                     </div>
                 </div>
                 <div class='statuses'>
-                    <p [ngClass]='itemSrvcStat ? "open status" : "closed status"'>open</p>
+                    <p [ngClass]='!itemSrvcStat ? "open status" : "closed status"'>open</p>
                     <p [ngClass]='itemDelivery ? "delivery status" : "no-delivery status"'>delivery</p>
                 </div>
             </section>
