@@ -116,6 +116,16 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
     #navbar .menuBtn:not(:first-child) {
         margin-left: 3px;
     }
+
+    /* // advert placeholder // */
+    .placeholder {
+        width: 100%;
+        height: 150px;
+        margin-top: 18%;
+        background: #7ED321;
+    }
+    /* // ------------------ // */
+
     /*.btn-group > .btn:not(:last-child):not(#orderAmt){
       font-size: 60% !important;
     }*/
@@ -166,6 +176,15 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
     body {
         font-size: 0.75rem !important;
     }
+
+    /* // advert placeholder // */
+    .placeholder {
+        width: 100%;
+        height: 150px;
+        margin-top: 16%;
+        background: #7ED321;
+    }
+    /* // ------------------ // */
 
     .media-left h4 {
         font-size: initial;
@@ -348,3 +367,6 @@ input.mat-input-element {
     content: '$';
 }
 
+.rteHldr {
+    position: relative;
+}

@@ -15,24 +15,42 @@ export const fader =
                     left: 0,
                     width: '100%',
                     opacity: 0,
-                    transform: 'scale(0) translateY(100%)'
+                    transform: 'translateX(100%)'
                 }),
             ]),
             query(':enter', [
                 animate('600ms ease',
-                    style({ opacity: 1, transform: 'scale(1) translateY(0)'})
+                    style({ opacity: 1, transform: 'translateX(0)'})
                 ),
             ])
         ]),
     ]);
 
-export const slider =
-    trigger('routeAnimations', [
+export const slider = [
+    trigger('routeAnimations',  [
+        transition('* => isLeft', slideTO('left')),
+        transition('* => isRight', slideTO('right')),
+        transition('isRight => *', slideTO('left')),
+        transition('isLeft => *', slideTO('right')),
+    ]),
+    trigger('userRouteAnimations',  [
+        transition('* => isLeft', slideTO('left')),
+        transition('* => isRight', slideTO('right')),
+        transition('isRight => *', slideTO('left')),
+        transition('isLeft => *', slideTO('right')),
+    ])
+];
+
+/*
+export const userSlider =
+    trigger('userRouteAnimations',  [
         transition('* => isLeft', slideTO('left')),
         transition('* => isRight', slideTO('right')),
         transition('isRight => *', slideTO('left')),
         transition('isLeft => *', slideTO('right')),
     ]);
+*/
+
 
 function slideTO(direction) {
     const optional = { optional: true };
@@ -42,18 +60,23 @@ function slideTO(direction) {
                 position: 'absolute',
                 top: 0,
                 [direction]: 0,
-                width: '100%'
+                width: '100%',
+                'z-index': 2,
+                opacity: 1,
             })
         ], optional),
         query(':enter', [
-            style({ [direction]: '-100%'})
+            style({ [direction]: '-100%', opacity: 0, 'z-index': 2 })
+        ]),
+        query(':leave', [
+            style({ [direction]: '100%', opacity: 0, 'z-index': 1 })
         ]),
         group([
             query(':leave', [
-                animate('600ms ease', style({ [direction]: '100%'}))
+                animate('600ms ease', style({ [direction]: '100%', opacity: 0, 'z-index': 1}))
             ], optional),
             query(':enter', [
-                animate('600ms ease', style({ [direction]: '0%'}))
+                animate('600ms ease', style({ [direction]: '0%', opacity: 1, 'z-index': 2}))
             ], optional),
         ])
     ];

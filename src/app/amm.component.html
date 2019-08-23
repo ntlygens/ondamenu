@@ -4,7 +4,7 @@
         <amm-header-logo [ngClass]="isSplash ? 'off' : ''"></amm-header-logo>
     </div>
 
-    <div [@routeAnimations]="prepareRoute(mainAppRO)">
+    <div id="rteHldr" [@routeAnimations]="prepareRoute(mainAppRO)">
         <router-outlet #mainAppRO="outlet" id="mainAppRO"></router-outlet>
     </div>
 </div>

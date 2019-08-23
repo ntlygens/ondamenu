@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AmmRouteInterface } from '../amm.enum';
 
 import { UserComponent } from './user.component';
 import { UserMrchntListComponent } from './user-mrchnt-list.component';
 import { UserMrchntListItemComponent } from './user-mrchnt-list-item.component';
 
-const routes: Routes = [
+const USERROUTES: AmmRouteInterface[] = [
     {
         path: '',
         component: UserComponent,
-        data: { state: 'uSlctMrchntPg1' },
+        data: {
+            state: 'user112',
+            animation: 'isRight'
+        },
         children: [
             {
                 path: '',
@@ -20,22 +24,18 @@ const routes: Routes = [
     },
     {
         path: ':id',
-        component: UserComponent,
-        data: { state: 'uSlctMenuPg1' },
-        children: [
-          {
-            path: '',
-            component: UserMrchntListItemComponent,
-              outlet: 'userRO'
-          }
-        ]
+        loadChildren: '../client/client.module#ClientModule',
+        data: {
+            state: 'userere',
+            animation: 'isLeft'
+        }
         // TODO: temp - replace with client component below
         // loadChildren: '../client/client.module#ClientModule'
     },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(USERROUTES)],
+    exports: [RouterModule]
 })
 export class UserRoutingModule { }

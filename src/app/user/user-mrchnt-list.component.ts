@@ -8,7 +8,7 @@ import { LoginService } from '../core-func/srvcs/login.service';
     template: `
         <mat-list>
             <mat-list-item
-                *ngFor="let merchant of merchants | slice:0:6;
+                *ngFor="let merchant of merchants;
                 let idx = index; let even = even; let odd = odd;
                 first as isFirst; last as isLast"
             >
@@ -24,7 +24,7 @@ import { LoginService } from '../core-func/srvcs/login.service';
                     [itemLocState]='merchant.state'
                     [itemLocZip]='merchant.zip'
                     [itemSrvcType]='merchant.concept'
-                    [itemSrvcStat]='merchant.srvcStatus'
+                    [itemSrvcStat]='merchant.status'
                     [itemFoodType]='merchant.food'
                     [itemDelivery]='merchant.delivery'
                     (click)='getMerchantMenu(merchant.client_id, merchant.username)'
@@ -75,7 +75,7 @@ import { LoginService } from '../core-func/srvcs/login.service';
         }
 
         .first {
-            margin-top: 100px;
+            /*margin-top: 100px;*/
         }
 
         .last {
@@ -96,7 +96,7 @@ import { LoginService } from '../core-func/srvcs/login.service';
     `]
 })
 export class UserMrchntListComponent implements OnInit {
-    merchants: MerchantInfoData;
+    merchants: MerchantInfoData[] = [];
     constructor(
         private ls: LoginService,
         private router: Router,
@@ -109,16 +109,13 @@ export class UserMrchntListComponent implements OnInit {
     }
 
     getMerchantsList() {
-        this.ls.getAllMerchants().subscribe(
-            (res: MerchantInfoData) => {
+        this.ls.getAllMerchants().then(
+            (res: MerchantInfoData[]) => {
                 this.merchants = res;
                 console.log('load eg: ', JSON.stringify(this.merchants[0]));
             },
             (err) => {
                 console.log('userMrchntList_Error: ', err);
-            },
-            () => {
-                console.log('get Merchant List Complete');
             }
         );
     }

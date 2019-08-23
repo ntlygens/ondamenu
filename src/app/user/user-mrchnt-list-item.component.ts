@@ -3,6 +3,9 @@ import { Component, OnInit, Input } from '@angular/core';
 @Component({
     selector: 'amm-user-mrchnt-list-item',
     template: `
+        <div class="dohSrvcs">
+            <amm-nydoh></amm-nydoh>
+        </div>
         <div class='imgPnl even flex-column'>
             <div class='imgStngs'>
                 <img *ngIf='!itemImage' class="rounded logo" src="../../assets/core-assets/escovich.png" />

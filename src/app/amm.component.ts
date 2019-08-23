@@ -47,7 +47,7 @@ export class AmmComponent implements OnInit {
     }
 
     prepareRoute(outlet: RouterOutlet) {
-        console.log('roo: ', outlet.activatedRouteData.animation);
+        console.log('roo: ', outlet.activatedRouteData.state);
         return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
     }
 

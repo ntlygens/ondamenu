@@ -65,7 +65,11 @@ export interface MerchantInfoData {
       };
     };*/
     delivery: boolean;
-    srvcType: LocSrvcType;
-    srvcStatus: LocSrvcStatus;
-    foodType: LocFoodType;
+    concept?: LocSrvcType;
+    status?: LocSrvcStatus;
+    food?: LocFoodType;
+}
+
+export interface MerchantDOHRating {
+    rating: string;
 }
