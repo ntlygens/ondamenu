@@ -33,12 +33,12 @@ export const slider = [
         transition('isRight => *', slideTO('left')),
         transition('isLeft => *', slideTO('right')),
     ]),
-    trigger('userRouteAnimations',  [
+    /*trigger('userRouteAnimations',  [
         transition('* => isLeft', slideTO('left')),
         transition('* => isRight', slideTO('right')),
         transition('isRight => *', slideTO('left')),
         transition('isLeft => *', slideTO('right')),
-    ])
+    ])*/
 ];
 
 /*

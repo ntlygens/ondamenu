@@ -121,7 +121,7 @@ export class UserMrchntListComponent implements OnInit {
     }
 
     getMerchantMenu(clientid: string, clientname: string) {
-        this.router.navigate( [ clientname], {relativeTo: this.route, queryParams: {clid: clientid}} );
+        this.router.navigate( [ '/c/'], {queryParams: {clid: clientid}} );
         console.log('cID: ', clientid, ' cName: ', clientname);
     }
 

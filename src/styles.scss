@@ -238,7 +238,7 @@ body {
     background: #1b579f $baseBlankBkgd-LG center center repeat-y;
     -webkit-background-size: cover;
     background-size: cover;
-    min-height: -webkit-fill-available;
+    min-height: 667px;
 }
 
 #navigationBar { position: fixed; top: 0; z-index: 99 }
@@ -367,6 +367,6 @@ input.mat-input-element {
     content: '$';
 }
 
-.rteHldr {
+#rteHldr {
     position: relative;
 }

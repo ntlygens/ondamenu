@@ -7,12 +7,12 @@ import { slider } from '../core-func/animations/animations.component';
     template: `
               <div id='ntroCntnr' class=''>
                   <div #advertisingModulePlaceholder class="placeholder" ></div>
-                  <!--<div>
+                  <div>
                       <router-outlet #userRO="outlet" name="userRO" id="userRO"></router-outlet>
-                  </div>-->
-                  <div [@userRouteAnimations]="prepareUserRoute(userRO)">
-                      <router-outlet #userRO="outlet" name='userRO' id="userRO"></router-outlet>
                   </div>
+                  <!--<div [@routeAnimations]="prepareUserRoute(userRO)">
+                      <router-outlet #userRO="outlet" name='userRO' id="userRO"></router-outlet>
+                  </div>-->
               </div>
           `,
     styles: [``],
@@ -30,9 +30,9 @@ export class UserComponent implements OnInit {
     ngOnInit() {
     }
 
-    prepareUserRoute(outlet: RouterOutlet) {
+    /*prepareUserRoute(outlet: RouterOutlet) {
         console.log('uRO: ', outlet.activatedRouteData.state);
         return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
-    }
+    }*/
 
 }

@@ -22,8 +22,8 @@ const USERROUTES: AmmRouteInterface[] = [
             },
         ]
     },
-    {
-        path: ':id',
+    /*{
+        path: '',
         loadChildren: '../client/client.module#ClientModule',
         data: {
             state: 'userere',
@@ -31,7 +31,7 @@ const USERROUTES: AmmRouteInterface[] = [
         }
         // TODO: temp - replace with client component below
         // loadChildren: '../client/client.module#ClientModule'
-    },
+    },*/
 ];
 
 @NgModule({

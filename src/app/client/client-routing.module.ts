@@ -9,6 +9,10 @@ const CLIENTROUTES: AmmRouteInterface[] = [
     {
         path: '',
         component: ClientContainerComponent,
+        data: {
+            state: 'client412',
+            animation: 'isLeft'
+        },
         children: [
             {
                 path: '',

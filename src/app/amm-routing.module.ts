@@ -20,7 +20,14 @@ const MAINROUTES: AmmRouteInterface[] = [
             animation: 'isRight'
         }
     },
-    /*{ path: 'u', loadChildren: './user/user.module#UserModule'},*/
+    {
+        path: 'c',
+        loadChildren: './client/client.module#ClientModule',
+        data: {
+            state: 'ClientMode',
+            animation: 'isRight'
+        }
+    },
     { path: '**', redirectTo: '', pathMatch: 'full'}
 
 ];
