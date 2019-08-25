@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'amm-intro',
   template: `
-      <div id='ntroCntnr' class=''>
+      <div id='' class=''>
           <router-outlet name='mainRO' id='mainRO'></router-outlet>
       </div>
   `,

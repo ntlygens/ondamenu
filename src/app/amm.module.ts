@@ -11,8 +11,8 @@ import { NgMatModule } from './ng-mat/ng-mat.module';
 import { IntroModule } from './intro/intro.module';
 
 import { AmmComponent } from './amm.component';
-import { HeaderBarComponent } from './core-func/header-bar.component';
-import { HeaderLogoComponent } from './core-func/header-logo.component';
+import { HeaderBarComponent } from './core-func/comps/header-bar.component';
+import { HeaderLogoComponent } from './core-func/comps/header-logo.component';
 
 @NgModule({
     declarations: [

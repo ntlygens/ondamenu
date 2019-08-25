@@ -3,8 +3,7 @@
         <amm-header-bar></amm-header-bar>
         <amm-header-logo [ngClass]="isSplash ? 'off' : ''"></amm-header-logo>
     </div>
-
-    <div id="rteHldr" [@routeAnimations]="prepareRoute(mainAppRO)">
+    <div id="ntroCntnr" [@routeAnimations]="prepareRoute(mainAppRO)">
         <router-outlet #mainAppRO="outlet" id="mainAppRO"></router-outlet>
     </div>
 </div>

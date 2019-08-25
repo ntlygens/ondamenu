@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, ActivatedRoute, Router } from '@angular/router';
-import { transition, trigger, useAnimation } from '@angular/animations';
+// import { transition, trigger, useAnimation } from '@angular/animations';
 import { fader, slider } from './core-func/animations/animations.component';
 import { StorageService } from './core-func/srvcs/storage.service';
 

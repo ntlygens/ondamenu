@@ -199,7 +199,7 @@ export class SignUpComponent {
                 this.clientType = urlSnapClType;
                 this.isClient = true;
                 this.createClientForm();
-                console.log( 'client: ', urlSnapClType );
+                console.log( 'menu: ', urlSnapClType );
                 break;
             case 'u':
                 this.clientType = urlSnapClType;

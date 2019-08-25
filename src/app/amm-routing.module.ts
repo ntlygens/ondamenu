@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AmmRouteInterface } from './amm.enum';
-
+import { ListComponent } from './core-func/comps/list.component';
+import { MenuComponent } from './core-func/menu/menu.component';
 
 const MAINROUTES: AmmRouteInterface[] = [
     {
@@ -10,23 +11,32 @@ const MAINROUTES: AmmRouteInterface[] = [
         data: {
             state: 'appIntro',
             animation: 'isLeft'
-        }
+        },
+        outlets: [ 'mainAppRO' ]
     },
     {
         path: 'u',
-        loadChildren: './user/user.module#UserModule',
+        component: ListComponent,
         data: {
             state: 'UserMode',
             animation: 'isRight'
-        }
+        },
+        outlets: [ 'mainAppRO' ]
+        /*loadChildren: './user/user.module#UserModule',
+        data: {
+            state: 'UserMode',
+            animation: 'isRight'
+        }*/
     },
     {
         path: 'c',
-        loadChildren: './client/client.module#ClientModule',
+        component: MenuComponent,
+        /*loadChildren: './menu/menu.module#ClientModule',*/
         data: {
             state: 'ClientMode',
-            animation: 'isRight'
-        }
+            animation: 'isLeft'
+        },
+        outlets: [ 'mainAppRO' ]
     },
     { path: '**', redirectTo: '', pathMatch: 'full'}
 

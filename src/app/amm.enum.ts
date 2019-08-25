@@ -2,7 +2,7 @@ export enum AmmStateType {
   INTRO = 'intro' as any,
   MERCHANT = 'merchant' as any,
   USER = 'user' as any,
-  CLIENT = 'client' as any,
+  CLIENT = 'menu' as any,
 }
 
 export enum LocSrvcType {

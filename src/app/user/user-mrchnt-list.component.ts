@@ -12,7 +12,7 @@ import { LoginService } from '../core-func/srvcs/login.service';
                 let idx = index; let even = even; let odd = odd;
                 first as isFirst; last as isLast"
             >
-                <amm-user-mrchnt-list-item
+                <amm-list-item
                     [ngClass]='{ "first" : isFirst, "last" : isLast, "even" : even, "odd" : odd }'
                     [itemID]='merchant.client_id'
                     [itemImage]='merchant.logo'
@@ -28,7 +28,7 @@ import { LoginService } from '../core-func/srvcs/login.service';
                     [itemFoodType]='merchant.food'
                     [itemDelivery]='merchant.delivery'
                     (click)='getMerchantMenu(merchant.client_id, merchant.username)'
-                ></amm-user-mrchnt-list-item>
+                ></amm-list-item>
 
             </mat-list-item>
         </mat-list>

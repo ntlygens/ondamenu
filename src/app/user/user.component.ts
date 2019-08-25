@@ -5,7 +5,7 @@ import { slider } from '../core-func/animations/animations.component';
 @Component({
     selector: 'amm-user',
     template: `
-              <div id='ntroCntnr' class=''>
+              <div id='' class=''>
                   <div #advertisingModulePlaceholder class="placeholder" ></div>
                   <div>
                       <router-outlet #userRO="outlet" name="userRO" id="userRO"></router-outlet>

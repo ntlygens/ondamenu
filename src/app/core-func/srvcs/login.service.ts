@@ -40,20 +40,20 @@ export class LoginService {
         return this.http.get(`${this.baseURL}`, { params: nuParamsIsProfileComplete});
     }
 
-    isUserValid(email: string, pwd: string, client: string, mID?: string): Observable<any> {
+    isUserValid(email: string, pwd: string, menu: string, mID?: string): Observable<any> {
         const nuParamsIsUserValid = new HttpParams()
             .set('email', email)
-            .set('client', client)
+            .set('menu', menu)
             .set('pwd', pwd)
             .set('mID', mID);
 
         return this.http.get(`${this.baseURL}`, {params: nuParamsIsUserValid});
     }
 
-    isEmailValid(email: string, client: string, mID?: string): Observable<any> {
+    isEmailValid(email: string, menu: string, mID?: string): Observable<any> {
         const nuParamsIsEmailValid = new HttpParams()
             .set('vldtemail', email)
-            .set('client', client)
+            .set('menu', menu)
             .set('mID', mID);
 
         return this.http.get(`${this.baseURL}`, {params: nuParamsIsEmailValid} );

@@ -6,11 +6,15 @@ import { CoreFuncModule } from '../core-func/core-func.module';
 
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
-import { UserMrchntListComponent } from './user-mrchnt-list.component';
-import { UserMrchntListItemComponent } from './user-mrchnt-list-item.component';
+// import { UserMrchntListComponent } from './user-mrchnt-list.component';
+// import { UserMrchntListItemComponent } from './user-mrchnt-list-item.component';
 
 @NgModule({
-  declarations: [UserComponent, UserMrchntListComponent, UserMrchntListItemComponent],
+  declarations: [
+      UserComponent,
+      // UserMrchntListComponent,
+      // UserMrchntListItemComponent
+  ],
   imports: [
       CommonModule,
       FormsModule,

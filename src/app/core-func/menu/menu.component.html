@@ -1,0 +1,99 @@
+<!--<amm-advert [crntPg]="currentPage"></amm-advert>-->
+<amm-list-item
+    class="cImgStng"
+    [itemID]="cID"
+    [itemImage]="bannerImage"
+    [itemPhone]="phn"
+    [itemSlogan]="slg"
+    [itemDelivery]="del"
+    [itemTitle]="cnm"
+    [itemFoodType]="cfd"
+    [itemSrvcType]="cpt"
+></amm-list-item>
+<div id="mainClientCntnr">
+    <!--<div [ngClass]='menuOpen ? "menuOpen" : ""' class='clientMenu'>
+        <div id="navbar" class="d-flex justify-content-center" style="vertical-align: top">
+            <app-category-selector
+                id='touchNav'
+                #touchnav class='menuBtn'
+                *ngFor="let category of navCats; let idx=index"
+                [mobileOnFS]="mobileOn"
+                [isActive]="category.visible"
+                [menuNavi]="category.name"
+                (tap)="menuClick(idx, $event.type, $event)"
+            ></app-category-selector>
+        </div>
+        <app-food-cart-ui #cartUI [foodSelection]="cartRef.getFoodItems()" [cartSelection]="cartRef.getNonDinnerItems()" [cartNotSelected]=""></app-food-cart-ui>
+
+        <div #menuArticle [ngClass]='menuOpen ? "menuArticle d-flex" : "menuArticle"'>
+            <article [ngClass]='menuOpen ? "col-8" : ""'>
+                <h6>Enjoy our lovely cuisine</h6>
+                <p>Our breakfast is the finest you’ll find anywhere in the state. Come judge for yourself.</p>
+            </article>
+            <button [ngClass]='menuOpen ? "col-2" : "off"' #callIcon type="button" (click)="$event.preventDefault()" class="mainSelectors callIcon btn btn-sm btn-secondary"><mat-icon>call</mat-icon>&lt;!&ndash;<img src="assets/glyphicons-cart-L.png" alt="Cart Icon" />&ndash;&gt;</button>
+            <button [ngClass]='menuOpen ? "col-2" : "off"' #cartIcon type="button" (click)="cartRef.viewCart(); toggleCartButton($event);" class="mainSelectors btn btn-sm btn-secondary"><mat-icon>shopping_cart</mat-icon>&lt;!&ndash;<img src="assets/glyphicons-cart-L.png" alt="Cart Icon" />&ndash;&gt;</button>
+
+            <mat-divider></mat-divider>
+        </div>
+
+        <div [ngClass]='menuOpen ? "off" : "callBox"'>
+            <button #callIcon type="button" (click)="$event.preventDefault()" class="mainSelectors callIcon btn btn-sm btn-secondary"><mat-icon>call</mat-icon>&lt;!&ndash;<img src="assets/glyphicons-cart-L.png" alt="Cart Icon" />&ndash;&gt;</button>
+            <p>(347) 236-2983</p>
+        </div>
+        <mat-divider></mat-divider>
+
+        <div [ngClass]='menuOpen ? "off" : "locBox"'>
+            &lt;!&ndash;<div class='mapPic'></div>&ndash;&gt;
+            <app-map></app-map>
+            <button #locIcon type="button" (click)="$event.preventDefault()" class="mainSelectors btn btn-sm btn-secondary">Directions</button>
+        </div>
+        <mat-divider></mat-divider>
+        <div class='subNavSpacer'>
+            <div *ngIf='menuOpen' id="sideNav" class="subNavMenu">
+                <app-sub-category-selector
+                    #subNav
+                    class='subNav'
+                    *ngFor="let subCategory of subNavCats; let idx=index"
+                    [mobileOnFS]="mobileOn"
+                    [isActive]="subCategory.visible"
+                    [subMenuNavi]="subCategory.scval"
+                    [sortOrder]="subCategory.sortOrder"
+                    (tap)="subMenuClick(subCategory.sortOrder, $event.type, $event)"
+                ></app-sub-category-selector>
+            </div>
+        </div>
+        <app-food-payment
+            #payRef
+            id="payRef"
+            [orderSbmtd]="cartRef.sendOrder()"
+        ></app-food-payment>
+
+    </div>
+    <div id="menuBox" class="container d-flex pt-5 pl-0 pr-0">
+        <app-food-category
+            #menuRef id='menuRef'
+            class="swipeBox w-100"
+            [style.touch-action]="TOUCH_ACTION.TOUCH"
+            *ngFor="let italpage of dCats; let idx=index"
+            [ngClass]="italpage.visible ? (mobileOn ? 'visible' : 'visible d-flex') : 'hidden'"
+            [menuNav]="italpage.name" [isMobile]='!mobileOn'
+            [menuID]="italpage.id"
+            [clientID]='italpage.client_id'
+            [menuOpen]='menuOpen'
+            [incremental]='(italpage.id !== ( "MJ7M88JTG3QF8" )) && (italpage.id !== ( "215B0KSFN91GM" ))'
+            (emitRemove_click3)='cartRef.removeItem($event)'
+
+        >&lt;!&ndash;[incremental]='(italpage.id !== ( (italpage.id[0]) || (italpage.id[1]) ))'&ndash;&gt;
+        </app-food-category>
+        <app-food-cart
+            #cartRef id="cartRef"
+            class="foodCart card-inverse justify-content-start btn-group-vertical hidden"
+            (c_orderID)="payRef.cartIDSend($event)"
+            (c_orderAmt)="payRef.cartAmtSend($event)"
+            (closeOnSubmit)="cartSubmitted()"
+            (rmvItemCounter)='menuRef.removeCounter($event)'
+            [orderItemsForPlate]="cartUI.getSelection()"
+            [orderItemsNotForPlate]="cartUI.getCart()"
+        ></app-food-cart>
+    </div>-->
+</div>

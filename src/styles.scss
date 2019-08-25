@@ -123,6 +123,8 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
         height: 150px;
         margin-top: 18%;
         background: #7ED321;
+        position: relative;
+        z-index: 90;
     }
     /* // ------------------ // */
 
@@ -146,9 +148,9 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
     #ntroCntnr {
         min-height: 670px;
     }
-    .imgStngs {
+    /*.imgStngs {
         width: 363px;
-    }
+    }*/
 
 }
 
@@ -183,6 +185,8 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
         height: 150px;
         margin-top: 16%;
         background: #7ED321;
+        position: relative;
+        z-index: 90;
     }
     /* // ------------------ // */
 
@@ -218,9 +222,9 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
     #navbar .btn-sm:not(first-child) {
         margin-left: 3px;
     }
-    .imgStngs {
+    /*.imgStngs {
         width: 400px;
-    }
+    }*/
 }
 
 
@@ -271,6 +275,7 @@ input.mat-input-element {
     background-repeat: no-repeat;*/
 
     overflow: hidden;
+    position: relative;
 
     /*.darkBackground {
       background-color: #12131b;
