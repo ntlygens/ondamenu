@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { RouterOutlet, ActivatedRoute, Router } from '@angular/router';
 // import { transition, trigger, useAnimation } from '@angular/animations';
 import { fader, slider } from './core-func/animations/animations.component';
 import { StorageService } from './core-func/srvcs/storage.service';
+import {takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
 
 @Component({
     selector: 'amm-root',
@@ -27,29 +29,33 @@ import { StorageService } from './core-func/srvcs/storage.service';
     ])*/
   ]
 })
-export class AmmComponent implements OnInit {
-    isSplash: boolean;
+export class AmmComponent implements OnInit, OnDestroy {
+    private destroy$ = new Subject<any>();
+    isStartPg: boolean;
 
     constructor(
-        private strgSrvc: StorageService,
+        private ss: StorageService,
         private route: ActivatedRoute,
         private router: Router
     ) {}
 
     ngOnInit(): void {
-        // this.rState = this.router;
-        this.strgSrvc.getPageRoute().subscribe(
+        this.ss.isStartPg$.pipe(takeUntil(this.destroy$)).subscribe(
             (res) => {
-                this.isSplash = res.s;
-                console.log('issplash res: ', this.isSplash);
+                this.isStartPg = res;
+                console.log('issplash res: ', this.isStartPg);
             }
         );
     }
 
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
     prepareRoute(outlet: RouterOutlet) {
-        console.log('roo: ', outlet.activatedRouteData.state);
+        console.log('router state: ', outlet.activatedRouteData.state);
         return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
     }
 
-    // title = 'ondamenu';
 }

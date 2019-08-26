@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, Validator } from '@angular/forms';
 import { LoginService } from '../../core-func/srvcs/login.service';
+import { StorageService } from '../../core-func/srvcs/storage.service';
 import {
     ConfirmValidEmailMatcher,
     regExps,
@@ -71,6 +72,7 @@ export class SignInComponent implements OnInit {
         private als: LoginService,
         private router: Router,
         private route: ActivatedRoute,
+        private ss: StorageService,
     ) {
         this.emailErrInst = 'email';
         this.passErrInst = 'password';
@@ -160,7 +162,7 @@ export class SignInComponent implements OnInit {
                               this.als.isProfileComplete(merchant).subscribe( resp => {
                                   // console.log('resp: ', resp);
                                   const isProfileCompleted = resp.profile_complete;
-                                  this.als.setProfileStatus({prflStat: isProfileCompleted});
+                                  this.ss.setProfileStatus(isProfileCompleted);
                                   console.log('profileCompleted: ', isProfileCompleted);
                                   if ( isProfileCompleted !== '0' ) {
                                     // IF PROFILE COMPLETE //

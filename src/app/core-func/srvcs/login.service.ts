@@ -13,10 +13,6 @@ export class LoginService {
     clientType;
     CloverAuth;
 
-    readonly profileStatus$: any;
-
-    setPrflStatus = new BehaviorSubject<any>( {prflStat: 0 });
-
     constructor(
         private http: HttpClient,
         private route: ActivatedRoute
@@ -26,7 +22,6 @@ export class LoginService {
         this.CloverAuth = 'https://api.clover.com:443/auth/authorize';
         this.emailValidate = 'http://localhost/~ntlygens/php/validateEmail.php'; // Local
         this.newUser = 'http://localhost/~ntlygens/php/addUser.php'; // Local
-        this.profileStatus$ = this.setPrflStatus.asObservable();
     }
 
     createJSONPostHeader(headers: HttpHeaders) {
@@ -88,14 +83,6 @@ export class LoginService {
         this.createJSONPostHeader(headers);
 
         return this.http.post(`${this.baseURL}`, [Params], {headers});
-    }
-
-    getProfileStatus(): any {
-        return this.profileStatus$;
-    }
-
-    setProfileStatus(prfl: any) {
-        this.setPrflStatus.next(prfl);
     }
 
     async getAllMerchants() {

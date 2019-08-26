@@ -1,14 +1,14 @@
 <!--<amm-advert [crntPg]="currentPage"></amm-advert>-->
 <amm-list-item
     class="cImgStng"
-    [itemID]="cID"
-    [itemImage]="bannerImage"
-    [itemPhone]="phn"
-    [itemSlogan]="slg"
-    [itemDelivery]="del"
-    [itemTitle]="cnm"
-    [itemFoodType]="cfd"
-    [itemSrvcType]="cpt"
+    [itemID]="bnrData.client_id"
+    [itemImage]="bnrData.logo"
+    [itemPhone]="bnrData.phone"
+    [itemSlogan]="bnrData.slogan"
+    [itemDelivery]="bnrData.delivery"
+    [itemTitle]="bnrData.username"
+    [itemFoodType]="bnrData.food"
+    [itemSrvcType]="bnrData.concept"
 ></amm-list-item>
 <div id="mainClientCntnr">
     <!--<div [ngClass]='menuOpen ? "menuOpen" : ""' class='clientMenu'>

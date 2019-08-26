@@ -28,7 +28,7 @@ export class SplashComponent implements OnInit {
     elem: any;
 
     constructor(
-        private strgSrvc: StorageService,
+        private ss: StorageService,
         private route: ActivatedRoute,
         private router: Router,
         private elemRef: ElementRef
@@ -59,13 +59,13 @@ export class SplashComponent implements OnInit {
     }
 
     startUserXp() {
+        this.ss.setStartPg(false);
         this.router.navigate(['u'], {relativeTo: this.route});
-        this.strgSrvc.setPageRoute({s: false});
     }
 
     startMrchntXp() {
         console.log('accessed from web');
-        this.strgSrvc.setPageRoute({s: false});
+        this.ss.setStartPg(false);
         window.open(`${this.mURL}`, '_self');
     }
 

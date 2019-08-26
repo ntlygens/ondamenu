@@ -1,8 +1,8 @@
-import {Component, OnInit, QueryList} from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MerchantInfoData } from '../../amm.enum';
 import { LoginService } from '../srvcs/login.service';
-import {HttpParams} from '@angular/common/http';
+import { StorageService } from '../srvcs/storage.service';
 
 @Component({
     selector: 'amm-list',
@@ -56,6 +56,7 @@ export class ListComponent implements OnInit {
     crntPage = 'the crnt page';
     constructor(
         private ls: LoginService,
+        private ss: StorageService,
         private router: Router,
         private route: ActivatedRoute
     ) {
@@ -78,18 +79,18 @@ export class ListComponent implements OnInit {
     }
 
     getMerchantMenu(merchant: MerchantInfoData) {
-        const mprms = {
-            cid: merchant.client_id,
-            cnm: merchant.username,
-            img: merchant.logo,
-            phn: merchant.phone,
-            slg: merchant.slogan,
-            cfd: merchant.food,
-            cpt: merchant.concept,
-            del: merchant.delivery
-        };
+        this.ss.setBannerData({
+            client_id: merchant.client_id,
+            username: merchant.username,
+            logo: merchant.logo,
+            phone: merchant.phone,
+            slogan: merchant.slogan,
+            food: merchant.food,
+            concept: merchant.concept,
+            delivery: merchant.delivery
+        });
 
-        this.router.navigate( [ '/c/'], {queryParams: mprms} );
+        this.router.navigate( [ '/c/'], {queryParams: {cid: merchant.client_id}} );
         console.log('cID: ', merchant.client_id, ' cName: ', merchant.username);
     }
 

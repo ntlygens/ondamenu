@@ -1,7 +1,11 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { MenuService } from '../srvcs/menu.service';
+import { MenuService } from '../core-func/srvcs/menu.service';
+import { StorageService } from '../core-func/srvcs/storage.service';
+import { MerchantInfoData } from '../amm.enum';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
     selector: 'amm-menu',
@@ -9,13 +13,12 @@ import { MenuService } from '../srvcs/menu.service';
     styleUrls: ['./menu.component.scss'],
     providers: [ MenuService ]
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit, OnDestroy {
     @ViewChild('cartRef', {static: true}) cartRef: ElementRef;
     @ViewChild('menuRef', {static: true}) menuRef: ElementRef;
     @ViewChild('cartIcon', {static: true}) cartIcon: ElementRef;
 
-    currentPage = 'thisis the current page';
-
+    bnrData: MerchantInfoData;
     mobileOn: boolean;
     menuOpen: boolean;
 
@@ -25,11 +28,9 @@ export class MenuComponent implements OnInit {
     subNavCats: any = [];
 
     catsAllwd = 4;
-    elem: any; bannerImage: string;
+    elem: any;
 
-    cID: string; cnm: string; img: string;
-    phn: string; slg: string; cfd: string;
-    cpt: string; del: string;
+    private destroy$ = new Subject<any>();
 
     SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight'};
     TOUCH_ACTION = { TOUCH: 'tap', DOUBLETAP: 'double-tap' };
@@ -38,29 +39,28 @@ export class MenuComponent implements OnInit {
         private loc: Location,
         private clSvc: MenuService,
         private elemRef: ElementRef,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private ss: StorageService,
     ) {
-        this.route.queryParams.subscribe( params => {
-            this.cID = params.cid;
-            this.cnm = params.cnm;
-            this.img = params.img;
-            this.phn = params.phn;
-            this.slg = params.slg;
-            this.cfd = params.cfd;
-            this.cpt = params.cpt;
-            this.del = params.del;
+
+        this.ss.menuBnrData$.pipe(takeUntil(this.destroy$)).subscribe( (res: MerchantInfoData) => {
+            console.log('data_Eg: = ', res.username);
+            this.bnrData = res;
+            this.getCats(res.client_id);
         });
-        this.getCats(this.cID);
+
     }
 
     ngOnInit() {
         this.elem = this.elemRef.nativeElement;
         const dEl = this.elem.querySelector('.imgStngs');
         dEl.classList.add('fullImg');
-        console.log('clientIDS: ', this.cID);
-        this.clSvc.getClientBnr(this.cID).subscribe( (res) => {
-            this.bannerImage = res.banner;
-        });
+
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
     getCats(cid: string): any {

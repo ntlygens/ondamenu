@@ -22,7 +22,7 @@ import { StorageService } from '../srvcs/storage.service';
 export class HeaderLogoComponent implements OnInit {
 
     constructor(
-        private strgSrvc: StorageService,
+        private ss: StorageService,
         private router: Router,
         private route: ActivatedRoute
     ) { }
@@ -31,7 +31,7 @@ export class HeaderLogoComponent implements OnInit {
     }
 
     goHome() {
-        this.strgSrvc.setPageRoute({s: true});
+        this.ss.setStartPg(true);
         this.router.navigate([''], {});
     }
 

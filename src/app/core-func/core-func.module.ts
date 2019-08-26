@@ -6,7 +6,7 @@ import { NydohComponent } from './doh/nydoh/nydoh.component';
 import { ListItemComponent } from './comps/list-item.component';
 import { ListComponent } from './comps/list.component';
 import { AdvertComponent } from './comps/advert.component';
-import { MenuComponent } from './menu/menu.component';
+import { MenuComponent } from '../menu/menu.component';
 
 
 @NgModule({
