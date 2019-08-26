@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'amm-header-bar',
     template: `
         <div class="headerbar">
-            <p>RESTAURANTS</p>
+            <h5>RESTAURANTS</h5>
         </div>
       `,
     styles: [`
@@ -21,7 +21,7 @@ import { Component, OnInit } from '@angular/core';
             border-bottom-right-radius: 5px;
 
         }
-        .headerbar p {
+        .headerbar h5 {
             position: relative;
             top: 1.25rem;
             margin: auto;

@@ -22,32 +22,32 @@ export class MenuService {
         return this.http.get( `${this.srvrURL}`, { params: nuParamsGetCats } );
     }
 
-    getCatProds( menu: string, cat: string ): Observable<any> {
+    getCatProds( client: string, cat: string ): Observable<any> {
         const nuParamsCatProds = new HttpParams()
-            .set( 'cl', menu )
+            .set( 'cl', client )
             .set( 'Cat', cat );
 
         return this.http.get( `${this.srvrURL}`, { params: nuParamsCatProds } );
     }
 
-    getSubCats( menu: string, subcat: string ): Observable<any> {
+    getSubCats( client: string, subcat: string ): Observable<any> {
         const nuParamsSubCats = new HttpParams()
-            .set( 'c', menu )
+            .set( 'c', client )
             .set( 'sC', subcat );
 
         return this.http.get( `${this.srvrURL}`, { params: nuParamsSubCats } );
     }
 
-    getPromoBnr( menu: string ): Observable<any> {
+    getPromoBnr( client: string ): Observable<any> {
         const nuParamsPromoBnr = new HttpParams()
-            .set( 'pBnr', menu );
+            .set( 'pBnr', client );
 
         return this.http.get(`${this.srvrURL}`, {params: nuParamsPromoBnr} );
     }
 
-    getClientBnr( menu: string ): Observable<any> {
+    getClientBnr( client: string ): Observable<any> {
         const nuParamsClientBnr = new HttpParams()
-            .set( 'cBnr', menu );
+            .set( 'cBnr', client );
 
         return this.http.get(`${this.srvrURL}`, {params: nuParamsClientBnr} );
     }

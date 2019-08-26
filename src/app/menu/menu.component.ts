@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MenuService } from '../core-func/srvcs/menu.service';
 import { StorageService } from '../core-func/srvcs/storage.service';
 import { MerchantInfoData } from '../amm.enum';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'amm-menu',
@@ -37,7 +37,7 @@ export class MenuComponent implements OnInit, OnDestroy {
 
     constructor(
         private loc: Location,
-        private clSvc: MenuService,
+        private ms: MenuService,
         private elemRef: ElementRef,
         private route: ActivatedRoute,
         private ss: StorageService,
@@ -64,14 +64,14 @@ export class MenuComponent implements OnInit, OnDestroy {
     }
 
     getCats(cid: string): any {
-        this.clSvc.getAllCategories(`${cid}`).subscribe(
+        this.ms.getAllCategories(`${cid}`).subscribe(
             (dCtgrys) => {
                 (dCtgrys).forEach((x, i) => {
                     x.id = x.cid;
                     x.name = x.cval;
                     x.clientid = x.client_id;
                     if (i < this.catsAllwd) {
-                        this.clSvc.getSubCats(x.clientid, x.id).subscribe(
+                        this.ms.getSubCats(x.clientid, x.id).subscribe(
                             (res) => {
                                 const catname = x.name;
                                 this.allSubCats.push({[catname]: res});
@@ -93,7 +93,7 @@ export class MenuComponent implements OnInit, OnDestroy {
                 console.log('getAllCategories_Error: ', err);
             },
             () => {
-                console.log('getAllCategories Complete');
+                console.log('getAllCategories Complete', this.navCats);
             }
         );
     }

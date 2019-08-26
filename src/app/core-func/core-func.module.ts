@@ -7,10 +7,11 @@ import { ListItemComponent } from './comps/list-item.component';
 import { ListComponent } from './comps/list.component';
 import { AdvertComponent } from './comps/advert.component';
 import { MenuComponent } from '../menu/menu.component';
+import { CategoryBtnComponent } from './comps/category-btn.component';
 
 
 @NgModule({
-    declarations: [NydohComponent, ListItemComponent, ListComponent, AdvertComponent, MenuComponent],
+    declarations: [NydohComponent, ListItemComponent, ListComponent, AdvertComponent, MenuComponent, CategoryBtnComponent],
     exports: [
         NydohComponent,
         ListItemComponent,

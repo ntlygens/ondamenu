@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, Validator } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../../core-func/srvcs/login.service';
 import { StorageService } from '../../core-func/srvcs/storage.service';
 import {
@@ -9,49 +9,48 @@ import {
     errorMessages,
 } from '../../core-func/errors/custom-validation/custom-validation.component';
 
-
 @Component({
     selector: 'amm-sign-in',
     template: `
-        <div id="ntroCntnr" class="inputBackground">
-            <form [formGroup]='submitForm' [ngClass]='this.clientType === "m" ? "": ""' id='CTA_div' novalidate>
-                <h3> sign in</h3>
-                <div formGroupName='userLoginData'>
-                    <mat-form-field>
-                        <input matInput (blur)='validateEmail()' placeholder='email' type='email' formControlName='email' name='email' [errorStateMatcher]='confirmValidEmailMatcher' />
-                        <mat-error>
-                            {{errors[emailErrInst]}}
-                        </mat-error>
-                    </mat-form-field>
+            <div id="ntroCntnr" class="inputBackground">
+                <form [formGroup]='submitForm' [ngClass]='this.clientType === "m" ? "": ""' id='CTA_div' novalidate>
+                    <h4> sign in</h4>
+                    <div formGroupName='userLoginData'>
+                        <mat-form-field>
+                            <input matInput (blur)='validateEmail()' placeholder='email' type='email' formControlName='email' name='email' [errorStateMatcher]='confirmValidEmailMatcher' />
+                            <mat-error>
+                                {{errors[emailErrInst]}}
+                            </mat-error>
+                        </mat-form-field>
 
-                    <mat-form-field>
-                        <input matInput placeholder='password' type='password' formControlName='password' name='password'  />
-                        <mat-error>
-                            {{errors[passErrInst]}}
-                        </mat-error>
-                    </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder='password' type='password' formControlName='password' name='password'  />
+                            <mat-error>
+                                {{errors[passErrInst]}}
+                            </mat-error>
+                        </mat-form-field>
 
-                </div>
-                <button (click)='validateUser()' [disabled]='this.submitForm.invalid' color='warn' mat-raised-button type='button'>Sign In</button>
-                <div id='loginOptns'>
-                    <a href='#' (click)='$event.preventDefault(); gotoSignUp()' routerLinkActive='true' id='signup' name='signup'>Sign Up</a>
-                    <a href='#' (click)='$event.preventDefault(); gotoReset()' routerLinkActive='true' id='reset' name='reset'>Reset</a>
-                </div>
-            </form>
-        </div>
-  `,
+                    </div>
+                    <button (click)='validateUser()' [disabled]='this.submitForm.invalid' color='warn' mat-raised-button type='button'>Sign In</button>
+                    <div id='loginOptns'>
+                        <a href='#' (click)='$event.preventDefault(); gotoSignUp()' routerLinkActive='true' id='signup' name='signup'>Sign Up</a>
+                        <a href='#' (click)='$event.preventDefault(); gotoReset()' routerLinkActive='true' id='reset' name='reset'>Reset</a>
+                    </div>
+                </form>
+            </div>
+      `,
     styles: [`
-        .splashImg {
-            width: 100%;
-            height: auto;
-        }
+            .splashImg {
+                width: 100%;
+                height: auto;
+            }
 
-        h3 {
-            text-transform: uppercase;
-        }
-    `],
+            h4 {
+                text-transform: uppercase;
+            }
+        `],
     providers: [
-      LoginService,
+        LoginService,
     ],
 })
 export class SignInComponent implements OnInit {
@@ -81,29 +80,29 @@ export class SignInComponent implements OnInit {
     }
 
     ngOnInit() {
-      const params = (new URL(document.location.href)).searchParams;
-      const searchParams = new URLSearchParams(params);
+        const params = (new URL(document.location.href)).searchParams;
+        const searchParams = new URLSearchParams(params);
 
-      switch ( true ) {
-        case searchParams.has('merchant_id'):
-          this.clientType = 'm';
-          this.merchantID = searchParams.get('merchant_id');
-          break;
-        case searchParams.has('employee_id'):
-          this.employeeID = searchParams.get('employee_id');
-          break;
-        case searchParams.has('client_id'):
-          this.clientID = searchParams.get('client_id');
-          break;
-        case searchParams.has('code'):
-          this.code = searchParams.get('code');
-          break;
-        default:
-          this.clientType = 'u';
+        switch ( true ) {
+            case searchParams.has('merchant_id'):
+                this.clientType = 'm';
+                this.merchantID = searchParams.get('merchant_id');
+                break;
+            case searchParams.has('employee_id'):
+                this.employeeID = searchParams.get('employee_id');
+                break;
+            case searchParams.has('client_id'):
+                this.clientID = searchParams.get('client_id');
+                break;
+            case searchParams.has('code'):
+                this.code = searchParams.get('code');
+                break;
+            default:
+                this.clientType = 'u';
 
-      }
+        }
 
-      console.log( 'm: ', this.merchantID, 'c: ', this.clientType );
+        console.log( 'm: ', this.merchantID, 'c: ', this.clientType );
 
     }
 
@@ -128,7 +127,7 @@ export class SignInComponent implements OnInit {
                     case validRes !== 1:
                         this.emailErrInst = 'wrgemail';
                         this.submitForm.get('userLoginData.email').setErrors({emailErr: true});
-                        // console.log(`${this.clientType}` + '-Email not in db- ' + validRes);
+                        console.log(`${this.clientType}` + '-Email not in db- ' + validRes);
                         break;
                     case validRes === 1:
                         this.submitForm.get('userLoginData.password').enable();
@@ -158,29 +157,30 @@ export class SignInComponent implements OnInit {
                             break;
                         case usrValidRes === 1:
                             if ( this.clientType === 'm' ) {
-                              console.log('being accesed by merchant');
-                              this.als.isProfileComplete(merchant).subscribe( resp => {
-                                  // console.log('resp: ', resp);
-                                  const isProfileCompleted = resp.profile_complete;
-                                  this.ss.setProfileStatus(isProfileCompleted);
-                                  console.log('profileCompleted: ', isProfileCompleted);
-                                  if ( isProfileCompleted !== '0' ) {
-                                    // IF PROFILE COMPLETE //
-                                    this.router.navigate( [ '/m' ], { relativeTo: this.route, queryParams: { mID: merchant } } );
-                                    console.log('profile completed!');
-                                  } else {
-                                    // IF PROFILE NOT COMPLETE //
-                                    this.router.navigate(['/m/profile'], {relativeTo: this.route, queryParams: {mID: merchant} });
-                                    console.log('profile NOT completed!');
-                                  }
-                                },
-                                (err) => {
-                                  console.log('there was an error getting profile status: ', err);
-                                },
-                                () => {
-                                  // this.router.navigate(['/m'], {relativeTo: this.route, queryParams: {'mID': merchant} });
-                                  // this.als.getProfileStatus().subscribe ( (resp) => { console.log('statusLog: ',  resp['prflStat']); } );
-                                });
+                                console.log('being accesed by merchant');
+                                this.als.isProfileComplete(merchant).subscribe(
+                                    resp => {
+                                        // console.log('resp: ', resp);
+                                        const isProfileCompleted = resp.profile_complete;
+                                        this.ss.setProfileStatus(isProfileCompleted);
+                                        console.log('profileCompleted: ', isProfileCompleted);
+                                        if ( isProfileCompleted !== '0' ) {
+                                            // IF PROFILE COMPLETE //
+                                            this.router.navigate( [ '/m' ], { relativeTo: this.route, queryParams: { mID: merchant } } );
+                                            console.log('profile completed!');
+                                        } else {
+                                            // IF PROFILE NOT COMPLETE //
+                                            this.router.navigate(['/m/profile'], {relativeTo: this.route, queryParams: {mID: merchant} });
+                                            console.log('profile NOT completed!');
+                                        }
+                                    },
+                                    (err) => {
+                                        console.log('there was an error getting profile status: ', err);
+                                    },
+                                    () => {
+                                        // this.router.navigate(['/m'], {relativeTo: this.route, queryParams: {'mID': merchant} });
+                                        // this.als.getProfileStatus().subscribe ( (resp) => { console.log('statusLog: ',  resp['prflStat']); } );
+                                    });
                             } else {
                                 this.router.navigate(['/u'], {relativeTo: this.route});
                             }

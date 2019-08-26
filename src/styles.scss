@@ -176,7 +176,7 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
     }
     .headerbar { width: 320px }
     body {
-        font-size: 0.75rem !important;
+        /*font-size: 0.75rem !important;*/
     }
 
     /* // advert placeholder // */
@@ -201,9 +201,6 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
         min-height: 736px;
     }
 
-    #navbar {
-        /*width: 90% !important;*/
-    }
     #sideNav .btn-sm, #navbar .btn-sm, #menuBox > #cartRef .btn-sm, #menuBox .list-group-item {
         font-size: 0.75rem !important;
     }
@@ -214,10 +211,10 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
     .icon-column {
         left: -36% !important;
     }
-    #navbar .btn-sm {
+    #navbar > .btn-sm {
         min-width: 85px;
         line-height: 34px;
-        padding: 0 14px;
+        padding: 0 0.95rem;
     }
     #navbar .btn-sm:not(first-child) {
         margin-left: 3px;
@@ -245,7 +242,16 @@ body {
     min-height: 667px;
 }
 
-#navigationBar { position: fixed; top: 0; z-index: 99 }
+#navigationBar {
+    position: fixed;
+    top: 0;
+
+    z-index: 99;
+}
+
+#navbar {
+    margin-top: 80px;
+}
 
 .mat-sort-header-container {
     justify-content: center !important;
@@ -264,9 +270,6 @@ input.mat-input-element {
     color: transparent;
     background-color: transparent;
 }
-
-
-
 
 #ntroCntnr {
     /*background-image: $baseIntroBkgd;

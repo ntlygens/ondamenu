@@ -11,19 +11,19 @@
     [itemSrvcType]="bnrData.concept"
 ></amm-list-item>
 <div id="mainClientCntnr">
-    <!--<div [ngClass]='menuOpen ? "menuOpen" : ""' class='clientMenu'>
-        <div id="navbar" class="d-flex justify-content-center" style="vertical-align: top">
-            <app-category-selector
+    <div [ngClass]='menuOpen ? "menuOpen" : ""' class='clientMenu'>
+        <div id="navbar" class="d-flex justify-content-center">
+            <amm-category-btn
                 id='touchNav'
                 #touchnav class='menuBtn'
                 *ngFor="let category of navCats; let idx=index"
-                [mobileOnFS]="mobileOn"
+                [mobileOn]="mobileOn"
                 [isActive]="category.visible"
-                [menuNavi]="category.name"
+                [menuNav]="category.name"
                 (tap)="menuClick(idx, $event.type, $event)"
-            ></app-category-selector>
+            ></amm-category-btn>
         </div>
-        <app-food-cart-ui #cartUI [foodSelection]="cartRef.getFoodItems()" [cartSelection]="cartRef.getNonDinnerItems()" [cartNotSelected]=""></app-food-cart-ui>
+        <!--<app-food-cart-ui #cartUI [foodSelection]="cartRef.getFoodItems()" [cartSelection]="cartRef.getNonDinnerItems()" [cartNotSelected]=""></app-food-cart-ui>
 
         <div #menuArticle [ngClass]='menuOpen ? "menuArticle d-flex" : "menuArticle"'>
             <article [ngClass]='menuOpen ? "col-8" : ""'>
@@ -94,6 +94,6 @@
             (rmvItemCounter)='menuRef.removeCounter($event)'
             [orderItemsForPlate]="cartUI.getSelection()"
             [orderItemsNotForPlate]="cartUI.getCart()"
-        ></app-food-cart>
-    </div>-->
+        ></app-food-cart>-->
+    </div>
 </div>
