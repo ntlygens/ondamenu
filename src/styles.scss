@@ -15,8 +15,27 @@ $blankIntroBkgd: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd.png");
 $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png");
 
 @media screen and (max-width: 321px) {
+    .introBackground {
+        background: transparent $blankIntroBkgd center center no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+        #CTA_div { top: 65%; }
+    }
+
+    .inputBackground {
+        background: #1b579f $baseInputBkgd center center no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+        #CTA_div { top: 50%; }
+    }
+
+    .uiBackground {
+        background: #1b579f $baseUIBkgd center center no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    .headerbar { width: 225px }
     #ntroCntnr {
-        height: calc(568px - 1rem);
         min-height: 640px;
     }
     .bannerCntnr {
@@ -46,6 +65,11 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
         line-height: 28px !important;
         padding: 0 10px !important;
     }
+    #navbar .btn-sm {
+        min-width: 57px;
+        line-height: 26px;
+        font-size: 0.65rem;
+    }
     #navbar .btn-sm:not(first-child) {
         margin-left: 2px;
     }
@@ -59,15 +83,36 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
 }
 
 @media screen and (width: 360px) {
+    .introBackground {
+        background: transparent $blankIntroBkgd center center no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+        #CTA_div { top: 65%; }
+    }
+
+    .inputBackground {
+        background: #1b579f $baseInputBkgd center center no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+        #CTA_div { top: 50%; }
+    }
+
+    .uiBackground {
+        background: #1b579f $baseUIBkgd center center no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    .headerbar { width: 280px }
     .bannerCntnr {
         height: 240px !important;
         top: -1px !important;
     }
 
     #navbar .btn-sm {
-        min-width: 68px;
-        line-height: 32px;
-        padding: 0px 12px;
+        min-width: 45px;
+        line-height: 30px;
+        padding: 0px 11px;
+        font-size: 0.75rem;
     }
 
     #navbar .menuBtn:not(:first-child) {
@@ -111,9 +156,9 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
     #navbar .btn-sm {
         font-size: 60% !important;
         padding: 0.4rem;
-        min-width: 78px;
+        min-width: 70px;
     }
-    #navbar .menuBtn:not(:first-child) {
+    #touchNav .btn-sm {
         margin-left: 3px;
     }
 
@@ -211,14 +256,19 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
     .icon-column {
         left: -36% !important;
     }
-    #navbar > .btn-sm {
-        min-width: 85px;
+    #navbar .btn-sm {
+
         line-height: 34px;
         padding: 0 0.95rem;
+        min-width: 66px;
     }
-    #navbar .btn-sm:not(first-child) {
+    #touchNav .btn-sm {
         margin-left: 3px;
     }
+
+    /*#fullMenuBtn .btn-sm {
+        margin-left: 0;
+    }*/
     /*.imgStngs {
         width: 400px;
     }*/
@@ -244,13 +294,12 @@ body {
 
 #navigationBar {
     position: fixed;
-    top: 0;
-
+    top: -2px;
     z-index: 99;
 }
 
 #navbar {
-    margin-top: 80px;
+    padding-top: 3px;
 }
 
 .mat-sort-header-container {
@@ -260,6 +309,7 @@ body {
 .mat-dialog-container {
     border-radius: .35rem !important;
 }
+
 .mat-list-item-content { padding: 0 6px !important; }
 input.mat-input-element {
     /*color: transparent;*/
@@ -370,11 +420,22 @@ input.mat-input-element {
 .off {
     display: none !important;
 }
+.visible { display: block !important }
+.hidden { display: none !important }
 
-.price::before, .priceAdded::before, .cartSumTotal::before {
+
+.price::before, .priceAdded::before, .cartSumTotal::before, .miPrice div::before {
     content: '$';
+}
+
+#menuBox {
+    .mat-list-item-content {
+        padding: 0.65rem !important;
+
+    }
 }
 
 #rteHldr {
     position: relative;
 }
+

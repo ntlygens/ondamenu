@@ -1,5 +1,12 @@
 .cImgStng {
-    padding: 6px 6px 0;
-    margin-bottom: 20px;
+    margin-bottom: 82px;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0px;
+    z-index: 90;
+}
+.mat-list-item {
+    height: auto !important;
+    margin-bottom: 2px;
 }
 

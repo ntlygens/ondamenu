@@ -224,7 +224,7 @@ import { Component, OnInit, Input } from '@angular/core';
         }
 
         .fullImg {
-            height: 100% !important;
+            height: 275px;
         }
 
 

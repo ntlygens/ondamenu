@@ -10,16 +10,24 @@
     [itemFoodType]="bnrData.food"
     [itemSrvcType]="bnrData.concept"
 ></amm-list-item>
-<div id="mainClientCntnr">
-    <div [ngClass]='menuOpen ? "menuOpen" : ""' class='clientMenu'>
+<div id="mainClientCntnr" class="">
+    <div class='clientMenu pt-sm-1'>
         <div id="navbar" class="d-flex justify-content-center">
+            <amm-category-btn
+                id="fullMenuBtn"
+                class="menuBtn"
+                [mobileOn]="mobileOn"
+                isActive="true"
+                menuNav="ALL"
+                (tap)="menuClick(null, $event.type, $event)"
+            ></amm-category-btn>
             <amm-category-btn
                 id='touchNav'
                 #touchnav class='menuBtn'
                 *ngFor="let category of navCats; let idx=index"
                 [mobileOn]="mobileOn"
-                [isActive]="category.visible"
-                [menuNav]="category.name"
+                [isActive]="category['visible']"
+                [menuNav]="category['name']"
                 (tap)="menuClick(idx, $event.type, $event)"
             ></amm-category-btn>
         </div>
@@ -66,11 +74,22 @@
             #payRef
             id="payRef"
             [orderSbmtd]="cartRef.sendOrder()"
-        ></app-food-payment>
-
+        ></app-food-payment>-->
     </div>
-    <div id="menuBox" class="container d-flex pt-5 pl-0 pr-0">
-        <app-food-category
+    <div id="menuBox" class="d-flex flex-column">
+        <amm-category-list
+            #menuRef id="menuRef"
+            [style.touch-action]="TOUCH_ACTION.TOUCH"
+            *ngFor="let dCat of dCats; let idx = index"
+            [ngClass]="dCat['visible'] ? (mobileOn ? 'visible' : 'visible d-flex') : 'hidden'"
+            [menuNav]="dCat['name']" [isMobile]='mobileOn'
+            [menuID]="dCat['id']"
+            [clientID]="dCat['client_id']"
+            [isIncremental]="(dCat['id'] !== ( 'MJ7M88JTG3QF8' )) && (dCat['id'] !== ( '215B0KSFN91GM' ))"
+        ></amm-category-list>
+
+
+        <!--<app-food-category
             #menuRef id='menuRef'
             class="swipeBox w-100"
             [style.touch-action]="TOUCH_ACTION.TOUCH"
@@ -80,10 +99,10 @@
             [menuID]="italpage.id"
             [clientID]='italpage.client_id'
             [menuOpen]='menuOpen'
-            [incremental]='(italpage.id !== ( "MJ7M88JTG3QF8" )) && (italpage.id !== ( "215B0KSFN91GM" ))'
-            (emitRemove_click3)='cartRef.removeItem($event)'
+            [isIncremental]='(italpage.id !== ( "MJ7M88JTG3QF8" )) && (italpage.id !== ( "215B0KSFN91GM" ))'
+            (emitRemoveClick3)='cartRef.removeItem($event)'
 
-        >&lt;!&ndash;[incremental]='(italpage.id !== ( (italpage.id[0]) || (italpage.id[1]) ))'&ndash;&gt;
+        >&lt;!&ndash;[isIncremental]='(italpage.id !== ( (italpage.id[0]) || (italpage.id[1]) ))'&ndash;&gt;
         </app-food-category>
         <app-food-cart
             #cartRef id="cartRef"

@@ -16,6 +16,7 @@ import { Component, OnInit, Input } from '@angular/core';
               color: #333;
               background-color: #BCF521;
               border-radius: 2px;
+              padding: 0 5px;
           }
 
           button:disabled {

@@ -30,6 +30,9 @@ export class MenuComponent implements OnInit, OnDestroy {
     catsAllwd = 4;
     elem: any;
 
+    Arr = Array;
+    nMbr = 20;
+
     private destroy$ = new Subject<any>();
 
     SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight'};
@@ -47,6 +50,7 @@ export class MenuComponent implements OnInit, OnDestroy {
             console.log('data_Eg: = ', res.username);
             this.bnrData = res;
             this.getCats(res.client_id);
+
         });
 
     }
@@ -55,6 +59,9 @@ export class MenuComponent implements OnInit, OnDestroy {
         this.elem = this.elemRef.nativeElement;
         const dEl = this.elem.querySelector('.imgStngs');
         dEl.classList.add('fullImg');
+
+        // TODO: setup matchmedia for mobile test //
+        this.mobileOn = true;
 
     }
 
@@ -96,6 +103,10 @@ export class MenuComponent implements OnInit, OnDestroy {
                 console.log('getAllCategories Complete', this.navCats);
             }
         );
+    }
+
+    getCatProds(cID, mnuID): any {
+
     }
 
     menuClick(currentIndex: number, action: string, e) {

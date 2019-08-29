@@ -26,6 +26,7 @@ export enum LocFoodType {
     ETHNIC = 'ethnic' as any,
     AMERICAN = 'american' as any,
 }
+
 export interface AmmRouteInterface {
   title?: string;
   redirectTo?: string;
@@ -72,4 +73,16 @@ export interface MerchantInfoData {
 
 export interface MerchantDOHRating {
     rating: string;
+}
+
+export interface CategoryProductsData {
+    pid: string;
+    prod_name: string;
+    alternateName: string;
+    price: number;
+    priceType: string;
+    src: string;
+    cid: string;
+    client_id: string;
+
 }
