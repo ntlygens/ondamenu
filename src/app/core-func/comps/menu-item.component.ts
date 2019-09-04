@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, AfterViewInit} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementRef } from '@angular/core';
 
 @Component({
     selector: 'amm-menu-item',
@@ -10,23 +10,55 @@ import {Component, OnInit, Input, Output, EventEmitter, AfterViewInit} from '@an
                     </div>
                     <div class="miPrice col-sm">
                         <div class="rounded">{{miPrice}}</div>
+                        <div class='cta_btns d-inline-flex'>
+                            <div *ngIf='miIncr' [ngClass]='itemCounter ? "itemCounter" : "off"'>
+                                <button mat-raised-button class='btn btn-info btn-sm' [disabled]='this.count < 2' (click)="this.count = (this.count - 1)">
+                                    <mat-icon>expand_more</mat-icon>
+                                </button>
+                                {{count}}
+                                <button mat-raised-button class='btn btn-outline-info btn-sm' [disabled]='this.count > 9' (click)="this.count = (this.count + 1)">
+                                    <mat-icon>expand_less</mat-icon>
+                                </button>
+                            </div>
+
+                            <amm-food-order [isIncremental]='miIncr' [itemCount]='this.count' id="orderBtn" #orderBtn (toggleIncr)='toggleCounter()' (rmvBtn_emitter)='send4Removal($event)' [prodid]="miID"></amm-food-order>
+                        </div>
                     </div>
                     <div class="miPic rounded" [ngStyle]="{'background-image': 'url(../../../' + this.miPic + ')'}"></div>
                 </div>
+
                 <div *ngIf="!isEven" class="menuItem d-flex">
                     <div class="miPic rounded" [ngStyle]="{'background-image': 'url(../../../' + this.miPic + ')'}"></div>
                     <div class="miPrice col-sm">
                         <div class="rounded">{{miPrice}}</div>
+                        <div class='cta_btns d-inline-flex'>
+                            <div *ngIf='miIncr' [ngClass]='itemCounter ? "itemCounter" : "off"'>
+                                <button mat-raised-button class='btn btn-info btn-sm' [disabled]='this.count < 2' (click)="this.count = (this.count - 1)">
+                                    <mat-icon>expand_more</mat-icon>
+                                </button>
+                                {{count}}
+                                <button mat-raised-button class='btn btn-outline-info btn-sm' [disabled]='this.count > 9' (click)="this.count = (this.count + 1)">
+                                    <mat-icon>expand_less</mat-icon>
+                                </button>
+                            </div>
+
+                            <amm-food-order [isIncremental]='miIncr' [itemCount]='this.count' id="orderBtn" #orderBtn (toggleIncr)='toggleCounter()' (rmvBtn_emitter)='send4Removal($event)' [prodid]="miID"></amm-food-order>
+                        </div>
                     </div>
                     <div class="miDesc">
                         <h6>{{miName}}</h6>
                         <p>{{miDesc}}</p>
                     </div>
                 </div>
+
               `,
     styles: [`
                 :host {
 
+                }
+
+                :host.last .menuItem {
+                    margin-bottom: 60px;
                 }
 
                 :host.odd .menuItem {
@@ -42,6 +74,11 @@ import {Component, OnInit, Input, Output, EventEmitter, AfterViewInit} from '@an
                     padding-right: 4px;
                 }
 
+                :host.odd .miPrice .rounded {
+                    box-shadow: inset -1px 2px 4px 0px #454545;
+                }
+
+                /* // ------------- // */
                 :host.even .menuItem {
                     background: linear-gradient(to bottom right, rgba(255,255,255,0.95), rgba(255,255,255,0.125));
                 }
@@ -52,6 +89,10 @@ import {Component, OnInit, Input, Output, EventEmitter, AfterViewInit} from '@an
 
                 :host.even .miDesc {
                     text-align: right;
+                }
+
+                :host.even .miPrice .rounded {
+                    box-shadow: inset 1px 2px 4px 0px #454545;
                 }
 
                 :host.even .miDesc, :host.even .miPrice, :host.even .miPic {
@@ -78,10 +119,11 @@ import {Component, OnInit, Input, Output, EventEmitter, AfterViewInit} from '@an
                 }
                 .miDesc h6 {
                     font-size: 0.85rem;
-                    color: #BB3523;
+                    color: #545454;
                     text-transform: capitalize;
-                    margin-bottom: 0.345rem;
+                    margin-bottom: 0.2345rem;
                     white-space: nowrap;
+                    font-weight: bold;
                 }
                 .miDesc p {
                     font-size: 13px;
@@ -96,10 +138,11 @@ import {Component, OnInit, Input, Output, EventEmitter, AfterViewInit} from '@an
                     color: #EA6A5E;
                 }
 
-                .miPrice div {
+                .miPrice .rounded {
                     font-size: 14px;
                     padding: 0.125rem 0rem;
-                    border: #EA6A5E thin solid;
+                    border: #E0E0E0 thin solid;
+                    background: #E0E0E0;
                     /*border: #BB3523 thin solid;*/
                 }
 
@@ -118,6 +161,11 @@ import {Component, OnInit, Input, Output, EventEmitter, AfterViewInit} from '@an
               `]
 })
 export class MenuItemComponent implements OnInit, AfterViewInit {
+    private isOrdered: boolean;
+    private elem: ElementRef;
+    itemCounter: boolean;
+    count = 1;
+
     @Input() miName: string;
     @Input() miDesc: string;
     @Input() miPrice: number;
@@ -130,9 +178,10 @@ export class MenuItemComponent implements OnInit, AfterViewInit {
 
     bckgrnd: string;
 
-    constructor() {
+    constructor( private elemRef: ElementRef ) {
+        this.elem = this.elemRef.nativeElement;
         // this.bckgrnd = `../../../${this.miPic}`;
-        // console.log('bckgrnd: ', this.bckgrnd);
+        console.log('isIncremental: ', this.miIncr);
         console.log('is even: ', this.isEven);
     }
 
@@ -147,8 +196,27 @@ export class MenuItemComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
+        this.isOrdered = false;
+        this.itemCounter = false;
         // this.bckgrnd = `../../../${this.miPic}`;
         // console.log('bckgrnd: ', this.bckgrnd);
+    }
+
+    addItem(msg: boolean): void {
+        console.log('thist ' + msg);
+        this.itemCounter = true;
+    }
+
+    toggleCounter(): void {
+        // this.itemCounter = !this.itemCounter;
+        // console.log('eeee: ', e.target.id);
+        this.itemCounter = !this.itemCounter;
+        console.log('itemcounter: = ', this.itemCounter);
+
+    }
+
+    removeItemCounter(msg: any): void {
+        this.itemCounter = false;
     }
 
     send4Removal(e): any {

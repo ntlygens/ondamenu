@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, HostListener, ElementRef} from '@angular/core';
 import { RouterOutlet, ActivatedRoute, Router } from '@angular/router';
 // import { transition, trigger, useAnimation } from '@angular/animations';
 import { fader, slider } from './core-func/animations/animations.component';
@@ -32,12 +32,31 @@ import {Subject} from 'rxjs';
 export class AmmComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<any>();
     isStartPg: boolean;
+    state = 'show';
 
     constructor(
         private ss: StorageService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private el: ElementRef
     ) {}
+
+    @HostListener('window:scroll', ['$event'])
+        onWindowScroll(e) {
+            const bnr = document.getElementById('miBnr');
+            const mnu = document.getElementById('clientMenu');
+            const ftr = document.getElementById('footerBar');
+            const ftrBar = ftr.querySelector('.footerbar');
+
+            if ( window.pageYOffset > 148) {
+                bnr.classList.add('sticky-bar');
+                mnu.classList.add('sticky-btns');
+            } else {
+                bnr.classList.remove('sticky-bar');
+                mnu.classList.remove('sticky-btns');
+            }
+
+        }
 
     ngOnInit(): void {
         this.ss.isStartPg$.pipe(takeUntil(this.destroy$)).subscribe(

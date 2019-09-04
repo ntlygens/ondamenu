@@ -2,7 +2,7 @@ import {
     sequence, trigger, stagger,
     animate, animation, style, group,
     query as q, transition, keyframes,
-    animateChild
+    animateChild, state
 } from '@angular/animations';
 const query = (s, a, o = { optional: true }) => q(s, a, o );
 
@@ -25,6 +25,23 @@ export const fader =
             ])
         ]),
     ]);
+
+export const lift = [
+    trigger('footerAnimations', [
+        state('show', style({
+            opacity: 1,
+            /*transform: 'translateY(0)',*/
+            bottom: 0,
+        })),
+        state('hide', style({
+            opacity: 1,
+            /*transform: 'translateY(-30px)',*/
+            bottom: '-45px'
+        })),
+        transition('show => hide', animate('500ms ease-out')),
+        transition('hide => show', animate('500ms ease-in'))
+    ])
+];
 
 export const slider = [
     trigger('routeAnimations',  [

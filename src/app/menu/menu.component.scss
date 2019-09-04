@@ -10,3 +10,35 @@
     margin-bottom: 2px;
 }
 
+.sticky-bar {
+    top: -150px;
+    position: fixed;
+}
+.sticky-btns {
+    top: 132px;
+    position: fixed;
+    width: 100%;
+    background: #fff;
+    padding-bottom: 5px;
+    height: 20px;
+    box-shadow: #444 0 1px 4px 0px;
+}
+
+.sticky-footer-up {
+
+}
+
+.sticky-footer-down {
+
+}
+
+#menuBox {
+    z-index: 5;
+}
+
+#clientMenu {
+    z-index: 90;
+}
+
+
+

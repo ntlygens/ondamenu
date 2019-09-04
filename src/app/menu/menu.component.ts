@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild, HostListener, Inject } from '@angular/core';
+import { Location, DOCUMENT } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MenuService } from '../core-func/srvcs/menu.service';
 import { StorageService } from '../core-func/srvcs/storage.service';
@@ -39,6 +39,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     TOUCH_ACTION = { TOUCH: 'tap', DOUBLETAP: 'double-tap' };
 
     constructor(
+        @Inject(DOCUMENT) document,
         private loc: Location,
         private ms: MenuService,
         private elemRef: ElementRef,
@@ -53,21 +54,6 @@ export class MenuComponent implements OnInit, OnDestroy {
 
         });
 
-    }
-
-    ngOnInit() {
-        this.elem = this.elemRef.nativeElement;
-        const dEl = this.elem.querySelector('.imgStngs');
-        dEl.classList.add('fullImg');
-
-        // TODO: setup matchmedia for mobile test //
-        this.mobileOn = true;
-
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 
     getCats(cid: string): any {
@@ -108,6 +94,27 @@ export class MenuComponent implements OnInit, OnDestroy {
     getCatProds(cID, mnuID): any {
 
     }
+
+    /*@HostListener('window:scroll', ['$event'])
+    onWindowScroll(e) {
+        console.log('wndw_scrl: ', e);
+
+        if ( window.pageYOffset > 148) {
+            const el = document.getElementById('miBnr');
+            el.classList.add('sticky-bar');
+        } else {
+            const el = document.getElementById('miBnr');
+            el.classList.remove('sticky-bar');
+        }
+
+        if ( window.pageYOffset > 148) {
+            const el = document.getElementById('clientMenu');
+            el.classList.add('sticky-btns');
+        } else {
+            const el = document.getElementById('clientMenu');
+            el.classList.remove('sticky-btns');
+        }
+    }*/
 
     menuClick(currentIndex: number, action: string, e) {
         const target = e.target.closest('.clientMenu');
@@ -176,5 +183,24 @@ export class MenuComponent implements OnInit, OnDestroy {
     goback() {
         this.loc.back();
     }
+
+
+    // * ======== navigation hooks ========= * //
+
+    ngOnInit() {
+        this.elem = this.elemRef.nativeElement;
+        const dEl = this.elem.querySelector('.imgStngs');
+        dEl.classList.add('fullImg');
+
+        // TODO: setup matchmedia for mobile test //
+        this.mobileOn = true;
+
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
 
 }

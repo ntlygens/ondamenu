@@ -11,7 +11,7 @@ import { StorageService } from '../srvcs/storage.service';
         .headerlogo {
             position: relative;
             left: 8px;
-            box-shadow: 0px 2px 4px #333;
+            box-shadow: 0px 1px 4px #444;
         }
 
         .logoImg {

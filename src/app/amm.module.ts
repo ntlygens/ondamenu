@@ -13,12 +13,14 @@ import { IntroModule } from './intro/intro.module';
 import { AmmComponent } from './amm.component';
 import { HeaderBarComponent } from './core-func/comps/header-bar.component';
 import { HeaderLogoComponent } from './core-func/comps/header-logo.component';
+import { FooterBarComponent } from './core-func/comps/footer-bar.component';
 
 @NgModule({
     declarations: [
         AmmComponent,
         HeaderBarComponent,
-        HeaderLogoComponent
+        HeaderLogoComponent,
+        FooterBarComponent
     ],
     imports: [
         BrowserModule,

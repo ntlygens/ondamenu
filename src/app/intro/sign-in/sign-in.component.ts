@@ -7,7 +7,7 @@ import {
     ConfirmValidEmailMatcher,
     regExps,
     errorMessages,
-} from '../../core-func/errors/custom-validation/custom-validation.component';
+} from '../../core-func/errors/custom-validation.component';
 
 @Component({
     selector: 'amm-sign-in',

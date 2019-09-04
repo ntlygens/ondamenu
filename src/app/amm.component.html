@@ -1,10 +1,13 @@
-<div #mainAppDiv id="mainAppDiv" >
+<div #mainAppDiv id="mainAppDiv">
     <div id="navigationBar" class="d-flex justify-content-between">
         <amm-header-bar></amm-header-bar>
         <amm-header-logo [ngClass]="isStartPg ? 'off' : ''"></amm-header-logo>
     </div>
     <div id="ntroCntnr" [@routeAnimations]="prepareRoute(mainAppRO)">
         <router-outlet #mainAppRO="outlet" id="mainAppRO"></router-outlet>
+    </div>
+    <div id="footerBar">
+        <amm-footer-bar></amm-footer-bar>
     </div>
 </div>
 

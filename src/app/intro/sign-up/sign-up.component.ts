@@ -7,7 +7,7 @@ import {
     ConfirmValidBusinessName,
     regExps, bizNmScrubr,
     errorMessages, bizNameErrMsgs
-} from '../../core-func/errors/custom-validation/custom-validation.component';
+} from '../../core-func/errors/custom-validation.component';
 
 @Component({
     selector: 'amm-sign-up',

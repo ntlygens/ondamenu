@@ -14,14 +14,17 @@ import { Component, OnInit, Input } from '@angular/core';
     styles: [`
           button {
               color: #333;
-              background-color: #BCF521;
+              /*background-color: #7ed321;*/
+              background-color: #E0E0E0f4;
               border-radius: 2px;
               padding: 0 5px;
           }
 
           button:disabled {
               color: white !important;
-              background-color: #3ACCE1 !important;
+              background-color: #BB3523!important;
+              opacity: 1;
+              /*background-color: #3ACCE1 !important;*/
           }
       `]
 })

@@ -15,15 +15,16 @@ import { Component, OnInit } from '@angular/core';
             text-align: center;
 
             background-color: #EA6A5E;
-            box-shadow: 0px 2px 4px #333;
+            box-shadow: 0px 1px 4px #444;
 
+            border-top: #BB3523 10px solid;
             border-top-right-radius: 5px;
             border-bottom-right-radius: 5px;
 
         }
         .headerbar h5 {
             position: relative;
-            top: 1.25rem;
+            top: 0.9rem;
             margin: auto;
             color: #fff;
         }
