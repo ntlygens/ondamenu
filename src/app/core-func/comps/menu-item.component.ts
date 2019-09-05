@@ -9,8 +9,8 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                         <p>{{miDesc}}</p>
                     </div>
                     <div class="miPrice col-sm">
-                        <div class="rounded">{{miPrice}}</div>
-                        <div class='cta_btns d-inline-flex'>
+                        <div class="rounded">{{miPrice * count | cloverUserPrice}}</div>
+                        <div class='cta_btns flex-column'>
                             <div *ngIf='miIncr' [ngClass]='itemCounter ? "itemCounter" : "off"'>
                                 <button mat-raised-button class='btn btn-info btn-sm' [disabled]='this.count < 2' (click)="this.count = (this.count - 1)">
                                     <mat-icon>expand_more</mat-icon>
@@ -30,8 +30,8 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                 <div *ngIf="!isEven" class="menuItem d-flex">
                     <div class="miPic rounded" [ngStyle]="{'background-image': 'url(../../../' + this.miPic + ')'}"></div>
                     <div class="miPrice col-sm">
-                        <div class="rounded">{{miPrice}}</div>
-                        <div class='cta_btns d-inline-flex'>
+                        <div class="rounded">{{miPrice * count | cloverUserPrice}}</div>
+                        <div class='cta_btns flex-column'>
                             <div *ngIf='miIncr' [ngClass]='itemCounter ? "itemCounter" : "off"'>
                                 <button mat-raised-button class='btn btn-info btn-sm' [disabled]='this.count < 2' (click)="this.count = (this.count - 1)">
                                     <mat-icon>expand_more</mat-icon>
@@ -74,9 +74,9 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                     padding-right: 4px;
                 }
 
-                :host.odd .miPrice .rounded {
-                    box-shadow: inset -1px 2px 4px 0px #454545;
-                }
+                /*:host.odd .miPrice .rounded {
+                    box-shadow: 0px 1px 4px 0px #454545;
+                }*/
 
                 /* // ------------- // */
                 :host.even .menuItem {
@@ -91,9 +91,9 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                     text-align: right;
                 }
 
-                :host.even .miPrice .rounded {
-                    box-shadow: inset 1px 2px 4px 0px #454545;
-                }
+                /*:host.even .miPrice .rounded {
+                    box-shadow: 0px 1px 4px 0px #454545;
+                }*/
 
                 :host.even .miDesc, :host.even .miPrice, :host.even .miPic {
 
@@ -134,15 +134,17 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
 
                 .miPrice {
                     text-align: center;
-                    padding: 0.125rem 0.65rem;
-                    color: #EA6A5E;
+                    padding: 0.125rem 0.865rem;
+                    color: #666;
+                    margin-top: -3px;
                 }
 
                 .miPrice .rounded {
                     font-size: 14px;
                     padding: 0.125rem 0rem;
-                    border: #E0E0E0 thin solid;
-                    background: #E0E0E0;
+                    border: #0e499a thin solid;
+                    background: #f9fbff;
+                    box-shadow: 0px 1px 4px 0px #454545;
                     /*border: #BB3523 thin solid;*/
                 }
 
@@ -155,6 +157,16 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                     min-width: 140px;
                     max-width: 150px;
                 }
+
+                .itemCounter { margin-top: 4px }
+
+                .itemCounter .btn {
+                    min-width: 24px;
+                    padding: 0;
+                    line-height: 21px;
+                }
+
+
                 /* ----------------- */
 
 

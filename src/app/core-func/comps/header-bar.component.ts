@@ -17,7 +17,7 @@ import { Component, OnInit } from '@angular/core';
             background-color: #EA6A5E;
             box-shadow: 0px 1px 4px #444;
 
-            border-top: #BB3523 10px solid;
+            border-top: #BB3523 8px solid;
             border-top-right-radius: 5px;
             border-bottom-right-radius: 5px;
 

@@ -8,7 +8,7 @@ declare var $: any;
           <button
             *ngIf='isIncremental'
             mat-raised-button id="add2Order"
-            class="btn btn-outline-secondary btn-sm"
+            class="btn btn-outline-secondary btn-sm fOdrBtn"
 
             [title]="prodid"
             name='incr'
@@ -19,7 +19,7 @@ declare var $: any;
 
           <button
             mat-raised-button id="add2Cart"
-            class="btn btn-outline-warning btn-sm"
+            class="btn btn-outline-warning btn-sm fAddBtn"
             [ngClass]="isIncremental ? ( isAdded ? 'visible' : 'hidden' ) : (isAdded ? 'hidden' : 'visible')"
             [title]="prodid"
             name='noincr'
@@ -28,7 +28,7 @@ declare var $: any;
             Add
           </button>
 
-          <button mat-raised-button id="inCart" class="btn btn-success btn-sm" [ngClass]="isInCart ? 'visible' : 'hidden' " >InCart</button><!--<br /><span class="hidden notify">{{message}}</span>-->
+          <button mat-raised-button id="inCart" class="btn btn-success btn-sm fSldBtn" [ngClass]="isInCart ? 'visible' : 'hidden' " >InCart</button><!--<br /><span class="hidden notify">{{message}}</span>-->
 
       `,
     styles: [`
@@ -121,13 +121,13 @@ export class FoodOrderComponent implements OnInit {
 
     toggleIncrBtn(e): any {
         // this.cartEmitter.emit(`then it is: ${this.isIncremental}`);
-        this.toggleIncr.emit(event);
+        this.toggleIncr.emit(e);
         // this.isOrdered = !this.isOrdered;
         // this.isAdded = !this.isAdded;
     }
 
     addItem2Order(e) {
-        e.target.classList.toggle('hidden');
+        e.target.parentNode.classList.toggle('hidden');
         this.toggleIncrBtn(e);
         this.isAdded = !this.isAdded;
     }

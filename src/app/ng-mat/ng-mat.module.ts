@@ -45,12 +45,12 @@ import {
   MatToolbarModule,
   MatTooltipModule,
 } from '@angular/material';
-// -- import { CloverOrigPrice, PriceChangePipe } from '../../food-cart/food-cart-price-change.pipe';
+// -- import { CloverOrigPrice, CloverUserPrice } from '../../food-cart/food-cart-price-change.pipe';
 
 
 @NgModule({
   declarations: [
-    // -- PriceChangePipe,
+    // -- CloverUserPrice,
     // -- CloverOrigPrice
   ],
   exports: [
@@ -98,7 +98,7 @@ import {
     MatTooltipModule,
     MatNativeDateModule,
 
-    // -- PriceChangePipe,
+    // -- CloverUserPrice,
   ]
 })
 
