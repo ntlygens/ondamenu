@@ -5,38 +5,39 @@ declare var $: any;
     selector: 'amm-food-order',
     template: `
 
-          <button
-            *ngIf='isIncremental'
-            mat-raised-button id="add2Order"
-            class="btn btn-outline-secondary btn-sm fOdrBtn"
+              <button
+                *ngIf='isIncremental'
+                mat-raised-button id="add2Order"
+                class="btn btn-outline-secondary btn-sm fOdrBtn"
 
-            [title]="prodid"
-            name='incr'
-            (click)="addItem2Order($event);"
-          >
-            Order
-          </button>
+                [title]="prodid"
+                name='incr'
+                (click)="addItem2Order($event);"
+              >
+                Order
+              </button>
 
-          <button
-            mat-raised-button id="add2Cart"
-            class="btn btn-outline-warning btn-sm fAddBtn"
-            [ngClass]="isIncremental ? ( isAdded ? 'visible' : 'hidden' ) : (isAdded ? 'hidden' : 'visible')"
-            [title]="prodid"
-            name='noincr'
-            (click)="addItem($event);"
-          >
-            Add
-          </button>
+              <button
+                mat-raised-button id="add2Cart"
+                class="btn btn-outline-warning btn-sm fAddBtn"
+                [ngClass]="isIncremental ? ( isAdded ? 'visible' : 'hidden' ) : (isAdded ? 'hidden' : 'visible colorWarn')"
+                [title]="prodid"
+                name='noincr'
+                (click)="addItem($event);"
+              >
+                Add
+              </button>
 
-          <button mat-raised-button id="inCart" class="btn btn-success btn-sm fSldBtn" [ngClass]="isInCart ? 'visible' : 'hidden' " >InCart</button><!--<br /><span class="hidden notify">{{message}}</span>-->
+              <button mat-raised-button id="inCart" class="btn btn-success btn-sm fSldBtn" [ngClass]="isInCart ? 'visible' : 'hidden' " >InCart</button><!--<br /><span class="hidden notify">{{message}}</span>-->
 
-      `,
+          `,
     styles: [`
-          :host { margin-left: 0px; }
-          .visible { display: block !important }
-          .hidden { display: none !important }
-          .notify { color:orangered; font-size: 75%; font-variant: small-caps }
-      `],
+              :host { margin-left: 0px; }
+              .visible { display: block !important }
+              .hidden { display: none !important }
+              .notify { color:orangered; font-size: 75%; font-variant: small-caps }
+                .colorWarn { background: #8fd450}
+          `],
     providers: []
 })
 export class FoodOrderComponent implements OnInit {

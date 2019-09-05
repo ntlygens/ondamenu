@@ -14,13 +14,17 @@ import { AmmComponent } from './amm.component';
 import { HeaderBarComponent } from './core-func/comps/header-bar.component';
 import { HeaderLogoComponent } from './core-func/comps/header-logo.component';
 import { FooterBarComponent } from './core-func/comps/footer-bar.component';
+import { ProfileComponent } from './core-func/comps/profile.component';
+import { FoodCartComponent } from './core-func/comps/food-cart.component';
 
 @NgModule({
     declarations: [
         AmmComponent,
         HeaderBarComponent,
         HeaderLogoComponent,
-        FooterBarComponent
+        FooterBarComponent,
+        ProfileComponent,
+        FoodCartComponent
     ],
     imports: [
         BrowserModule,
@@ -35,6 +39,10 @@ import { FooterBarComponent } from './core-func/comps/footer-bar.component';
 
     ],
     providers: [],
+    entryComponents: [
+        ProfileComponent,
+        FoodCartComponent
+    ],
     bootstrap: [AmmComponent]
 })
 export class AmmModule { }

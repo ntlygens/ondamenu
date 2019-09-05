@@ -433,11 +433,12 @@ input.mat-input-element {
     content: '$';
 }
 .miPrice .rounded { line-height: 17px}
-.miPrice .fOdrBtn {  }
+.miPrice .fOdrBtn { background: #8fd450; }
+.miPrice .fAddBtn { background: #ea6a5e; }
+.miPrice .fSldBtn { background: #0e499a; }
 .miPrice .fOdrBtn, .miPrice .fAddBtn, .miPrice .fSldBtn {
     color: #efefef;
     margin: 4px auto auto;
-    background: #8fd450;
     padding-bottom: 1px;
     line-height: 19px;
     border: #0e499a thin solid;
@@ -455,3 +456,6 @@ input.mat-input-element {
     position: relative;
 }
 
+.cdk-overlay-container {
+    z-index: 0;
+}

@@ -119,11 +119,16 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                 }
                 .miDesc h6 {
                     font-size: 0.85rem;
-                    color: #545454;
+                    color: #333;
                     text-transform: capitalize;
                     margin-bottom: 0.2345rem;
                     white-space: nowrap;
                     font-weight: bold;
+                    /* border-bottom: #ea6a5e thin solid; */
+                    text-decoration-line: underline;
+                    text-decoration-color: #ea6a5e;
+                    text-decoration-style: wavy;
+                    line-height: inherit;
                 }
                 .miDesc p {
                     font-size: 13px;

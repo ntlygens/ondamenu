@@ -12,7 +12,7 @@ import { CategoryBtnComponent } from './comps/category-btn.component';
 import { MenuItemComponent } from './comps/menu-item.component';
 import { CategoryListComponent } from './comps/category-list.component';
 import { FoodOrderComponent } from './comps/food-order.component';
-import { FoodCartComponent } from './comps/food-cart.component';
+// import { FoodCartComponent } from './comps/food-cart.component';
 import { FoodPaymentComponent } from './comps/food-payment.component';
 import { CloverUserPrice, CloverDbPrice } from './price-change.pipe';
 
@@ -28,7 +28,7 @@ import { CloverUserPrice, CloverDbPrice } from './price-change.pipe';
         MenuItemComponent,
         CategoryListComponent,
         FoodOrderComponent,
-        FoodCartComponent,
+        // FoodCartComponent,
         FoodPaymentComponent,
         CloverUserPrice,
         CloverDbPrice

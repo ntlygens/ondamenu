@@ -78,7 +78,7 @@
         ></app-food-payment>-->
         <amm-food-payment
             #payRef id="payRef"
-            [orderSbmtd]="cartRef.sendOrder()"
+            [orderSbmtd]=""
         ></amm-food-payment>
     </div>
     <div id="menuBox" class="d-flex flex-column">
@@ -92,14 +92,14 @@
             [clientID]="dCat['client_id']"
             [isIncremental]="(dCat['id'] !== ( 'MJ7M88JTG3QF8' )) && (dCat['id'] !== ( '215B0KSFN91GM' ))"
         ></amm-category-list>
-        <amm-food-cart
+        <!--<amm-food-cart
             #cartRef id="cartRef"
             class="foodCart card-inverse justify-content-start btn-group-vertical hidden"
             (c_orderID)="payRef.cartIDSend($event)"
             (c_orderAmt)="payRef.cartAmtSend($event)"
             (closeOnSubmit)="cartSubmitted()"
             (rmvItemCounter)='menuRef.removeCounter($event)'
-        ></amm-food-cart>
+        ></amm-food-cart>-->
 
         <!--<app-food-category
             #menuRef id='menuRef'

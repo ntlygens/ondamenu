@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, ElementRef, AfterViewInit, OnDestroy, OnChanges, EventEmitter, Renderer2} from '@angular/core';
+import { Component, OnInit, Input, Output, ElementRef, AfterViewInit, OnDestroy, OnChanges, EventEmitter, Renderer2 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { MenuService } from '../srvcs/menu.service';
 

@@ -144,6 +144,8 @@ import { Component, OnInit, Input } from '@angular/core';
             background: #ddd;
             color: #333;
             text-decoration: line-through;
+            text-decoration-style: wavy;
+            text-decoration-color: #ea6a5e;
         }
 
         .delivery {
@@ -156,6 +158,8 @@ import { Component, OnInit, Input } from '@angular/core';
             background: #ddd;
             color: #333;
             text-decoration: line-through;
+            text-decoration-style: wavy;
+            text-decoration-color: #ea6a5e;
         }
 
 
