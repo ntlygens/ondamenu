@@ -15,6 +15,7 @@ import { FoodOrderComponent } from './comps/food-order.component';
 // import { FoodCartComponent } from './comps/food-cart.component';
 import { FoodPaymentComponent } from './comps/food-payment.component';
 import { CloverUserPrice, CloverDbPrice } from './price-change.pipe';
+// import { CartItemComponent } from './comps/cart-item.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { CloverUserPrice, CloverDbPrice } from './price-change.pipe';
         // FoodCartComponent,
         FoodPaymentComponent,
         CloverUserPrice,
-        CloverDbPrice
+        CloverDbPrice,
+        // CartItemComponent
     ],
     exports: [
         NydohComponent,
@@ -40,6 +42,8 @@ import { CloverUserPrice, CloverDbPrice } from './price-change.pipe';
         AdvertComponent,
         MenuComponent,
         FoodOrderComponent,
+        CloverUserPrice,
+        // CartItemComponent,
     ],
     imports: [
         CommonModule,

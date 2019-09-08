@@ -137,7 +137,7 @@ export class FoodOrderComponent implements OnInit {
 
 
     // function calls //
-    addItem(e): any {
+    /*addItem(e): any {
         this.isInCart = !this.isInCart;
         // if ( this.orderBtn > 0 ) { this.toggleIncrBtn(e); }
         this.toggleIncrBtn(e);
@@ -146,7 +146,7 @@ export class FoodOrderComponent implements OnInit {
         this.foodCart = document.querySelector('.foodCart');
         // this.btnIsMains = document.querySelectorAll('button:disabled.allMenusBtn');
         // == this one == //
-        this.btnIsMain = document.querySelector('button:disabled.allMenusBtn');
+        this.btnIsMain = document.querySelector('button:disabled:not(.allMenusBtn)');
         this.menuCatName = document.querySelector('#DINNER');
         // console.log('item Cat: ', this.btnIsMain.textContent);
         console.log(e.target.title, ' added from :', this.btnIsMain.textContent, ': => ', this.itemCount, ' times.');
@@ -161,10 +161,14 @@ export class FoodOrderComponent implements OnInit {
 
         const lineItem = e.target.title;
         // console.log('totle: ', lineItem);
-        const itemTitle = this.elem.parentElement.parentElement.querySelectorAll('.itemTitle');
+        const Title = e.target.closest('.menuItem');
+        const itemTitle = Title.firstChild.firstChild.textContent;
+        // const itemTitle = this.elem.parentElement.parentElement.querySelectorAll('.itemTitle');
         // let itemTitle = this.elem.parentElement.parentElement.classList;
-        // console.log('wylf: ', itemTitle);
-        const itemPrice = this.elem.parentElement.parentElement.querySelector('.price').textContent;
+        console.log('wylf: ', itemTitle);
+        const itemPrice = e.target.closest('.miPrice').firstChild.textContent;
+        // console.log('price: ', itemPrice);
+        // const itemPrice = this.elem.parentElement.parentElement.querySelector('.price').textContent;
         ///// let itemPrice = this.elem.parentElement.querySelector('.price').textContent;
         const notify = this.elem.querySelector('.notify');
         // console.log('evt: Item ID - '+e.target.title+' \nOrder ID: '+order_id+'\nNotification: '); ///+notify.innerHTML);
@@ -183,7 +187,7 @@ export class FoodOrderComponent implements OnInit {
         cntnr.setAttribute('title', this.menuCat);
         cntnr.style.cssText = 'width: inherit; margin-left: 0px; margin-bottom: 0.125rem;';
         label.className = 'cartItem title btn btn-sm btn-xs btn-secondary';
-        label.textContent = itemTitle[0].textContent + '  x  ' + this.itemCount;
+        label.textContent = itemTitle.textContent + '  x  ' + this.itemCount;
         label.style.width = '50%';
         label.style.overflow = 'hidden';
         cost.className = 'cartItem amt price btn btn-sm btn-xs btn-secondary';
@@ -225,6 +229,80 @@ export class FoodOrderComponent implements OnInit {
         // this.menuCatName.style.pointerEvents = 'none';
         this.foodCart.insertBefore(fragment, this.foodCart.lastElementChild);
         // }
+    }*/
+
+    addItem(e): any {
+        this.isInCart = !this.isInCart;
+        // if ( this.orderBtn > 0 ) { this.toggleIncrBtn(e); }
+        this.toggleIncrBtn(e);
+        this.isAdded = !this.isAdded;
+        // console.log('selected Item count: ', this.itemCount);
+        this.foodCart = document.querySelector('.foodCart');
+        // this.btnIsMains = document.querySelectorAll('button:disabled.allMenusBtn');
+        // == this one == //
+        this.btnIsMain = document.querySelector('button:disabled:not(#touchNav)');
+        this.menuCatName = document.querySelector('#DINNER');
+        // console.log('item Cat: ', this.btnIsMain.textContent);
+        console.log(e.target.title, ' added from :', this.btnIsMain.textContent, ': => ', this.itemCount, ' times.');
+
+        if (!this.btnIsMain) {
+            this.menuCat = '';
+        } else {
+            this.menuCat = this.btnIsMain.textContent;
+        }
+
+        const fragment = document.createDocumentFragment();
+
+        const lineItem = e.target.title;
+        // console.log('totle: ', lineItem);
+        const title = e.target.closest('.menuItem');
+        const iTitle = title.getElementsByClassName('miDesc')[0];
+        const itemTitle = iTitle.firstChild.textContent;
+        // const itemTitle = this.elem.parentElement.parentElement.querySelectorAll('.itemTitle');
+        // let itemTitle = this.elem.parentElement.parentElement.classList;
+        // console.log('wylf: ', itemTitle);
+        const itemPrice = e.target.closest('.miPrice').firstChild.textContent;
+        // console.log('price: ', itemPrice);
+        // const itemPrice = this.elem.parentElement.parentElement.querySelector('.price').textContent;
+        ///// let itemPrice = this.elem.parentElement.querySelector('.price').textContent;
+        const notify = this.elem.querySelector('.notify');
+        // console.log('evt: Item ID - '+e.target.title+' \nOrder ID: '+order_id+'\nNotification: '); ///+notify.innerHTML);
+
+        const elmnt = this.elem;
+
+        // TODO: Handle adding items in-app. Handle editing cart in-app.
+        // TODO: Push item to array then iterate through array to send/add items to order.
+        /*const cntnr = document.createElement('div');
+        const label = document.createElement('button');
+        const cost = document.createElement('button');
+        const btn = document.createElement('button');
+        cntnr.className = 'btn-group justify-content-between';
+        cntnr.setAttribute('role', 'group');
+        cntnr.setAttribute('aria-label', 'food-item');
+        cntnr.setAttribute('title', this.menuCat);
+        cntnr.style.cssText = 'width: inherit; margin-left: 0px; margin-bottom: 0.125rem;';
+        label.className = 'cartItem title btn btn-sm btn-xs btn-secondary';
+        label.textContent = itemTitle.textContent + '  x  ' + this.itemCount;
+        label.style.width = '50%';
+        label.style.overflow = 'hidden';
+        cost.className = 'cartItem amt price btn btn-sm btn-xs btn-secondary';
+        cost.textContent = itemPrice;
+        cost.style.width = '30%';
+        btn.className = 'btn btn-sm btn-xs rmvBtn close btn-warning';
+        btn.type = 'button';
+        btn.id = 'deleteBtn';
+        btn.title = lineItem;
+        btn.style.color = 'white';
+        btn.style.width = '20%';
+        btn.style.background = 'darkorange';
+        btn.innerHTML = 'x';
+
+        cntnr.appendChild(label);
+        cntnr.appendChild(cost);
+        cntnr.appendChild(btn);
+        fragment.appendChild(cntnr);
+
+        this.foodCart.insertBefore(fragment, this.foodCart.lastElementChild);*/
     }
 
 

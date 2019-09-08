@@ -86,3 +86,8 @@ export interface CategoryProductsData {
     client_id: string;
 
 }
+
+export interface CartItemData {
+    pid: string;
+    amt: number;
+}

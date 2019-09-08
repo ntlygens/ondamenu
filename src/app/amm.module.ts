@@ -16,6 +16,8 @@ import { HeaderLogoComponent } from './core-func/comps/header-logo.component';
 import { FooterBarComponent } from './core-func/comps/footer-bar.component';
 import { ProfileComponent } from './core-func/comps/profile.component';
 import { FoodCartComponent } from './core-func/comps/food-cart.component';
+import { CartItemComponent } from './core-func/comps/cart-item.component';
+// import {CartService} from './core-func/srvcs/cart.service';
 
 @NgModule({
     declarations: [
@@ -24,7 +26,8 @@ import { FoodCartComponent } from './core-func/comps/food-cart.component';
         HeaderLogoComponent,
         FooterBarComponent,
         ProfileComponent,
-        FoodCartComponent
+        FoodCartComponent,
+        CartItemComponent
     ],
     imports: [
         BrowserModule,
@@ -38,10 +41,13 @@ import { FoodCartComponent } from './core-func/comps/food-cart.component';
         IntroModule,
 
     ],
-    providers: [],
+    providers: [
+        // CartService
+    ],
     entryComponents: [
         ProfileComponent,
-        FoodCartComponent
+        FoodCartComponent,
+        CartItemComponent
     ],
     bootstrap: [AmmComponent]
 })

@@ -15,10 +15,11 @@
     <div id="clientMenu" class='clientMenu pt-sm-1'>
         <div id="navbar" class="d-flex justify-content-center">
             <amm-category-btn
+                #fullMenuBtn
                 id="fullMenuBtn"
                 class="menuBtn"
                 [mobileOn]="mobileOn"
-                isActive="true"
+                [isActive]="active"
                 menuNav="ALL"
                 (tap)="menuClick(null, $event.type, $event)"
             ></amm-category-btn>

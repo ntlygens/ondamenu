@@ -5,7 +5,7 @@ import { Component, OnInit, Input } from '@angular/core';
     template: `
         <button
             mat-button
-            class="btn btn-sm btn-secondary"
+            class="btn btn-sm btn-secondary menuBtns"
             [disabled]="isActive"
         >
             {{menuNav}}
