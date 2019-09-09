@@ -70,10 +70,10 @@ export class FooterBarComponent implements OnInit {
         onWindowScroll(e) {
             if ( window.pageYOffset > 100 ) {
                 this.state = 'show';
-                console.log('show');
+                // console.log('show');
             } else {
                 this.state = 'hide';
-                console.log('hide');
+                // console.log('hide');
             }
     }
     ngOnInit() {

@@ -52,7 +52,7 @@ export class AmmComponent implements OnInit, OnDestroy {
     }
 
     prepareRoute(outlet: RouterOutlet) {
-        console.log('router state: ', outlet.activatedRouteData.state);
+        // console.log('router state: ', outlet.activatedRouteData.state);
         return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
     }
 

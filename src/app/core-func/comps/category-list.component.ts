@@ -54,9 +54,10 @@ export class CategoryListComponent implements OnInit {
         private elemRef: ElementRef
     ) {
         this.elem = this.elemRef.nativeElement;
-        const dMenuItems = this.elem.querySelectorAll('#menuNav.mat-list-item');
+        // const dMenuItems = this.elem.querySelector('#menuRef.visible').firstChild.firstChild.childElementCount;
+        // const dMenuItems = this.elem.querySelectorAll('.menuItem');
         // this.isMiEven = dMenuItem.classList.contains('even');
-        console.log('is mi even: ', dMenuItems.length);
+        // console.log('is mi even: ', dMenuItems);
     }
 
     removeCounter(item): any {

@@ -198,12 +198,12 @@ export class MenuItemComponent implements OnInit, AfterViewInit {
     constructor( private elemRef: ElementRef ) {
         this.elem = this.elemRef.nativeElement;
         // this.bckgrnd = `../../../${this.miPic}`;
-        console.log('isIncremental: ', this.miIncr);
-        console.log('is even: ', this.isEven);
+        // console.log('isIncremental: ', this.miIncr);
+        // console.log('is even: ', this.isEven);
     }
 
     ngOnInit() {
-        console.log('mypic: ', this.miPic);
+        // console.log('mypic: ', this.miPic);
         if (this.miName.length > 17) {
             this.miName = this.miName.substring(0, 17) + '...';
         }

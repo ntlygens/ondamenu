@@ -104,8 +104,6 @@ export class FoodOrderComponent implements OnInit {
         this.randNum = Math.floor(Math.random() * 90 + 10);
         this.elem = this.elemRef.nativeElement;
 
-        console.log('foodOrder Incr: ', this.isIncremental);
-
     }
 
     //
@@ -314,7 +312,7 @@ export class FoodOrderComponent implements OnInit {
           console.log('nope: ', this.isIncremental);
         }*/
         this.orderBtn = this.elem.querySelectorAll('button #add2Order').length;
-
+        // console.log('foodOrder Incr: ', this.isIncremental);
     }
 
 
