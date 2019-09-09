@@ -29,13 +29,16 @@ export class CartItemComponent implements OnInit, OnDestroy {
 
     constructor(
     ) {
-        console.log('cartitem: ', this.cartItem);
+        // console.log('cartitem: ', this.cartItem.pid);
     }
 
     ngOnInit() {
+
     }
 
     ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
 }

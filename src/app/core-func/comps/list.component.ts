@@ -90,7 +90,7 @@ export class ListComponent implements OnInit {
             delivery: merchant.delivery
         });
 
-        this.router.navigate( [ '/c/'], {queryParams: {cid: merchant.client_id}} );
+        this.router.navigate( [ '/c/'], {queryParams: {clid: merchant.client_id}} );
         console.log('cID: ', merchant.client_id, ' cName: ', merchant.username);
     }
 

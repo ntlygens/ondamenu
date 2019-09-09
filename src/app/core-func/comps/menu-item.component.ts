@@ -21,7 +21,7 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                                 </button>
                             </div>
 
-                            <amm-food-order [title]="miID" [isIncremental]='miIncr' [itemCount]='this.count' id="orderBtn" #orderBtn (toggleIncr)='toggleCounter()' (rmvBtn_emitter)='send4Removal($event)' [prodid]="miID"></amm-food-order>
+                            <amm-food-order [title]="miID" [isIncremental]='miIncr' [itemCount]='this.count' id="orderBtn" #orderBtn (toggleIncr)='toggleCounter()' (rmvBtn_emitter)='send4Removal($event)' [prodname]="miName" [prodid]="miID" [prodprice]="miPrice"></amm-food-order>
                         </div>
                     </div>
                     <div class="miPic rounded" [ngStyle]="{'background-image': 'url(../../../' + this.miPic + ')'}"></div>
@@ -42,7 +42,7 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                                 </button>
                             </div>
 
-                            <amm-food-order [title]="miID" [isIncremental]='miIncr' [itemCount]='this.count' id="orderBtn" #orderBtn (toggleIncr)='toggleCounter()' (rmvBtn_emitter)='send4Removal($event)' [prodid]="miID"></amm-food-order>
+                            <amm-food-order [title]="miID" [isIncremental]='miIncr' [itemCount]='this.count' id="orderBtn" #orderBtn (toggleIncr)='toggleCounter()' (rmvBtn_emitter)='send4Removal($event)' [prodname]="miName" [prodid]="miID" [prodprice]="miPrice"></amm-food-order>
                         </div>
                     </div>
                     <div class="miDesc">
@@ -195,7 +195,9 @@ export class MenuItemComponent implements OnInit, AfterViewInit {
 
     bckgrnd: string;
 
-    constructor( private elemRef: ElementRef ) {
+    constructor(
+        private elemRef: ElementRef
+    ) {
         this.elem = this.elemRef.nativeElement;
         // this.bckgrnd = `../../../${this.miPic}`;
         // console.log('isIncremental: ', this.miIncr);

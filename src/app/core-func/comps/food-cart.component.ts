@@ -1,6 +1,18 @@
-import { Component, OnInit, Input, Output, ElementRef, AfterViewInit, OnDestroy, OnChanges, EventEmitter, Renderer2 } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    Output,
+    ElementRef,
+    AfterViewInit,
+    OnDestroy,
+    OnChanges,
+    EventEmitter,
+    Renderer2,
+    ViewChild, ViewContainerRef
+} from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { MenuService } from '../srvcs/menu.service';
+import { CartService } from '../srvcs/cart.service';
 
 @Component({
     selector: 'amm-food-cart',
@@ -8,11 +20,13 @@ import { MenuService } from '../srvcs/menu.service';
         <p>
           food-cart works!
         </p>
+        <ng-template #cartItem></ng-template>
       `,
     styles: []
 })
 
 export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+    @ViewChild('cartItem', {static: false}) cartItem: ViewContainerRef;
     @Output() cOrderID: EventEmitter<string> = new EventEmitter<string>();
     @Output() cOrderAmt: EventEmitter<number> = new EventEmitter<number>();
     @Output() closeOnSubmit = new EventEmitter();
@@ -33,7 +47,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     plateSize: string; deleteBtnListener: () => void;
 
     constructor(
-        private ms: MenuService,
+        private cs: CartService,
         private elemRef: ElementRef,
         private renderer: Renderer2,
         private dialog: MatDialog
@@ -62,6 +76,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     /// ======== LIFE CYCLE HOOKS ======== ///
 
     ngOnInit() {
+        // this.cs.addDynamicComponent();
     }
 
     ngAfterViewInit(): void {

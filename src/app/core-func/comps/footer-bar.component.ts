@@ -77,6 +77,7 @@ export class FooterBarComponent implements OnInit {
             }
     }
     ngOnInit() {
+        this.openCart();
     }
 
     openProfile() {
@@ -112,7 +113,7 @@ export class FooterBarComponent implements OnInit {
 
     openCart() {
         this.cartCnfg = {
-            hasBackdrop: true,
+            // hasBackdrop: true,
             disableClose: false,
             backdropClass: 'bottomSheetBackdrop'
         };
