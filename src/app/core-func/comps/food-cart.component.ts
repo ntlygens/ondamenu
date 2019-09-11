@@ -9,7 +9,7 @@ import {
     OnChanges,
     EventEmitter,
     Renderer2,
-    ViewChild, ViewContainerRef
+    ViewChild, ViewContainerRef, TemplateRef
 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { CartService } from '../srvcs/cart.service';
@@ -26,7 +26,8 @@ import { CartService } from '../srvcs/cart.service';
 })
 
 export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
-    @ViewChild('cartItem', {static: false}) cartItem: ViewContainerRef;
+    // @ViewChild('cartItem', {read: ViewContainerRef, static: true}) cartItem: ViewContainerRef;
+    @ViewChild('cart', {read: TemplateRef, static: false}) cart: TemplateRef<any>;
     @Output() cOrderID: EventEmitter<string> = new EventEmitter<string>();
     @Output() cOrderAmt: EventEmitter<number> = new EventEmitter<number>();
     @Output() closeOnSubmit = new EventEmitter();
@@ -76,7 +77,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     /// ======== LIFE CYCLE HOOKS ======== ///
 
     ngOnInit() {
-        // this.cs.addDynamicComponent();
+        this.cs.setCartContainerRef(this.cart);
     }
 
     ngAfterViewInit(): void {

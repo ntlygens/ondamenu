@@ -1,4 +1,15 @@
-import { Injectable, Inject, Injector, EmbeddedViewRef, ApplicationRef, ReflectiveInjector, ComponentFactoryResolver, ViewContainerRef} from '@angular/core';
+import {
+    Injectable,
+    Inject,
+    Injector,
+    EmbeddedViewRef,
+    ApplicationRef,
+    TemplateRef,
+    ReflectiveInjector,
+    ComponentFactoryResolver,
+    ViewContainerRef,
+    ComponentFactory, ComponentRef
+} from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { CartItemData } from '../../amm.enum';
 
@@ -13,9 +24,10 @@ export class CartService {
     readonly newCartItemData$: any;
 
     private setCartItem$: Subject<CartItemData> = new BehaviorSubject<CartItemData>(null);
-    private setCartViewContainerRef$: Subject<ViewContainerRef> = new BehaviorSubject<ViewContainerRef>(null);
+    private setCartViewContainerRef$: Subject<TemplateRef<any>> = new BehaviorSubject<TemplateRef<any>>(null);
+    // private setCartViewContainerRef$: Subject<ViewContainerRef> = new BehaviorSubject<ViewContainerRef>(null);
 
-    compRef: any;
+    compRef: ComponentRef<CartItemComponent>;
     constructor(
         // @Inject(ComponentFactoryResolver) resolver,
         private resolver: ComponentFactoryResolver,
@@ -31,27 +43,31 @@ export class CartService {
         this.setCartItem$.next(data);
     }
 
-    setCartContainerRef(container: ViewContainerRef) {
+    setCartContainerRef(container: TemplateRef<any>) {
         this.setCartViewContainerRef$.next(container);
         // viewContainerRef.clear();
         // this.cartViewItem$ = viewContainerRef;
         // this.addDynamicComponent(data, );
         // console.log('cont: ', this.cartViewItem$);
-        // this.addDynamicComponent(this.cartViewContainer$);
+        this.addDynamicComponent();
     }
 
-    // addDynamicComponent(viewContainer: ViewContainerRef) {
-    addDynamicComponent(e) {
-        this.newCartItemData$.subscribe( (res: CartItemData[]) => {
-            const factory = this.resolver.resolveComponentFactory(CartItemComponent);
-            this.compRef = factory.create(this.injector);
-            this.appRef.attachView(this.compRef.hostView);
-            this.compRef.instance.cartItem = res;
+    addDynamicComponent() {
+    // addDynamicComponent(e) {
+        this.newCartItemData$.subscribe( (res: CartItemData) => {
+            const factory: ComponentFactory<CartItemComponent> = this.resolver.resolveComponentFactory(CartItemComponent);
+            this.cartViewContainer$.clear();
+            this.appRef = this.cartViewContainer$;
 
-            const domElem = (this.compRef.hostView as EmbeddedViewRef<any>)
-                .rootNodes[0] as HTMLElement;
-            const cart = document.getElementsByClassName('cdk-overlay-container')[0];
-            cart.appendChild(domElem);
+
+            this.compRef = this.cartViewContainer$.createComponent(factory);
+            // this.appRef.attachView(this.compRef.hostView);
+            this.compRef.instance.cartItem = res;
+            this.cartViewContainer$.createEmbeddedView(this.compRef);
+            // const domElem = (this.compRef.hostView as EmbeddedViewRef<any>)
+            //    .rootNodes[0] as HTMLElement;
+            // const cart = document.getElementsByClassName('cdk-overlay-container')[0];
+            // cart.appendChild(domElem);
 
         });
 

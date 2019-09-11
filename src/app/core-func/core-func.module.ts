@@ -15,6 +15,7 @@ import { FoodOrderComponent } from './comps/food-order.component';
 // import { FoodCartComponent } from './comps/food-cart.component';
 import { FoodPaymentComponent } from './comps/food-payment.component';
 import { CloverUserPrice, CloverDbPrice } from './price-change.pipe';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 // import { CartItemComponent } from './comps/cart-item.component';
 
 
@@ -49,6 +50,7 @@ import { CloverUserPrice, CloverDbPrice } from './price-change.pipe';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        ScrollingModule,
         NgMatModule
     ]
 })

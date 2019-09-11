@@ -7,6 +7,8 @@ import { AmmRoutingModule } from './amm-routing.module';
 
 import { CoreFuncModule } from './core-func/core-func.module';
 import { NgMatModule } from './ng-mat/ng-mat.module';
+// import { ScrollingModule } from '@angular/cdk/scrolling';
+import { PortalModule } from '@angular/cdk/portal';
 
 import { IntroModule } from './intro/intro.module';
 
@@ -38,6 +40,8 @@ import { CartService } from './core-func/srvcs/cart.service';
         AmmRoutingModule,
         CoreFuncModule,
         NgMatModule,
+        // ScrollingModule,
+        PortalModule,
         IntroModule,
 
     ],

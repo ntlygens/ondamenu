@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
+import {Component, OnDestroy, OnInit, HostListener, ViewChildren, ViewContainerRef} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { slider } from './core-func/animations/animations.component';
 import { StorageService } from './core-func/srvcs/storage.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/overlay';
 
 @Component({
     selector: 'amm-root',
@@ -12,20 +13,27 @@ import { Subject } from 'rxjs';
     animations: [ slider ]
 })
 export class AmmComponent implements OnInit, OnDestroy {
+    @ViewChildren('scrolllist') scrolllist: CdkScrollable;
+
     private destroy$ = new Subject<any>();
     isStartPg: boolean;
     state = 'show';
 
     constructor(
         private ss: StorageService,
-    ) {}
+        public scroll: ScrollDispatcher
+    ) {
+        // this.scrolllist.scrollable.elementScrolled();
+    }
+
+
 
     @HostListener('window:scroll', ['$event'])
         onWindowScroll(e) {
             const bnr = document.getElementById('miBnr');
             const mnu = document.getElementById('clientMenu');
 
-            if (bnr) {
+            /*if (bnr) {
                 if (window.pageYOffset > 148) {
                     bnr.classList.add('sticky-bar');
                     mnu.classList.add('sticky-btns');
@@ -33,7 +41,7 @@ export class AmmComponent implements OnInit, OnDestroy {
                     bnr.classList.remove('sticky-bar');
                     mnu.classList.remove('sticky-btns');
                 }
-            }
+            }*/
 
         }
 

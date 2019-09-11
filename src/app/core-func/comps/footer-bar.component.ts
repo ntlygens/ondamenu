@@ -45,9 +45,9 @@ import { lift } from '../animations/animations.component';
         }
 
         .bottomSheetBackdrop {
-            user-select: none;
+            /*user-select: none;
             pointer-events: none;
-            /*z-index: 80;*/
+            z-index: 80;*/
         }
     `],
     providers: [
@@ -77,7 +77,7 @@ export class FooterBarComponent implements OnInit {
             }
     }
     ngOnInit() {
-        this.openCart();
+        // this.openCart();
     }
 
     openProfile() {
@@ -113,9 +113,10 @@ export class FooterBarComponent implements OnInit {
 
     openCart() {
         this.cartCnfg = {
-            // hasBackdrop: true,
+            hasBackdrop: true,
             disableClose: false,
-            backdropClass: 'bottomSheetBackdrop'
+            backdropClass: 'bottomSheetBackdrop',
+
         };
 
         // this.bottomSheet.open(BottomSheetComponent, this.bottomSheetConfig );

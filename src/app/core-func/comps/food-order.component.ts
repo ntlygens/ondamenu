@@ -9,40 +9,39 @@ declare var $: any;
 @Component({
     selector: 'amm-food-order',
     template: `
+        <button
+            *ngIf='isIncremental'
+            mat-raised-button id="add2Order"
+            class="btn btn-outline-secondary btn-sm fOdrBtn"
 
-              <button
-                *ngIf='isIncremental'
-                mat-raised-button id="add2Order"
-                class="btn btn-outline-secondary btn-sm fOdrBtn"
+            [title]="prodid"
+            name='incr'
+            (click)="addItem2Order($event);"
+        >
+            Order
+        </button>
 
-                [title]="prodid"
-                name='incr'
-                (click)="addItem2Order($event);"
-              >
-                Order
-              </button>
+        <button
+            mat-raised-button id="add2Cart"
+            class="btn btn-outline-warning btn-sm fAddBtn"
+            [ngClass]="isIncremental ? ( isAdded ? 'visible' : 'hidden' ) : (isAdded ? 'hidden' : 'visible colorWarn')"
+            [title]="prodid"
+            name='noincr'
+            (click)="addItem($event);"
+        >
+            Add
+        </button>
 
-              <button
-                mat-raised-button id="add2Cart"
-                class="btn btn-outline-warning btn-sm fAddBtn"
-                [ngClass]="isIncremental ? ( isAdded ? 'visible' : 'hidden' ) : (isAdded ? 'hidden' : 'visible colorWarn')"
-                [title]="prodid"
-                name='noincr'
-                (click)="addItem($event);"
-              >
-                Add
-              </button>
+        <button mat-raised-button id="inCart" class="btn btn-success btn-sm fSldBtn" [ngClass]="isInCart ? 'visible' : 'hidden' " >InCart</button>
 
-              <button mat-raised-button id="inCart" class="btn btn-success btn-sm fSldBtn" [ngClass]="isInCart ? 'visible' : 'hidden' " >InCart</button><!--<br /><span class="hidden notify">{{message}}</span>-->
-
-          `,
+    `,
     styles: [`
-              :host { margin-left: 0px; }
-              .visible { display: block !important }
-              .hidden { display: none !important }
-              .notify { color:orangered; font-size: 75%; font-variant: small-caps }
-                .colorWarn { background: #8fd450}
-          `],
+        :host { margin-left: 0px; }
+        .visible { display: block !important }
+        .hidden { display: none !important }
+        .notify { color:orangered; font-size: 75%; font-variant: small-caps }
+        .colorWarn { background: #8fd450}
+    `],
     providers: []
 })
 export class FoodOrderComponent implements OnInit, OnDestroy {
@@ -85,17 +84,6 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
     // static methods //
     public static emitRemove_click(e): any {
         console.log('worksss -- ', e.target.title);
-        // this.rmvBtnEmitter.emit(event);
-        // this.removeFromCart();
-        // let rmv: EventEmitter<any> = new EventEmitter<any>();
-        //    rmv.emit(event);
-
-        // that.renderer.listen(e.target, 'click', () => {
-        //   // this.rmvBtn_Emitter.emit(event);
-        //   console.log('wheato');
-        // });
-
-
     }
 
     /*public static removeFromCart(e): any {
@@ -154,9 +142,6 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
         this.isAdded = !this.isAdded;
 
         const lineItem = e.target;
-        // const itemPrice = lineItem.closest('.miPrice').textContent;
-        // const notify = this.elem.querySelector('.notify');
-        // const itemTitle = lineItem.previousSibling.firstChild.textContent;
 
         // == this one == //
         const navBtn = lineItem.closest('#menuRef');
@@ -221,7 +206,7 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
     }
 
     addComp(e): void {
-        this.cs.addDynamicComponent(e);
+        this.cs.addDynamicComponent();
         // this.destroy$.next();
         // this.cs.newCartItemData$.complete();
     }
@@ -229,11 +214,6 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
 
     // navigation hooks //
     ngOnInit() {
-        /*if (this.isIncremental) {
-          console.log('yepL: ', this.isIncremental);
-        } else {
-          console.log('nope: ', this.isIncremental);
-        }*/
         this.orderbutton = this.elem.querySelectorAll('button #add2Order').length;
         // console.log('foodOrder Incr: ', this.isIncremental);
     }

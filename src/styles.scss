@@ -464,3 +464,7 @@ input.mat-input-element {
     background: #f0af30;
     border-color: #f0af30;
 }
+
+.cdk-virtual-scroll-orientation-vertical .cdk-virtual-scroll-content-wrapper {
+    position: unset;
+}
