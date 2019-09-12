@@ -3,7 +3,7 @@ import { Location, DOCUMENT } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MenuService } from '../core-func/srvcs/menu.service';
 import { StorageService } from '../core-func/srvcs/storage.service';
-import { MerchantInfoData } from '../amm.enum';
+import {CategoryData, MerchantInfoData, SubCategoryData} from '../amm.enum';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -61,23 +61,21 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     getCats(cid: string): any {
-        this.ms.getAllCategories(`${cid}`).subscribe(
-            (dCtgrys) => {
-                (dCtgrys).forEach((x, i) => {
-                    x.id = x.cid;
-                    x.name = x.cval;
-                    x.clientid = x.client_id;
+        this.ms.getAllCategories(`${cid}`).then(
+            (dCtgrys: CategoryData[]) => {
+                dCtgrys.forEach((x, i) => {
+                    const dCID = x.cid;
+                    const dNM = x.cval;
+                    const dCLID = x.client_id;
+                    // console.log('temp: ', dNM);
                     if (i < this.catsAllwd) {
-                        this.ms.getSubCats(x.clientid, x.id).subscribe(
-                            (res) => {
-                                const catname = x.name;
-                                this.allSubCats.push({[catname]: res});
+                        this.ms.getSubCats(dCLID, dCID).then(
+                            (res: SubCategoryData[]) => {
+                                // const catname = dNM;
+                                this.allSubCats.push({[dNM]: res});
                             },
                             (err) => {
                                 console.log('getSubCat_Error: ', err);
-                            },
-                            () => {
-                                console.log('getSubCat Complete');
                             }
                         );
                         this.navCats.push(x);
@@ -88,11 +86,9 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             (err) => {
                 console.log('getAllCategories_Error: ', err);
-            },
-            () => {
-                console.log('getAllCategories Complete', this.navCats);
             }
         );
+        // console.log('cat array amt: ', this.navCats.length, ' first cat array name ', this.navCats[0]);
     }
 
     getCatProds(cID, mnuID): any {
@@ -130,17 +126,18 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         if ( action === this.TOUCH_ACTION.TOUCH) {
             console.log('actnTrgt: ', action);
             // TODO: ADD MENU ID TO BUTTON AND CALL INSTEAD OF NAME # USE MENUID //
-            this.dCats.forEach((x, i) => {
+            this.dCats.forEach((x: CategoryData, i) => {
                 const crntCat = (i === currentIndex);
                 x.visible = crntCat;
                 switch (true) {
-                    case x.id !== 'fullMenuBtn':
+                    case x.cid !== 'fullMenuBtn':
                         if (this.isAllBtnActive === crntCat) {
                             this.active = false;
                         }
                         break;
-                    case x.id === 'fullMenuBtn':
+                    case x.cid === 'fullMenuBtn':
                         this.active = true;
+                        // x.visible = true;
                 }
 
 
@@ -152,7 +149,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
                     Object.keys(subCatObj).forEach( (key) => {
                             // console.log('pi ' + JSON.stringify(subCatObj[key]));
                         switch (key) {
-                            case x.name:
+                            case x.cval:
                                 subCatObj[key].forEach( (y, j) => {
                                     this.subNavCats.push(y);
                                 });

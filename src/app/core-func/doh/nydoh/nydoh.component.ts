@@ -36,17 +36,15 @@ export class NydohComponent implements OnInit {
 
     }
     getMerchantDOHData() {
-        this.DohSvc.getMrchDOHData('merchantinfihere').subscribe(
+        this.DohSvc.getMrchDOHData('merchantinfihere').then(
             (res: MerchantDOHRating) => {
                 this.mDohData = res;
 
             },
             (err) => {
-
-            },
-            () => {
-
-            });
+                console.log('getMerchantDOHData_Error: ', err);
+            }
+        );
     }
 
 }

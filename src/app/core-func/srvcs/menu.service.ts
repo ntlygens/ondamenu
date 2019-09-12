@@ -12,30 +12,36 @@ export class MenuService {
     constructor(
         private http: HttpClient,
     ) {
-        console.log('srvrUrl = ', this.srvrURL);
+        // console.log('srvrUrl = ', this.srvrURL);
     }
 
-    getAllCategories( clientID: string ): Observable<any> {
+    async getAllCategories( clientID: string ) {
         const nuParamsGetCats = new HttpParams()
             .set( 'clid', clientID );
 
-        return this.http.get( `${this.srvrURL}`, { params: nuParamsGetCats } );
+        const allCats = this.http.get( `${this.srvrURL}`, { params: nuParamsGetCats } ).toPromise();
+        if (!allCats) { return; }
+        return allCats;
     }
 
-    getCatProds( client: string, cat: string ): Observable<any> {
+    async getCatProds( client: string, cat: string ) {
         const nuParamsCatProds = new HttpParams()
             .set( 'cl', client )
             .set( 'Cat', cat );
 
-        return this.http.get( `${this.srvrURL}`, { params: nuParamsCatProds } );
+        const catProds = await this.http.get( `${this.srvrURL}`, { params: nuParamsCatProds }).toPromise();
+        if (!catProds) { return; }
+        return catProds;
     }
 
-    getSubCats( client: string, subcat: string ): Observable<any> {
+    async getSubCats( client: string, subcat: string ) {
         const nuParamsSubCats = new HttpParams()
             .set( 'c', client )
             .set( 'sC', subcat );
 
-        return this.http.get( `${this.srvrURL}`, { params: nuParamsSubCats } );
+        const subCats = this.http.get( `${this.srvrURL}`, { params: nuParamsSubCats } ).toPromise();
+        if ( !subCats ) { return; }
+        return subCats;
     }
 
     getPromoBnr( client: string ): Observable<any> {

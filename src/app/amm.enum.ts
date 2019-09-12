@@ -96,3 +96,16 @@ export interface CartItemData {
     cid: string;
     client_id: string;
 }
+
+export interface CategoryData {
+    client_id: string;
+    cid: string;
+    cval: string;
+    visible?: boolean;
+}
+
+export interface SubCategoryData {
+    scid: string;
+    scval: string;
+    sortOrder: number;
+}

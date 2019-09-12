@@ -28,7 +28,7 @@
                 *ngFor="let category of navCats; let idx=index"
                 [mobileOn]="mobileOn"
                 [isActive]="category['visible']"
-                [menuNav]="category['name']"
+                [menuNav]="category['cval']"
                 (tap)="menuClick(idx, $event.type, $event)"
             ></amm-category-btn>
         </div>
@@ -43,10 +43,10 @@
             [style.touch-action]="TOUCH_ACTION.TOUCH"
             *ngFor="let dCat of dCats; let idx = index"
             [ngClass]="dCat['visible'] ? (mobileOn ? 'visible' : 'visible d-flex') : 'hidden'"
-            [menuNav]="dCat['name']" [isMobile]='mobileOn'
-            [menuID]="dCat['id']"
+            [menuNav]="dCat['cval']" [isMobile]='mobileOn'
+            [menuID]="dCat['cid']"
             [clientID]="dCat['client_id']"
-            [isIncremental]="(dCat['id'] !== ( 'MJ7M88JTG3QF8' )) && (dCat['id'] !== ( '215B0KSFN91GM' ))"
+            [isIncremental]="(dCat['cid'] !== ( 'MJ7M88JTG3QF8' )) && (dCat['cid'] !== ( '215B0KSFN91GM' ))"
         ></amm-category-list>
     </div>
 </div>

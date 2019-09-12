@@ -1,6 +1,8 @@
-import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, ViewChild, EventEmitter, Input, OnInit, Output, AfterViewInit} from '@angular/core';
 import { MenuService } from '../srvcs/menu.service';
-import {CategoryProductsData} from '../../amm.enum';
+import { CategoryProductsData } from '../../amm.enum';
+import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
+import {filter} from 'rxjs/operators';
 
 @Component({
     selector: 'amm-category-list',
@@ -43,7 +45,9 @@ import {CategoryProductsData} from '../../amm.enum';
     `],
     changeDetection: ChangeDetectionStrategy.Default
 })
-export class CategoryListComponent implements OnInit {
+export class CategoryListComponent implements OnInit, AfterViewInit {
+    @ViewChild(CdkVirtualScrollViewport, {static: true}) virtualScroll: CdkVirtualScrollViewport;
+
     @Input() isMobile: boolean;
     @Input() menuNav = '';
     @Input() menuID = '';
@@ -52,13 +56,14 @@ export class CategoryListComponent implements OnInit {
     @Input() isIncremental: boolean;
     @Output() emitRemoveClick3: EventEmitter<any> = new EventEmitter<any>();
 
-    dMenuItems: CategoryProductsData[];
+    dMenuItems: CategoryProductsData[] = [];
     isMiEven: boolean;
     elem;
 
     constructor(
         private ms: MenuService,
-        private elemRef: ElementRef
+        private elemRef: ElementRef,
+        private scrollDispatcher: ScrollDispatcher
     ) {
         this.elem = this.elemRef.nativeElement;
 
@@ -73,7 +78,18 @@ export class CategoryListComponent implements OnInit {
     ngOnInit() {
         if (this.menuNav) {
             ///// ## /// console.log('foodCard: clid - ', this.clientID, ' -- menuID - ', this.menuID);
-            this.ms.getCatProds(this.clientID, this.menuID).subscribe(
+            this.ms.getCatProds(this.clientID, this.menuID).then(
+                (res: CategoryProductsData[]) => {
+                    this.dMenuItems = res;
+                    ///// ## /// console.log('test_prod: ', this.dMenuItems[0]['prod_name']);
+                },
+                (err) => {
+                    console.log('getCatProds_Error: ' + err);
+                }
+            );
+
+            /* // working function // */
+            /*this.ms.getCatProds(this.clientID, this.menuID).subscribe(
                 (res) => {
                     this.dMenuItems = res;
                     ///// ## /// console.log('test_prod: ', this.dMenuItems[0]['prod_name']);
@@ -84,9 +100,26 @@ export class CategoryListComponent implements OnInit {
                 () => {
                     ///// ## /// console.log('success: category products returned');
                 }
-            );
+            );*/
 
         }
+    }
+
+    ngAfterViewInit(): void {
+        // this.virtualScroll.elementScrolled()
+        //     .subscribe(event => {
+        //         console.log('scrolled', event);
+        //     });
+        // console.log('data: ', this.virtualScroll.measureScrollOffset('top'));
+
+        this.scrollDispatcher.scrolled().pipe(
+            filter(event => this.virtualScroll.measureScrollOffset('top') > 150)
+            // filter(event => this.virtualScroll.getRenderedRange().end === this.virtualScroll.getDataLength())
+        ).subscribe(event => {
+            console.log('data: ', this.virtualScroll.measureScrollOffset('top'));
+            // this.searchPageNumber++;
+            // this.nextSearchPage(this.searchPageNumber);
+        });
     }
 
 }

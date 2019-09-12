@@ -28,10 +28,12 @@ export class DohService {
         return this.dohRtng$;
     }
 
-    getMrchDOHData(mID: string): Observable<any> {
+    async getMrchDOHData(mID: string) {
         const mDOHInfo = new HttpParams()
             .set('mDohNfo', mID);
 
-        return this.http.get(`${this.mDOHUrl}`, {params: mDOHInfo});
+        const dohData = await this.http.get(`${this.mDOHUrl}`, {params: mDOHInfo}).toPromise();
+        if (!dohData) { return; }
+        return dohData;
     }
 }
