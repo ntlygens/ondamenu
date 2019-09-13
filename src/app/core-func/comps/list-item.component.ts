@@ -6,23 +6,9 @@ import { Component, OnInit, Input } from '@angular/core';
         <div class="dohSrvcs">
             <amm-nydoh></amm-nydoh>
         </div>
-        <!--<div class='flex-column'>
-            <div class='imgStngs'>
-                <img *ngIf='!itemImage' class="rounded logo" src="../../../assets/core-assets/escovich.png" />
-                <img class="rounded logo" src="{{itemImage}}" />
-            </div>
-            &lt;!&ndash;<div class='resType'>
-                <p>Egyptian Cuisine</p>
-            </div>&ndash;&gt;
-        </div>-->
-        <div class='flex-column'>
-            <div class='imgStngs'>
-                <img *ngIf='!itemImage' class="rounded logo" src="../../../assets/core-assets/escovich.png" />
-                <img class="rounded logo" src="{{itemImage}}" />
-            </div>
-            <!--<div class='resType'>
-                <p>Polynesian</p>
-            </div>-->
+        <div class='imgStngs'>
+            <img *ngIf='!itemImage' class="rounded logo" src="../../../assets/core-assets/escovich.png" />
+            <img class="rounded logo" src="{{itemImage}}" />
         </div>
         <div id='baseURL' class='iteminfo gradient d-flex'>
             <section class='cardTxt d-flex w-100 justify-content-between'>
@@ -73,7 +59,21 @@ import { Component, OnInit, Input } from '@angular/core';
                 text-align: center;
                 margin-top: 10px;
                 right: 7%;
+                z-index: 4;
             }
+
+            .dohmini {
+                top: 82px;
+                right: 130px;
+            }
+            .imgStngsmini {
+                top: -148px;
+            }
+
+            .iteminfomini {
+                top: -218px;
+            }
+
         }
 
         /* HOST CSS STYLES */
@@ -178,6 +178,8 @@ import { Component, OnInit, Input } from '@angular/core';
 
         .imgStngs {
             height: 200px;
+            position: relative;
+
             border-radius: 0.3rem;
             overflow: hidden;
             object-fit: contain;

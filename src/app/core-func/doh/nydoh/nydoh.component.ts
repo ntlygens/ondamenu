@@ -18,7 +18,19 @@ import { DohService } from '../../srvcs/doh.service';
         :host {
             text-transform: uppercase;
         }
-        .rate { background: #7ed321c2 }
+        .rate {
+            background: #7ed321c2;
+            width: 100%;
+            height: fit-content;
+        }
+        .mini {
+            width: fit-content;
+            font-size: 1rem;
+            padding: 0.325rem 0.45rem 0.245rem;
+        }
+
+        h2 { margin-bottom: 0 }
+
         h1 { font-size: 0.65rem; margin-bottom: 3px }
 
       `]

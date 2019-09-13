@@ -40,8 +40,9 @@ import {filter} from 'rxjs/operators';
             padding-top: 5px;
         }
         .scrollport {
-            height: 420px;
+            height: 600px;
         }
+
     `],
     changeDetection: ChangeDetectionStrategy.Default
 })
@@ -55,6 +56,7 @@ export class CategoryListComponent implements OnInit, AfterViewInit {
     @Input() menuOpen: boolean;
     @Input() isIncremental: boolean;
     @Output() emitRemoveClick3: EventEmitter<any> = new EventEmitter<any>();
+    @Output() emitFtrBarOpen: EventEmitter<any> = new EventEmitter<any>();
 
     dMenuItems: CategoryProductsData[] = [];
     isMiEven: boolean;
@@ -116,7 +118,8 @@ export class CategoryListComponent implements OnInit, AfterViewInit {
             filter(event => this.virtualScroll.measureScrollOffset('top') > 150)
             // filter(event => this.virtualScroll.getRenderedRange().end === this.virtualScroll.getDataLength())
         ).subscribe(event => {
-            console.log('data: ', this.virtualScroll.measureScrollOffset('top'));
+            this.emitFtrBarOpen.emit(event);
+            // console.log('data: ', this.virtualScroll.measureScrollOffset('top'));
             // this.searchPageNumber++;
             // this.nextSearchPage(this.searchPageNumber);
         });

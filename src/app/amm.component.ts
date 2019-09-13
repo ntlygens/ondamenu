@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, HostListener, ViewChildren, ViewContainerRef} from '@angular/core';
+import {Component, OnDestroy, OnInit, HostListener, ViewChildren, ViewContainerRef, ViewChild, ElementRef} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { slider } from './core-func/animations/animations.component';
 import { StorageService } from './core-func/srvcs/storage.service';
@@ -14,6 +14,7 @@ import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/overlay';
 })
 export class AmmComponent implements OnInit, OnDestroy {
     @ViewChildren('scrolllist') scrolllist: CdkScrollable;
+    @ViewChild('footer', {static: true}) footer: ElementRef;
 
     private destroy$ = new Subject<any>();
     isStartPg: boolean;
@@ -62,6 +63,10 @@ export class AmmComponent implements OnInit, OnDestroy {
     prepareRoute(outlet: RouterOutlet) {
         // console.log('router state: ', outlet.activatedRouteData.state);
         return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
+    }
+
+    openFtrBar() {
+        this.footer.nativeElement.openCart();
     }
 
 }

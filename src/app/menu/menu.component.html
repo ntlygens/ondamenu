@@ -1,4 +1,5 @@
 <amm-list-item
+    #banner
     id="miBnr"
     class="cImgStng"
     [itemID]="bnrData.client_id"
@@ -10,7 +11,7 @@
     [itemFoodType]="bnrData.food"
     [itemSrvcType]="bnrData.concept"
 ></amm-list-item>
-<div id="mainClientCntnr" class="">
+<div id="mainClientCntnr" class="navigation">
     <div id="clientMenu" class='clientMenu pt-sm-1'>
         <div id="navbar" class="d-flex justify-content-center">
             <amm-category-btn
@@ -47,6 +48,7 @@
             [menuID]="dCat['cid']"
             [clientID]="dCat['client_id']"
             [isIncremental]="(dCat['cid'] !== ( 'MJ7M88JTG3QF8' )) && (dCat['cid'] !== ( '215B0KSFN91GM' ))"
+            (emitFtrBarOpen)="setFtrToOpen($event)"
         ></amm-category-list>
     </div>
 </div>

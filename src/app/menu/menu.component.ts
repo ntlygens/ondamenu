@@ -1,4 +1,15 @@
-import { Component, ElementRef, OnInit, AfterViewInit, OnDestroy, ViewChild, HostListener, Inject } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    OnInit,
+    AfterViewInit,
+    OnDestroy,
+    ViewChild,
+    HostListener,
+    Inject,
+    Output,
+    EventEmitter, ComponentRef
+} from '@angular/core';
 import { Location, DOCUMENT } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MenuService } from '../core-func/srvcs/menu.service';
@@ -17,6 +28,8 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('cartRef', {static: true}) cartRef: ElementRef;
     @ViewChild('menuRef', {static: true}) menuRef: ElementRef;
     @ViewChild('cartIcon', {static: true}) cartIcon: ElementRef;
+    @Output() dFtr: EventEmitter<any> = new EventEmitter<any>();
+
 
     bnrData: MerchantInfoData;
     mobileOn: boolean;
@@ -46,6 +59,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         private loc: Location,
         private ms: MenuService,
         private elemRef: ElementRef,
+        // private compRef: ComponentRef<>,
         private route: ActivatedRoute,
         private ss: StorageService,
     ) {
@@ -194,6 +208,28 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loc.back();
     }
 
+    setFtrToOpen(e) {
+        console.log('this footer btn open');
+        const cntnr = this.elem.querySelector('#mainClientCntnr');
+        const img = this.elem.querySelector('.imgStngs');
+        const info = this.elem.querySelector('.iteminfo');
+        const doh = this.elem.querySelector('.dohSrvcs');
+        const rate = this.elem.querySelector('.rate');
+
+        cntnr.classList.add('mini');
+        img.setAttribute('style', 'top: -148px');
+        info.setAttribute('style', 'top: -218px');
+        doh.setAttribute('style', 'top: 82px; right: 130px');
+        rate.setAttribute('style', 'width: fit-content; padding: 0.325rem 0.45rem 0.245rem;');
+        rate.previousSibling.setAttribute('style', 'display: none');
+        rate.firstElementChild.setAttribute('style', 'font-size: 1rem');
+        /*Array.from([cntnr, img, info, doh]).forEach( (x) => {
+            x.classList.add('mini');
+        });*/
+
+        // this.elem.attrs('(')
+    }
+
 
     // * ======== navigation hooks ========= * //
 
@@ -204,6 +240,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // TODO: setup matchmedia for mobile test //
         this.mobileOn = true;
+        this.elem.setAttribute('dFtr', 'footer.openCart()');
 
     }
 
