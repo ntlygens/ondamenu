@@ -1,7 +1,6 @@
 .cImgStng {
-    position: absolute;
+    position: fixed;
     top: 0px;
-    z-index: 95;
 }
 
 .mat-list-item {
@@ -32,18 +31,14 @@
 }
 
 #menuBox {
-    z-index: 5;
     padding-top: 5px;
 }
 
-#clientMenu {
-    z-index: 90;
-}
-
 .navigation {
+    position: fixed;
+    width: 100%;
     top: 282px;
-    position: relative;
-    z-index: 96;
+
 }
 
 .mini {

@@ -60,6 +60,7 @@ import { Component, OnInit, Input } from '@angular/core';
                 margin-top: 10px;
                 right: 7%;
                 z-index: 4;
+                top: 60px;
             }
 
             .dohmini {
