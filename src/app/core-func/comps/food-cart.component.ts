@@ -20,7 +20,8 @@ import { CartService } from '../srvcs/cart.service';
         <p>
           food-cart works!
         </p>
-        <ng-template #cartItem></ng-template>
+        <div class="cartItemHldr"></div>
+        <ng-template #cart></ng-template>
       `,
     styles: []
 })
@@ -77,7 +78,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     /// ======== LIFE CYCLE HOOKS ======== ///
 
     ngOnInit() {
-        this.cs.setCartContainerRef(this.cart);
+        // this.cs.setCartContainerRef(this.cart);
     }
 
     ngAfterViewInit(): void {

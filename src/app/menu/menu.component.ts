@@ -208,7 +208,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loc.back();
     }
 
-    setFtrToOpen(e) {
+    minimizeUI(e) {
         console.log('this footer btn open');
         const cntnr = this.elem.querySelector('#mainClientCntnr');
         const img = this.elem.querySelector('.imgStngs');

@@ -1,5 +1,6 @@
-import { Component, ElementRef, OnInit, HostListener } from '@angular/core';
+import { Component, ElementRef, OnInit, AfterViewInit, HostListener } from '@angular/core';
 import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material';
+import { Portal, ComponentPortal } from '@angular/cdk/portal';
 import { ProfileComponent } from './profile.component';
 import { FoodCartComponent } from './food-cart.component';
 import { lift } from '../animations/animations.component';
@@ -14,6 +15,7 @@ import { lift } from '../animations/animations.component';
             <div class="uCart" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_shopping_cart_black_24dp.png)'}" (click)="openCart();"></div>
             <!--<div class="uCart" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_shopping_cart_black_24dp.png)'}" (click)="cartRef.viewCart(); toggleCartButton($event);"></div>-->
         </div>
+        <ng-template [cdkPortalOutlet]="portal"></ng-template>
       `,
     styles: [`
         .footerbar {
@@ -55,8 +57,14 @@ import { lift } from '../animations/animations.component';
     ],
     animations: [ lift ]
 })
-export class FooterBarComponent implements OnInit {
+export class FooterBarComponent implements OnInit, AfterViewInit {
     state = 'hide';
+    portal: Portal<any>;
+    cartSelectedPortal: Portal<any>;
+    profileSelectedPortal: Portal<any>;
+    profileComponentPortal: ComponentPortal<ProfileComponent>;
+    cartComponentPortal: ComponentPortal<FoodCartComponent>;
+
     constructor(
         private el: ElementRef,
         private btmSht: MatBottomSheet,
@@ -64,32 +72,28 @@ export class FooterBarComponent implements OnInit {
         private searchCnfg: MatBottomSheetConfig<ProfileComponent>,
         private filterCnfg: MatBottomSheetConfig<ProfileComponent>,
         private cartCnfg: MatBottomSheetConfig<FoodCartComponent>,
-    ) {}
+    ) {
+        // this.openCart(Event);
+        // console.log('event');
+    }
 
     @HostListener('window:scroll', ['$event'])
         onWindowScroll(e) {
             if ( window.pageYOffset > 100 ) {
                 this.state = 'show';
+                this.openCart();
                 // console.log('show');
-            } else {
+            } /*else {
                 this.state = 'hide';
                 // console.log('hide');
-            }
-    }
-    ngOnInit() {
-        // this.openCart();
+            }*/
     }
 
     openProfile() {
-        this.profileCnfg = {
-            hasBackdrop: true,
-            disableClose: false,
-            backdropClass: 'bottomSheetBackdrop'
-        };
-
-        // this.bottomSheet.open(BottomSheetComponent, this.bottomSheetConfig );
-        this.btmSht.open(ProfileComponent, this.profileCnfg );
+        this.portal = this.profileSelectedPortal;
+        this.profileSelectedPortal = this.profileComponentPortal;
     }
+
     openSearch() {
         this.searchCnfg = {
             hasBackdrop: true,
@@ -100,6 +104,7 @@ export class FooterBarComponent implements OnInit {
         // this.bottomSheet.open(BottomSheetComponent, this.bottomSheetConfig );
         // this.btmSht.open(comp, this.searchCnfg );
     }
+
     openFilter() {
         this.filterCnfg = {
             hasBackdrop: true,
@@ -111,7 +116,7 @@ export class FooterBarComponent implements OnInit {
         // this.btmSht.open(comp, this.filterCnfg );
     }
 
-    openCart() {
+    /*openCart() {
         this.cartCnfg = {
             hasBackdrop: true,
             disableClose: false,
@@ -121,8 +126,23 @@ export class FooterBarComponent implements OnInit {
 
         // this.bottomSheet.open(BottomSheetComponent, this.bottomSheetConfig );
         this.btmSht.open(FoodCartComponent, this.cartCnfg );
+    }*/
+
+    openCart() {
+        this.portal = this.cartSelectedPortal;
+        this.cartSelectedPortal = this.cartComponentPortal;
     }
 
 
+    /* // ==================== // */
+    ngOnInit() {
+        this.profileComponentPortal = new ComponentPortal(ProfileComponent);
+        this.cartComponentPortal = new ComponentPortal(FoodCartComponent);
+    }
+
+    ngAfterViewInit(): void {
+        // this.portal = this.cartSelectedPortal;
+        // this.cartSelectedPortal = this.cartComponentPortal;
+    }
 
 }

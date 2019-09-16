@@ -32,6 +32,7 @@ export class CartService {
         // @Inject(ComponentFactoryResolver) resolver,
         private resolver: ComponentFactoryResolver,
         private appRef: ApplicationRef,
+        private vcRef: ViewContainerRef,
         private injector: Injector,
     ) {
         this.newCartItemData$ = this.setCartItem$.asObservable();
@@ -52,7 +53,7 @@ export class CartService {
         this.addDynamicComponent();
     }
 
-    addDynamicComponent() {
+    /*addDynamicComponent() {
     // addDynamicComponent(e) {
         this.newCartItemData$.subscribe( (res: CartItemData) => {
             const factory: ComponentFactory<CartItemComponent> = this.resolver.resolveComponentFactory(CartItemComponent);
@@ -71,25 +72,26 @@ export class CartService {
 
         });
 
-    }
+    }*/
 
 
     // ==== WORKING RIGHT ==== //
-    /*addDynamicComponent(e) {
-        this.newCartItemData$.subscribe( (res: CartItemData[]) => {
+    addDynamicComponent(): void {
+        // this.compRef.destroy();
+        this.newCartItemData$.subscribe( (res: CartItemData) => {
             const factory = this.resolver.resolveComponentFactory(CartItemComponent);
             this.compRef = factory.create(this.injector);
-            this.appRef.attachView(this.compRef.hostView);
+            // this.appRef.attachView(this.compRef.hostView);
             this.compRef.instance.cartItem = res;
 
             const domElem = (this.compRef.hostView as EmbeddedViewRef<any>)
                 .rootNodes[0] as HTMLElement;
-            const cart = document.getElementsByClassName('cdk-overlay-container')[0];
+            const cart = document.getElementsByClassName('cartItemHldr')[0];
             cart.appendChild(domElem);
 
         });
 
-    }*/
+    }
     // ----------------------- //
 
 }

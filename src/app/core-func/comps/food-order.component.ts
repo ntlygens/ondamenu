@@ -168,7 +168,7 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
             cid: catID,
             client_id: clID
         });
-        this.addComp(e);
+        this.addComp();
 
         // TODO: Handle adding items in-app. Handle editing cart in-app.
         // TODO: Push item to array then iterate through array to send/add items to order.
@@ -205,7 +205,7 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
         this.foodCart.insertBefore(fragment, this.foodCart.lastElementChild);*/
     }
 
-    addComp(e): void {
+    addComp(): void {
         this.cs.addDynamicComponent();
         // this.destroy$.next();
         // this.cs.newCartItemData$.complete();

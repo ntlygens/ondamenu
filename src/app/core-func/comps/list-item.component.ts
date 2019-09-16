@@ -33,8 +33,8 @@ import { Component, OnInit, Input } from '@angular/core';
       `,
     styles: [`
         @media screen and (max-width: 375px) {
-            .iteminfo {
-                /*width: 363px;*/
+            /*.iteminfo {
+                !*width: 363px;*!
             }
             .statuses {
                 padding-top: 7%;
@@ -44,12 +44,12 @@ import { Component, OnInit, Input } from '@angular/core';
                 text-align: center;
                 margin-top: 10px;
                 right: 7%;
-            }
+            }*/
         }
 
         @media screen and (min-width: 376px) and (max-width: 765px) {
-            .iteminfo {
-                /*width: 400px;*/
+            /*.iteminfo {
+                !*width: 400px;*!
             }
             .statuses {
                 padding-top: 6%;
@@ -60,7 +60,7 @@ import { Component, OnInit, Input } from '@angular/core';
                 margin-top: 10px;
                 right: 7%;
                 z-index: 4;
-                top: 60px;
+                top: 0px;
             }
 
             .dohmini {
@@ -73,7 +73,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
             .iteminfomini {
                 top: -218px;
-            }
+            }*/
 
         }
 
