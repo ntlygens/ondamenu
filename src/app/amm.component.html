@@ -3,11 +3,13 @@
         <amm-header-bar></amm-header-bar>
         <amm-header-logo [ngClass]="isStartPg ? 'off' : ''"></amm-header-logo>
     </div>
-    <div id="ntroCntnr" [@routeAnimations]="prepareRoute(mainAppRO)">
-        <router-outlet #mainAppRO="outlet" id="mainAppRO"></router-outlet>
-    </div>
+
     <div id="footerBar">
         <amm-footer-bar #footer></amm-footer-bar>
     </div>
+
+    <div id="ntroCntnr" [@routeAnimations]="prepareRoute(mainAppRO)">
+    <router-outlet #mainAppRO="outlet" id="mainAppRO"></router-outlet>
+</div>
 </div>
 

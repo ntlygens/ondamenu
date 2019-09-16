@@ -8,14 +8,18 @@ import { lift } from '../animations/animations.component';
 @Component({
     selector: 'amm-footer-bar',
     template: `
-        <div class="footerbar w-100 d-flex" [@footerAnimations]="state">
+        <div class="footerbar w-100 d-flex" [@footerAnimations]="ftrState">
             <div class="uProfile" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_account_circle_black_18dp@2x.png)'}" (click)="openProfile();"></div>
             <div class="uSearch" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_search_black_24dp.png)'}" (click)="openSearch();"></div>
             <div class="uFilter" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_tune_black_24dp.png)'}" (click)="openFilter();"></div>
             <div class="uCart" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_shopping_cart_black_24dp.png)'}" (click)="openCart();"></div>
             <!--<div class="uCart" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_shopping_cart_black_24dp.png)'}" (click)="cartRef.viewCart(); toggleCartButton($event);"></div>-->
         </div>
-        <ng-template [cdkPortalOutlet]="portal"></ng-template>
+        <div>
+            <amm-profile class="profileComp w-100" [@cartAnimations]="prflState"></amm-profile>
+            <amm-food-cart class="shoppingCart w-100" [@cartAnimations]="crtState"></amm-food-cart>
+        </div>
+        <!--<ng-template [cdkPortalOutlet]="portal"></ng-template>-->
       `,
     styles: [`
         .footerbar {
@@ -46,6 +50,12 @@ import { lift } from '../animations/animations.component';
 
         }
 
+        .shoppingCart, .profileComp {
+            position: fixed;
+            background: #ea6a5e;
+            height: 100%;
+        }
+
         .bottomSheetBackdrop {
             /*user-select: none;
             pointer-events: none;
@@ -58,7 +68,10 @@ import { lift } from '../animations/animations.component';
     animations: [ lift ]
 })
 export class FooterBarComponent implements OnInit, AfterViewInit {
-    state = 'hide';
+    ftrState = 'hide';
+    crtState = 'close';
+    prflState = 'close';
+    srchState = 'close';
     portal: Portal<any>;
     cartSelectedPortal: Portal<any>;
     profileSelectedPortal: Portal<any>;
@@ -79,19 +92,19 @@ export class FooterBarComponent implements OnInit, AfterViewInit {
 
     @HostListener('window:scroll', ['$event'])
         onWindowScroll(e) {
-            if ( window.pageYOffset > 100 ) {
-                this.state = 'show';
-                this.openCart();
-                // console.log('show');
-            } /*else {
-                this.state = 'hide';
-                // console.log('hide');
-            }*/
+            if (true === window.pageYOffset > 20) {
+                this.ftrState = 'show';
+            }
     }
 
     openProfile() {
-        this.portal = this.profileSelectedPortal;
-        this.profileSelectedPortal = this.profileComponentPortal;
+        if ( this.prflState === 'close') {
+            this.prflState = 'open';
+        } else {
+            this.prflState = 'close';
+        }
+        // this.portal = this.profileSelectedPortal;
+        // this.profileSelectedPortal = this.profileComponentPortal;
     }
 
     openSearch() {
@@ -116,21 +129,14 @@ export class FooterBarComponent implements OnInit, AfterViewInit {
         // this.btmSht.open(comp, this.filterCnfg );
     }
 
-    /*openCart() {
-        this.cartCnfg = {
-            hasBackdrop: true,
-            disableClose: false,
-            backdropClass: 'bottomSheetBackdrop',
-
-        };
-
-        // this.bottomSheet.open(BottomSheetComponent, this.bottomSheetConfig );
-        this.btmSht.open(FoodCartComponent, this.cartCnfg );
-    }*/
-
     openCart() {
-        this.portal = this.cartSelectedPortal;
-        this.cartSelectedPortal = this.cartComponentPortal;
+        // this.portal = this.cartSelectedPortal;
+        // this.cartSelectedPortal = this.cartComponentPortal;
+        if ( this.crtState === 'close') {
+            this.crtState = 'open';
+        } else {
+            this.crtState = 'close';
+        }
     }
 
 

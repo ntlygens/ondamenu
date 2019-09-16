@@ -8,7 +8,7 @@ import {
     HostListener,
     Inject,
     Output,
-    EventEmitter, ComponentRef
+    EventEmitter, ComponentRef, ViewContainerRef
 } from '@angular/core';
 import { Location, DOCUMENT } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -26,8 +26,10 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('cartRef', {static: true}) cartRef: ElementRef;
+    @ViewChild('touchnav', {static: true}) touchnav;
     @ViewChild('menuRef', {static: true}) menuRef: ElementRef;
     @ViewChild('cartIcon', {static: true}) cartIcon: ElementRef;
+    @ViewChild('fullMenuBtn', {static: true}) fullMenuBtn;
     @Output() dFtr: EventEmitter<any> = new EventEmitter<any>();
 
 
@@ -70,7 +72,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
             this.getCats(res.client_id);
 
         });
-        this.active = true;
+        // this.active = true;
 
     }
 
@@ -132,28 +134,20 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
     menuClick(currentIndex: number, action: string, e) {
         const target = e.target.closest('.clientMenu');
+        const navbtn = e.target.parentNode.id;
+        console.log('menuIndex: ', currentIndex);
+        // if (this.menuOpen !== true) {
+        //     // target.classList.toggle('menuOpen');
+        //     this.menuOpen = true;
+        // }
 
-        if (this.menuOpen !== true) {
-            // target.classList.toggle('menuOpen');
-            this.menuOpen = true;
-        }
         if ( action === this.TOUCH_ACTION.TOUCH) {
             console.log('actnTrgt: ', action);
+            this.fullMenuBtn.isActive = currentIndex === null;
             // TODO: ADD MENU ID TO BUTTON AND CALL INSTEAD OF NAME # USE MENUID //
             this.dCats.forEach((x: CategoryData, i) => {
                 const crntCat = (i === currentIndex);
                 x.visible = crntCat;
-                switch (true) {
-                    case x.cid !== 'fullMenuBtn':
-                        if (this.isAllBtnActive === crntCat) {
-                            this.active = false;
-                        }
-                        break;
-                    case x.cid === 'fullMenuBtn':
-                        this.active = true;
-                        // x.visible = true;
-                }
-
 
                 if ( crntCat && i < 4) {
                     // if ( (i === currentIndex) && i < 4) {
@@ -240,16 +234,17 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // TODO: setup matchmedia for mobile test //
         this.mobileOn = true;
-        this.elem.setAttribute('dFtr', 'footer.openCart()');
+        // this.elem.setAttribute('dFtr', 'footer.openCart()');
 
     }
 
     ngAfterViewInit(): void {
-        this.allItemsBtn = document.querySelector('#fullMenuBtn button');
-        this.isAllBtnActive = Boolean(this.allItemsBtn.getAttribute('isactive'));
+        // this.allItemsBtn = document.querySelector('#fullMenuBtn button');
+        // this.isAllBtnActive = Boolean(this.allItemsBtn.getAttribute('isactive'));
 
-        console.log('isAllBtnActive: ', this.isAllBtnActive);
-        console.log('AllBtn: ', this.allItemsBtn.classList);
+        // console.log('isAllBtnActive: ', this.isAllBtnActive);
+        // console.log('AllBtn: ', this.allItemsBtn.classList);
+        // this.fullMenuBtn.isActive = true;
     }
 
     ngOnDestroy(): void {

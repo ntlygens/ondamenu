@@ -13,22 +13,40 @@ import {
 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { CartService } from '../srvcs/cart.service';
+import { lift } from '../animations/animations.component';
 
 @Component({
     selector: 'amm-food-cart',
     template: `
-        <p>
-          food-cart works!
-        </p>
         <div class="cartItemHldr"></div>
         <ng-template #cart></ng-template>
       `,
-    styles: []
+    styles: [`
+        /*:host {
+            position: fixed;
+            width: 100%;
+            background: #ea6a5e;
+            border: #efefef thin solid;
+            border-top-right-radius: 4px;
+            border-top-left-radius: 4px;
+            z-index: 1;
+        }
+        @media screen and (max-width: 375px) {
+            :host {
+                top: 600px;
+            }
+        }
+        @media screen and (min-width: 376px) and (max-width: 765px) {
+            :host {
+                top: 720px;
+            }
+        }*/
+    `]
 })
 
 export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     // @ViewChild('cartItem', {read: ViewContainerRef, static: true}) cartItem: ViewContainerRef;
-    @ViewChild('cart', {read: TemplateRef, static: false}) cart: TemplateRef<any>;
+    @ViewChild('cart', {read: ViewContainerRef, static: false}) cart: ViewContainerRef;
     @Output() cOrderID: EventEmitter<string> = new EventEmitter<string>();
     @Output() cOrderAmt: EventEmitter<number> = new EventEmitter<number>();
     @Output() closeOnSubmit = new EventEmitter();
@@ -63,6 +81,8 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
         this.elem = this.elemRef.nativeElement;
         this.orderSent = false;
+
+        // this.elem.setAttribute('[@cartAnimations]', 'state');
     }
 
 
@@ -85,6 +105,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     ngOnChanges(changes): void {
+        // console.log('fd change: ', this.cart.element.nativeElement.children.count);
     }
 
     ngOnDestroy(): void {

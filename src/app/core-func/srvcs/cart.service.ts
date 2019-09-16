@@ -5,16 +5,13 @@ import {
     EmbeddedViewRef,
     ApplicationRef,
     TemplateRef,
-    ReflectiveInjector,
     ComponentFactoryResolver,
     ViewContainerRef,
     ComponentFactory, ComponentRef
 } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { CartItemData } from '../../amm.enum';
-
 import { CartItemComponent } from '../comps/cart-item.component';
-import {take, takeUntil} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -27,12 +24,11 @@ export class CartService {
     private setCartViewContainerRef$: Subject<TemplateRef<any>> = new BehaviorSubject<TemplateRef<any>>(null);
     // private setCartViewContainerRef$: Subject<ViewContainerRef> = new BehaviorSubject<ViewContainerRef>(null);
 
-    compRef: ComponentRef<CartItemComponent>;
+    private compRef: ComponentRef<CartItemComponent>;
     constructor(
         // @Inject(ComponentFactoryResolver) resolver,
         private resolver: ComponentFactoryResolver,
         private appRef: ApplicationRef,
-        private vcRef: ViewContainerRef,
         private injector: Injector,
     ) {
         this.newCartItemData$ = this.setCartItem$.asObservable();
@@ -76,19 +72,22 @@ export class CartService {
 
 
     // ==== WORKING RIGHT ==== //
-    addDynamicComponent(): void {
+    addDynamicComponent(): any {
+        console.log('--strted--');
         // this.compRef.destroy();
         this.newCartItemData$.subscribe( (res: CartItemData) => {
             const factory = this.resolver.resolveComponentFactory(CartItemComponent);
             this.compRef = factory.create(this.injector);
-            // this.appRef.attachView(this.compRef.hostView);
             this.compRef.instance.cartItem = res;
+
+            this.appRef.attachView(this.compRef.hostView);
 
             const domElem = (this.compRef.hostView as EmbeddedViewRef<any>)
                 .rootNodes[0] as HTMLElement;
-            const cart = document.getElementsByClassName('cartItemHldr')[0];
+            const cart = document.getElementsByClassName('shoppingCart')[0];
             cart.appendChild(domElem);
 
+            console.log('vcf# ', this.appRef.viewCount);
         });
 
     }
