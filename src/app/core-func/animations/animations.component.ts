@@ -46,14 +46,14 @@ export const lift = [
             opacity: 1,
             /*transform: 'translateY(0)',*/
             top: '130px',
-            zIndex: 2
+            zIndex: 3
 
 })),
         state('close', style({
             opacity: 0.9,
             /*transform: 'translateY(-30px)',*/
             top: '720px',
-            zIndex: 1
+            zIndex: 2
         })),
         transition('open => close', animate('500ms ease-out')),
         transition('close => open', animate('300ms ease-out'))

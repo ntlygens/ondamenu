@@ -8,7 +8,7 @@ import {
     HostListener,
     Inject,
     Output,
-    EventEmitter, ComponentRef, ViewContainerRef
+    EventEmitter, ComponentRef, ViewContainerRef, ApplicationRef
 } from '@angular/core';
 import { Location, DOCUMENT } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -64,6 +64,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         // private compRef: ComponentRef<>,
         private route: ActivatedRoute,
         private ss: StorageService,
+        private apRef: ApplicationRef
     ) {
 
         this.ss.menuBnrData$.pipe(takeUntil(this.destroy$)).subscribe( (res: MerchantInfoData) => {
@@ -229,8 +230,8 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         this.elem = this.elemRef.nativeElement;
-        const dEl = this.elem.querySelector('.imgStngs');
-        dEl.classList.add('fullImg');
+        const listItmImg = this.elem.querySelector('.imgStngs');
+        listItmImg.classList.add('fullImg');
 
         // TODO: setup matchmedia for mobile test //
         this.mobileOn = true;

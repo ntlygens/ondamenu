@@ -170,7 +170,7 @@ import { Component, OnInit, Input } from '@angular/core';
             padding: 10px;
             margin: auto;
             justify-content: space-between;
-            z-index: 3;
+            /*z-index: 3;*/
             position: relative;
             top: -68px;
             /* box-shadow: 0px -1px 4px 0px; */

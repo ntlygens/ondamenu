@@ -16,10 +16,11 @@ import { lift } from '../animations/animations.component';
             <!--<div class="uCart" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_shopping_cart_black_24dp.png)'}" (click)="cartRef.viewCart(); toggleCartButton($event);"></div>-->
         </div>
         <div>
-            <amm-profile class="profileComp w-100" [@cartAnimations]="prflState"></amm-profile>
+            <ng-template [cdkPortalOutlet]="portal"></ng-template>
+            <!--<amm-profile class="profileComp w-100" [@cartAnimations]="prflState"></amm-profile>-->
             <amm-food-cart class="shoppingCart w-100" [@cartAnimations]="crtState"></amm-food-cart>
         </div>
-        <!--<ng-template [cdkPortalOutlet]="portal"></ng-template>-->
+
       `,
     styles: [`
         .footerbar {
@@ -57,9 +58,9 @@ import { lift } from '../animations/animations.component';
         }
 
         .bottomSheetBackdrop {
-            /*user-select: none;
+            user-select: none;
             pointer-events: none;
-            z-index: 80;*/
+            z-index: 180;
         }
     `],
     providers: [
@@ -98,13 +99,28 @@ export class FooterBarComponent implements OnInit, AfterViewInit {
     }
 
     openProfile() {
-        if ( this.prflState === 'close') {
+        /*if ( this.prflState === 'close') {
             this.prflState = 'open';
         } else {
             this.prflState = 'close';
-        }
+        }*/
         // this.portal = this.profileSelectedPortal;
         // this.profileSelectedPortal = this.profileComponentPortal;
+        this.profileCnfg = {
+            hasBackdrop: true,
+            disableClose: false,
+            backdropClass: 'bottomSheetBackdrop'
+        };
+
+        // this.bottomSheet.open(BottomSheetComponent, this.bottomSheetConfig );
+
+
+        if ( this.btmSht._openedBottomSheetRef) {
+            this.btmSht.dismiss();
+        } else {
+            this.btmSht.open(ProfileComponent, this.profileCnfg );
+            console.log( 'btmSht opened');
+        }
     }
 
     openSearch() {
