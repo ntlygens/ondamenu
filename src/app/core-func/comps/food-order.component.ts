@@ -1,8 +1,20 @@
-import { Component, OnInit, Input, Output, OnDestroy, ElementRef, EventEmitter, Renderer2 } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    Output,
+    OnDestroy,
+    ElementRef,
+    EventEmitter,
+    Renderer2,
+    ComponentFactoryResolver,
+    ApplicationRef, Injector, ComponentRef, EmbeddedViewRef, AfterViewInit
+} from '@angular/core';
 import { CartService } from '../srvcs/cart.service';
 import { CartItemData } from '../../amm.enum';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {CartItemComponent} from './cart-item.component';
 
 declare var $: any;
 
@@ -44,7 +56,7 @@ declare var $: any;
     `],
     providers: []
 })
-export class FoodOrderComponent implements OnInit, OnDestroy {
+export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() prodid: string;
     @Input() prodname: string;
     @Input() prodprice: number;
@@ -54,6 +66,7 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
     @Output() toggleIncr: EventEmitter<any> = new EventEmitter<any>();
     @Output() rmvBtnEmitter: EventEmitter<any> = new EventEmitter<any>();
     private destroy$ = new Subject<any>();
+    private compRef: ComponentRef<CartItemComponent>;
     isOrdered: boolean;
     isAdded: boolean;
     isInCart: boolean;
@@ -82,6 +95,10 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
 
 
     // static methods //
+    public static insertAfter(referenceNode, newNode) {
+        referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    }
+
     public static emitRemove_click(e): any {
         console.log('worksss -- ', e.target.title);
     }
@@ -96,7 +113,10 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
     constructor(
         private elemRef: ElementRef,
         private renderer: Renderer2,
-        private cs: CartService
+        private cs: CartService,
+        private resolver: ComponentFactoryResolver,
+        private appRef: ApplicationRef,
+        private injector: Injector
     ) {
         this.isOrdered = false;
         this.isAdded = false;
@@ -168,7 +188,7 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
             cid: catID,
             client_id: clID
         });
-        this.addComp();
+        this.addCartItemComp();
 
         // TODO: Handle adding items in-app. Handle editing cart in-app.
         // TODO: Push item to array then iterate through array to send/add items to order.
@@ -205,10 +225,24 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
         this.foodCart.insertBefore(fragment, this.foodCart.lastElementChild);*/
     }
 
-    addComp(): void {
-        this.cs.addDynamicComponent();
-        // this.destroy$.next();
-        // this.cs.newCartItemData$.complete();
+    addCartItemComp(): void {
+        this.cs.newCartItemData$.pipe(takeUntil(this.destroy$)).subscribe(
+            (res: CartItemData) => {
+                if (this.compRef) { this.compRef.destroy(); }
+
+                const factory = this.resolver.resolveComponentFactory(CartItemComponent);
+                this.compRef = factory.create(this.injector);
+                this.compRef.instance.cartItem = res;
+
+                this.appRef.attachView(this.compRef.hostView);
+
+                const domElem = (this.compRef.hostView as EmbeddedViewRef<any>)
+                    .rootNodes[0] as HTMLElement;
+                const cart = document.getElementsByClassName('shoppingCart')[0];
+                FoodOrderComponent.insertAfter(cart.firstChild, domElem);
+            }
+        );
+
     }
 
 
@@ -216,6 +250,9 @@ export class FoodOrderComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.orderbutton = this.elem.querySelectorAll('button #add2Order').length;
         // console.log('foodOrder Incr: ', this.isIncremental);
+    }
+
+    ngAfterViewInit(): void {
     }
 
     ngOnDestroy(): void {

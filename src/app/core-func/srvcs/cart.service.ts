@@ -19,64 +19,39 @@ import { CartItemComponent } from '../comps/cart-item.component';
 export class CartService {
     readonly cartViewContainer$;
     readonly newCartItemData$: any;
+    readonly getCartItems4PlateCount$: any;
+    itemCount$: number;
 
     private setCartItem$: Subject<CartItemData> = new BehaviorSubject<CartItemData>(null);
+    private setCartItems4PlateCount$: Subject<any> = new BehaviorSubject<any>(0);
     private setCartViewContainerRef$: Subject<TemplateRef<any>> = new BehaviorSubject<TemplateRef<any>>(null);
-    // private setCartViewContainerRef$: Subject<ViewContainerRef> = new BehaviorSubject<ViewContainerRef>(null);
 
-    private compRef: ComponentRef<CartItemComponent>;
-    constructor(
-        // @Inject(ComponentFactoryResolver) resolver,
-        private resolver: ComponentFactoryResolver,
-        private appRef: ApplicationRef,
-        private injector: Injector,
-    ) {
+    constructor() {
         this.newCartItemData$ = this.setCartItem$.asObservable();
+        this.getCartItems4PlateCount$ = this.setCartItems4PlateCount$.asObservable();
         this.cartViewContainer$ = this.setCartViewContainerRef$.asObservable();
-        this.resolver = resolver;
     }
 
     setCartItemData(data) {
         this.setCartItem$.next(data);
+        // console.log('dataname: ', data.cnm);
+        if ( data.cnm === 'DINNER') { this.setCartItems4PlateCount(); }
+        // console.log('amt from srvc: ', this.getCartItems4PlateCount$);
     }
 
-    setCartContainerRef(container: TemplateRef<any>) {
-        this.setCartViewContainerRef$.next(container);
-        // viewContainerRef.clear();
-        // this.cartViewItem$ = viewContainerRef;
-        // this.addDynamicComponent(data, );
-        // console.log('cont: ', this.cartViewItem$);
-        this.addDynamicComponent();
+    setCartItems4PlateCount() {
+        this.getCartItems4PlateCount$.subscribe(res => { this.itemCount$ = res; });
+        this.setCartItems4PlateCount$.next(this.itemCount$ + 1);
+        // return this.itemCount$;
     }
-
-    /*addDynamicComponent() {
-    // addDynamicComponent(e) {
-        this.newCartItemData$.subscribe( (res: CartItemData) => {
-            const factory: ComponentFactory<CartItemComponent> = this.resolver.resolveComponentFactory(CartItemComponent);
-            this.cartViewContainer$.clear();
-            this.appRef = this.cartViewContainer$;
-
-
-            this.compRef = this.cartViewContainer$.createComponent(factory);
-            // this.appRef.attachView(this.compRef.hostView);
-            this.compRef.instance.cartItem = res;
-            this.cartViewContainer$.createEmbeddedView(this.compRef);
-            // const domElem = (this.compRef.hostView as EmbeddedViewRef<any>)
-            //    .rootNodes[0] as HTMLElement;
-            // const cart = document.getElementsByClassName('cdk-overlay-container')[0];
-            // cart.appendChild(domElem);
-
-        });
-
-    }*/
-
 
     // ==== WORKING RIGHT ==== //
-    addDynamicComponent(): any {
+    /*addDynamicComponent(): any {
         console.log('--strted--');
         // this.compRef.destroy();
         this.newCartItemData$.subscribe( (res: CartItemData) => {
             const factory = this.resolver.resolveComponentFactory(CartItemComponent);
+            // if ( this.compRef ) { this.compRef.destroy(); }
             this.compRef = factory.create(this.injector);
             this.compRef.instance.cartItem = res;
 
@@ -90,7 +65,7 @@ export class CartService {
             console.log('vcf# ', this.appRef.viewCount);
         });
 
-    }
+    }*/
     // ----------------------- //
 
 }

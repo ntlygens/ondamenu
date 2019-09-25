@@ -1,9 +1,12 @@
-import { Component, ElementRef, OnInit, AfterViewInit, HostListener } from '@angular/core';
+import {Component, ElementRef, OnInit, AfterViewInit, HostListener, OnDestroy} from '@angular/core';
 import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material';
 import { Portal, ComponentPortal } from '@angular/cdk/portal';
 import { ProfileComponent } from './profile.component';
 import { FoodCartComponent } from './food-cart.component';
 import { lift } from '../animations/animations.component';
+import {CartService} from '../srvcs/cart.service';
+import {takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
 
 @Component({
     selector: 'amm-footer-bar',
@@ -18,7 +21,7 @@ import { lift } from '../animations/animations.component';
         <div>
             <ng-template [cdkPortalOutlet]="portal"></ng-template>
             <!--<amm-profile class="profileComp w-100" [@cartAnimations]="prflState"></amm-profile>-->
-            <amm-food-cart class="shoppingCart w-100" [@cartAnimations]="crtState"></amm-food-cart>
+            <amm-food-cart class="shoppingCart w-100" [@cartAnimations]="crtState" [amtItems4Plate]="amt4Plate"></amm-food-cart>
         </div>
 
       `,
@@ -68,7 +71,9 @@ import { lift } from '../animations/animations.component';
     ],
     animations: [ lift ]
 })
-export class FooterBarComponent implements OnInit, AfterViewInit {
+export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
+    private destroy$ = new Subject<any>();
+    amt4Plate: number; amtNot4Plate: number;
     ftrState = 'hide';
     crtState = 'close';
     prflState = 'close';
@@ -80,6 +85,7 @@ export class FooterBarComponent implements OnInit, AfterViewInit {
     cartComponentPortal: ComponentPortal<FoodCartComponent>;
 
     constructor(
+        private cs: CartService,
         private el: ElementRef,
         private btmSht: MatBottomSheet,
         private profileCnfg: MatBottomSheetConfig<ProfileComponent>,
@@ -87,8 +93,12 @@ export class FooterBarComponent implements OnInit, AfterViewInit {
         private filterCnfg: MatBottomSheetConfig<ProfileComponent>,
         private cartCnfg: MatBottomSheetConfig<FoodCartComponent>,
     ) {
-        // this.openCart(Event);
-        // console.log('event');
+        this.cs.getCartItems4PlateCount$.pipe(takeUntil(this.destroy$)).subscribe(
+            (res) => {
+                this.amt4Plate = res;
+            }
+        );
+
     }
 
     @HostListener('window:scroll', ['$event'])
@@ -99,21 +109,11 @@ export class FooterBarComponent implements OnInit, AfterViewInit {
     }
 
     openProfile() {
-        /*if ( this.prflState === 'close') {
-            this.prflState = 'open';
-        } else {
-            this.prflState = 'close';
-        }*/
-        // this.portal = this.profileSelectedPortal;
-        // this.profileSelectedPortal = this.profileComponentPortal;
         this.profileCnfg = {
             hasBackdrop: true,
             disableClose: false,
             backdropClass: 'bottomSheetBackdrop'
         };
-
-        // this.bottomSheet.open(BottomSheetComponent, this.bottomSheetConfig );
-
 
         if ( this.btmSht._openedBottomSheetRef) {
             this.btmSht.dismiss();
@@ -165,6 +165,11 @@ export class FooterBarComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         // this.portal = this.cartSelectedPortal;
         // this.cartSelectedPortal = this.cartComponentPortal;
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
 }
