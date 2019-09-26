@@ -97,6 +97,12 @@ export interface CartItemData {
     client_id: string;
 }
 
+export interface PlateItemData {
+    plateSize: string;
+    plateNum: number;
+    platePrice: number;
+}
+
 export interface CategoryData {
     client_id: string;
     cid: string;

@@ -226,11 +226,11 @@ export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     addCartItemComp(): void {
-        this.cs.newCartItemData$.pipe(takeUntil(this.destroy$)).subscribe(
+        this.cs.newCartItemData$.subscribe(
             (res: CartItemData) => {
+                const factory = this.resolver.resolveComponentFactory(CartItemComponent);
                 if (this.compRef) { this.compRef.destroy(); }
 
-                const factory = this.resolver.resolveComponentFactory(CartItemComponent);
                 this.compRef = factory.create(this.injector);
                 this.compRef.instance.cartItem = res;
 

@@ -1,7 +1,7 @@
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
-    Component,
+    Component, ComponentFactoryResolver, ComponentRef,
     ElementRef,
     EventEmitter,
     Input,
@@ -11,10 +11,13 @@ import {
     Output,
     Renderer2,
     ViewChild,
-    ViewContainerRef
+    ViewContainerRef,
+    ApplicationRef, Injector, EmbeddedViewRef
 } from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {CartService} from '../srvcs/cart.service';
+import { PlateItemData } from '../../amm.enum';
+import {PlateItemComponent} from './plate-item.component';
 
 @Component({
     selector: 'amm-food-cart',
@@ -72,6 +75,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     orderSent: boolean; isOrderIdVisible = false; isPlateVisible = false;
     plateSize: string; deleteBtnListener: () => void;
 
+    private compRef: ComponentRef<PlateItemComponent>;
     public static insertAfter(referenceNode, newNode) {
         referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     }
@@ -81,7 +85,10 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         private cs: CartService,
         private elemRef: ElementRef,
         private renderer: Renderer2,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private resolver: ComponentFactoryResolver,
+        private appRef: ApplicationRef,
+        private injector: Injector
     ) {
         const params = (new URL(document.location.href)).searchParams;
         const searchParams = new URLSearchParams(params);
@@ -133,7 +140,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
     checkForExistingPlates() {
         // const num = 0;
-        this.foodPlate = this.elem.querySelectorAll('div[name^="food-plate_"]');
+        this.foodPlate = this.elem.querySelectorAll('div[data-name^="food-plate_"]');
         if (this.foodPlate.length > 0) {
             console.log('amt Plates: ' + this.foodPlate.length);
             return this.foodPlate.length;
@@ -143,9 +150,26 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
     }
 
-    createPlate(plate, num) {
-        console.log('this is plate number ' + num);
-        const fragment = document.createDocumentFragment();
+    newPlateQuery(size) {
+        // if(this.orderItemsForPlate < 8) {
+        if ( window.confirm('Add to Existing Plate?') ) {
+            this.changePlateSize(size);
+            console.log('You\'ve changed to ' + size + ' plate');
+        } else {
+            // this.changePlateSize('sm');
+            console.log('You have confirmed to start a new plate');
+        }
+        // } else {
+        //   this.changePlateSize('sm');
+        //   console.log('You cannot add any more items to this plate. You MUST start a new plate');
+        // }
+    }
+
+    createPlate(data): void {
+        if ( this.compRef ) { this.compRef.destroy(); }
+
+        console.log('this is plate number ' + data.plateNum);
+        /*const fragment = document.createDocumentFragment();
         const myPlate = document.createElement('div');
         const plateHdr = document.createElement('div');
         const priceLbl = document.createElement('span');
@@ -182,28 +206,90 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         myPlate.appendChild(plateHdr);
         fragment.appendChild(myPlate);
 
-        // this.elem.insertBefore(fragment, this.elem.querySelectorAll('div.btn-group')[0]);
-        // this.elem.insertBefore(fragment, this.elem.querySelector('div[aria-label="orderAmt"]'));
+        this.elem.insertBefore(fragment, this.elem.querySelectorAll('div.btn-group')[0]);
+        this.elem.insertBefore(fragment, this.elem.querySelector('div[aria-label="orderAmt"]'));
 
-        // this.elem.querySelector()
-        // const existingPlate = this.elem.querySelector('div[name^="food_plate"]');
-        // if(existingPlate) {
-        // console.log('plate exists');
+        this.elem.querySelector()
+        const existingPlate = this.elem.querySelector('div[name^="food_plate"]');
+        if(existingPlate) {
+        console.log('plate exists');
         FoodCartComponent.insertAfter(this.elem.querySelector('.cartItemHldr'), fragment );
-        // } else {
-        // console.log('sending lERT');
-        // let item2Load = this.elem.querySelector('#tabulator');
-        // this.elem.insertBefore(fragment, this.elem.querySelectorAll('div.btn-group')[0]);
-        // }
+        } else {
+        console.log('sending lERT');
+        let item2Load = this.elem.querySelector('#tabulator');
+        this.elem.insertBefore(fragment, this.elem.querySelectorAll('div.btn-group')[0]);
+        }
+        */
 
+        const factory = this.resolver.resolveComponentFactory(PlateItemComponent);
+        this.compRef = factory.create(this.injector);
+        this.compRef.instance.plateItem = data;
+
+        this.appRef.attachView(this.compRef.hostView);
+
+        const domElement = (this.compRef.hostView as EmbeddedViewRef<any>)
+            .rootNodes[0] as HTMLElement;
+        const cart = document.getElementsByClassName('shoppingCart')[0];
+        FoodCartComponent.insertAfter(cart.firstChild, domElement);
+        // this.compRef.instance.plateItem
+        // return 1;
+        this.injectItemsN2Plate(data);
+
+    }
+
+    injectItemsN2Plate(data): void {
+        /*const foodPlates = this.elem.getElementsByTagName('amm-plate-item');
+        console.log('foodPlatesAmt: ', foodPlates.length);
+
+        for ( let i = 0; i < foodPlates; i++) {
+            console.log('fpi: ', foodPlates[i]);
+            if ( foodPlates[i].getAttribute('data-title') === ('food-plate_' + data.plateNum) ) {
+                this.crntFoodPlate = foodPlates[i];
+            }
+        }*/
+
+        this.crntFoodPlate = this.elem.getElementsByTagName('amm-plate-item')[data.plateNum - 1];
+        this.dinnerItemsNotInPlate = this.elem.getElementsByTagName('amm-cart-item');
+
+        console.log('fp: ', this.crntFoodPlate );
+        console.log('not 1st plated ' + this.dinnerItemsNotInPlate.length);
+
+        for (const plate of this.dinnerItemsNotInPlate) {
+            console.log('j: ', plate.getAttribute('aria-label'));
+            FoodCartComponent.insertAfter(this.crntFoodPlate.firstChild, plate);
+        }
+
+        /*if ( this.crntFoodPlate.count > 0 ) {
+            console.log( 'itssssss: ', this.crntFoodPlate.children.count, ' num = ', data.plateNum);
+        } else {
+            console.log('nummm: ', data.plateNum);
+        }*/
+
+        // this.dinnerItemsNotInPlate.forEach((x) => {
+        //     FoodCartComponent.insertAfter(this.crntFoodPlate.firstChild, x);
+        //     // this.crntFoodPlate.appendChild(x);
+        // });
+
+        const platedItemsSM = this.crntFoodPlate.querySelectorAll('[aria-label="food-item"]');
+        platedItemsSM.forEach( (x) => {
+            x.setAttribute('data-name', 'plated');
+            if (x.children[1].classList.contains('price')) {
+                x.children[1].classList.remove('price');
+                x.children[1].classList.add('priceAdded');
+            }
+
+        });
+        this.getOrderTotal();
     }
 
     changePlateSize(size) {
         const amtPlates: number = this.checkForExistingPlates();
         const plateNum: number = (amtPlates + 1);
-        console.log('plates = ', amtPlates);
-        this.dinnerItemsNotInPlate = this.elem.querySelectorAll('[title="DINNER"]:not([name="plated"])');
-        // console.log('not plated ' + this.dinnerItemsNotInPlate.length);
+        console.log('prev-plates = ', amtPlates, ' crnt-plates = ', plateNum);
+
+        this.dinnerItemsNotInPlate = this.elem.querySelectorAll('[title="DINNER"]:not([data-name])');
+        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('[title*="DINNER"]');
+
         switch (size) {
             case 'none':
                 this.isPlateVisible = false;
@@ -211,37 +297,23 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 // console.log('item added ' + size);
                 break;
             case 'sm':
-                this.createPlate('small', plateNum);
-                this.crntFoodPlate = this.elem.querySelector('[name="food-plate_' + plateNum + '"]');
-
-                this.dinnerItemsNotInPlate.forEach((x, i) => {
-                    this.crntFoodPlate.appendChild(x);
-                });
-
-                const platedItemsSM = this.crntFoodPlate.querySelectorAll('[aria-label="food-item"]');
-                platedItemsSM.forEach( (x) => {
-                    x.setAttribute('name', 'plated');
-                    if (x.children[1].classList.contains('price')) {
-                        x.children[1].classList.remove('price');
-                        x.children[1].classList.add('priceAdded');
-                    }
-
-                });
-                this.getOrderTotal();
+                this.createPlate({plateSize: 'small', plateNum, platePrice: 800});
+                console.log('not plated ' + this.dinnerItemsNotInPlate.length);
                 break;
-            /*case 'md':
-                this.crntFoodPlate = this.elem.querySelector('div[name="food-plate_' + amtPlates + '"]');
+            case 'md':
+                this.crntFoodPlate = this.elem.getElementsByTagName('amm-plate-item')[amtPlates];
                 this.crntFoodPlate.querySelector('#platePrice').innerHTML = '10.00';
                 this.crntFoodPlate.querySelector('#platePrice').className = 'price';
                 this.crntFoodPlate.querySelector('#plateSize').innerHTML = 'medium';
                 this.orderTotal -= 7;
+                console.log('const: ', this.dinnerItemsNotInPlate.length);
                 this.dinnerItemsNotInPlate.forEach((x, i) => {
                     this.crntFoodPlate.appendChild(x);
                     // console.log('plates: '+this.foodPlate.childList);
                 });
 
-                const platedItems_md = this.crntFoodPlate.querySelectorAll('div[aria-label="food-item"]');
-                platedItems_md.forEach( (x, i) => {
+                const platedItemsMD = this.crntFoodPlate.querySelectorAll('div[aria-label="food-item"]');
+                platedItemsMD.forEach( (x, i) => {
                     x.setAttribute('name', 'plated');
                     if (x.children[1].classList.contains('price')) {
                         x.children[1].classList.remove('price');
@@ -251,8 +323,8 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
                 this.getOrderTotal();
                 break;
-            case 'lg':
-                this.crntFoodPlate = this.elem.querySelector('[name="food-plate_' + amtPlates + '"]');
+            /*case 'lg':
+                this.crntFoodPlate = this.elem.querySelector('[data-title="food-plate_' + amtPlates + '"]');
                 this.crntFoodPlate.querySelector('#platePrice').innerHTML = '13.00';
                 this.crntFoodPlate.querySelector('#platePrice').className = 'price';
                 this.crntFoodPlate.querySelector('#plateSize').innerHTML = 'large';
@@ -322,7 +394,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
             const platePrice = Number(platedParent.querySelector('.priceAdded').textContent * 100) ;
             // console.log(e.target.parentElement.parentElement.getAttribute('name'));
-            const orderPlate = platedParent.querySelectorAll('div[name="plated"]');
+            const orderPlate = platedParent.querySelectorAll('div[data-title="plated"]');
             orderPlate.forEach( (x) => {
                 x.removeAttribute('name');
                 x.children[1].classList.remove('priceAdded');
@@ -333,7 +405,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
             // e.target.parentElement.remove();
             itemParent.remove();
             platedParent.remove();
-            // this.elem.querySelector('div[name="' + platedParentName + '"').remove();
+            // this.elem.querySelector('div[data-title="' + platedParentName + '"').remove();
 
         } else {
             // this.removeListener(e.target);
@@ -362,7 +434,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         this.breakfastItemsInCart = this.elem.querySelectorAll('[title="BREAKFAST"]');
         // this.nonDinnerItemsInCart = this.elem.querySelectorAll('div[aria-label="food-item"]');
 
-        this.dinnerItemsNotInPlate = this.elem.querySelectorAll('[title="DINNER"]:not([name="plated"])');
+        this.dinnerItemsNotInPlate = this.elem.querySelectorAll('[title="DINNER"]:not([data-name="plated"])');
         this.prodsInCart = this.elem.querySelectorAll('button.close');
         // this.amtFoodItems = this.nonDinnerItemsInCart.length;
     }
@@ -385,20 +457,20 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                   break;
       */
             case (this.forPlate === 3):
-                if (this.dinnerItemsNotInPlate.length === 3) {
-                    this.changePlateSize('sm');
-                }
+                // if (this.dinnerItemsNotInPlate.length === 3) {
+                this.changePlateSize('sm');
+                // }
                 break;
 
-            /*case (this.forPlate === 5):
-                if (this.notForPlate > 0) {
-                    this.changePlateSize('none');
-                } else {
-                    this.newPlateQuery('md');
-                }
+            case (this.forPlate === 5):
+                // if (this.notForPlate > 0) {
+                this.changePlateSize('none');
+                // } else {
+                this.newPlateQuery('md');
+                // }
                 break;
 
-            case (this.forPlate === 6):
+            /*case (this.forPlate === 6):
                 if (this.dinnerItemsNotInPlate.length === 3) {
                     this.changePlateSize('sm');
                 }

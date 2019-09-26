@@ -16,6 +16,7 @@ import { FoodOrderComponent } from './comps/food-order.component';
 import { FoodPaymentComponent } from './comps/food-payment.component';
 import { CloverUserPrice, CloverDbPrice } from './price-change.pipe';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+// import { PlateItemComponent } from './comps/plate-item.component';
 // import { CartItemComponent } from './comps/cart-item.component';
 
 
@@ -34,6 +35,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
         FoodPaymentComponent,
         CloverUserPrice,
         CloverDbPrice,
+        // PlateItemComponent,
         // CartItemComponent
     ],
     exports: [
