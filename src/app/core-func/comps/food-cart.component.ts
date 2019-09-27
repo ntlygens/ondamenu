@@ -54,6 +54,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     @ViewChild('cart', {read: ViewContainerRef, static: false}) cart: ViewContainerRef;
 
     @Input() amtItems4Plate: any;
+    @Input() amtItemsNot4Plate: any;
     // @Input() amtItemsNot4Plate: any;
 
     @Output() cOrderID: EventEmitter<string> = new EventEmitter<string>();
@@ -442,9 +443,12 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     ngOnChanges(changes): void {
         console.log( 'hit: ', this.amtItems4Plate);
         this.forPlate = this.amtItems4Plate;
+        this.notForPlate = this.amtItemsNot4Plate;
+
 
         console.log(
             ' dinner items ', this.forPlate, ' \n',
+            ' other items ', this.notForPlate, ' \n',
             ' total itams in cart ', this.prodsInCart.length
         );
 
@@ -464,19 +468,19 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
             case (this.forPlate === 5):
                 // if (this.notForPlate > 0) {
-                this.changePlateSize('none');
+                // this.changePlateSize('none');
                 // } else {
                 this.newPlateQuery('md');
                 // }
                 break;
 
-            /*case (this.forPlate === 6):
+            case (this.forPlate === 6):
                 if (this.dinnerItemsNotInPlate.length === 3) {
                     this.changePlateSize('sm');
                 }
                 break;
 
-            case (this.forPlate === 7):
+            /*case (this.forPlate === 7):
                 if (this.dinnerItemsNotInPlate.length === 2) {
                     this.newPlateQuery('lg');
                 }

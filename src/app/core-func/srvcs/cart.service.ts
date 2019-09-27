@@ -20,28 +20,37 @@ export class CartService {
     readonly cartViewContainer$;
     readonly newCartItemData$: any;
     readonly getCartItems4PlateCount$: any;
-    itemCount$: number;
+    readonly getCartItemsNot4PlateCount$: any;
+    itemCount$ = 0; nonItemCount$ = 0;
 
     private setCartItem$: Subject<CartItemData> = new BehaviorSubject<CartItemData>(null);
     private setCartItems4PlateCount$: Subject<any> = new BehaviorSubject<any>(0);
+    private setCartItemsNot4PlateCount$: Subject<any> = new BehaviorSubject<any>(0);
     private setCartViewContainerRef$: Subject<TemplateRef<any>> = new BehaviorSubject<TemplateRef<any>>(null);
 
     constructor() {
         this.newCartItemData$ = this.setCartItem$.asObservable();
         this.getCartItems4PlateCount$ = this.setCartItems4PlateCount$.asObservable();
+        this.getCartItemsNot4PlateCount$ = this.setCartItemsNot4PlateCount$.asObservable();
         this.cartViewContainer$ = this.setCartViewContainerRef$.asObservable();
     }
 
     setCartItemData(data) {
         this.setCartItem$.next(data);
         // console.log('dataname: ', data.cnm);
-        if ( data.cnm === 'DINNER') { this.setCartItems4PlateCount(); }
+        if ( data.cnm === 'DINNER') { this.setCartItems4PlateCount(); } else { this.setCartItemsNot4PlateCount(); }
         // console.log('amt from srvc: ', this.getCartItems4PlateCount$);
     }
 
     setCartItems4PlateCount() {
         this.getCartItems4PlateCount$.subscribe(res => { this.itemCount$ = res; });
         this.setCartItems4PlateCount$.next(this.itemCount$ + 1);
+        // return this.itemCount$;
+    }
+
+    setCartItemsNot4PlateCount() {
+        this.getCartItemsNot4PlateCount$.subscribe(res => { this.nonItemCount$ = res; });
+        this.setCartItemsNot4PlateCount$.next(this.nonItemCount$ + 1);
         // return this.itemCount$;
     }
 

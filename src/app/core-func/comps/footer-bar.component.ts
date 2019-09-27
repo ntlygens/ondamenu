@@ -21,7 +21,7 @@ import {Subject} from 'rxjs';
         <div>
             <ng-template [cdkPortalOutlet]="portal"></ng-template>
             <!--<amm-profile class="profileComp w-100" [@cartAnimations]="prflState"></amm-profile>-->
-            <amm-food-cart class="shoppingCart w-100" [@cartAnimations]="crtState" [amtItems4Plate]="amt4Plate"></amm-food-cart>
+            <amm-food-cart class="shoppingCart w-100" [@cartAnimations]="crtState" [amtItems4Plate]="amt4Plate" [amtItemsNot4Plate]="amtNot4Plate"></amm-food-cart>
         </div>
 
       `,
@@ -96,6 +96,11 @@ export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.cs.getCartItems4PlateCount$.pipe(takeUntil(this.destroy$)).subscribe(
             (res) => {
                 this.amt4Plate = res;
+            }
+        );
+        this.cs.getCartItemsNot4PlateCount$.pipe(takeUntil(this.destroy$)).subscribe(
+            (res) => {
+                this.amtNot4Plate = res;
             }
         );
 
