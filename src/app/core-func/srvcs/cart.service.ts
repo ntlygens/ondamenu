@@ -36,6 +36,7 @@ export class CartService {
     }
 
     setCartItemData(data) {
+        // this.setCartItem$.complete();
         this.setCartItem$.next(data);
         // console.log('dataname: ', data.cnm);
         if ( data.cnm === 'DINNER') { this.setCartItems4PlateCount(); } else { this.setCartItemsNot4PlateCount(); }

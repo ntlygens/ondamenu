@@ -1,18 +1,22 @@
 import {
+    AfterViewInit,
+    ApplicationRef,
+    ChangeDetectionStrategy,
     Component,
-    OnInit,
-    Input,
-    Output,
-    OnDestroy,
-    ElementRef,
-    EventEmitter,
-    Renderer2,
     ComponentFactoryResolver,
-    ApplicationRef, Injector, ComponentRef, EmbeddedViewRef, AfterViewInit
+    ComponentRef,
+    ElementRef,
+    EmbeddedViewRef,
+    EventEmitter,
+    Injector,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    Renderer2
 } from '@angular/core';
-import { CartService } from '../srvcs/cart.service';
-import { CartItemData } from '../../amm.enum';
-import {takeUntil} from 'rxjs/operators';
+import {CartService} from '../srvcs/cart.service';
+import {CartItemData} from '../../amm.enum';
 import {Subject} from 'rxjs';
 import {CartItemComponent} from './cart-item.component';
 
@@ -54,7 +58,8 @@ declare var $: any;
         .notify { color:orangered; font-size: 75%; font-variant: small-caps }
         .colorWarn { background: #8fd450}
     `],
-    providers: []
+    providers: [],
+    changeDetection: ChangeDetectionStrategy.Default
 })
 export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() prodid: string;
@@ -72,6 +77,7 @@ export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     isInCart: boolean;
     message: string;
     elem: any;
+    newComp: any;
     sTimer: any;
     eTimer: any;
     notification: HTMLBodyElement;
@@ -228,20 +234,21 @@ export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     addCartItemComp(): void {
         this.cs.newCartItemData$.subscribe(
             (res: CartItemData) => {
-                const factory = this.resolver.resolveComponentFactory(CartItemComponent);
-                if (this.compRef) { this.compRef.destroy(); }
-
-                this.compRef = factory.create(this.injector);
-                this.compRef.instance.cartItem = res;
-
-                this.appRef.attachView(this.compRef.hostView);
-
-                const domElem = (this.compRef.hostView as EmbeddedViewRef<any>)
-                    .rootNodes[0] as HTMLElement;
-                const cart = document.getElementsByClassName('shoppingCart')[0];
-                FoodOrderComponent.insertAfter(cart.firstChild, domElem);
+                this.newComp = res;
             }
         );
+        const factory = this.resolver.resolveComponentFactory(CartItemComponent);
+
+        this.compRef = factory.create(this.injector);
+        this.compRef.instance.cartItem = this.newComp;
+
+        this.appRef.attachView(this.compRef.hostView);
+        // this.appRef.tick();
+
+        const domElem = (this.compRef.hostView as EmbeddedViewRef<any>)
+            .rootNodes[0] as HTMLElement;
+        const cart = document.getElementsByClassName('shoppingCart')[0];
+        FoodOrderComponent.insertAfter(cart.firstChild, domElem);
 
     }
 

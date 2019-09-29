@@ -299,7 +299,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 break;
             case 'sm':
                 this.createPlate({plateSize: 'small', plateNum, platePrice: 800});
-                console.log('not plated ' + this.dinnerItemsNotInPlate.length);
+                // console.log('not plated ' + this.dinnerItemsNotInPlate.length);
                 break;
             case 'md':
                 this.crntFoodPlate = this.elem.getElementsByTagName('amm-plate-item')[amtPlates];
