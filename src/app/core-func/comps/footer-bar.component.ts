@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, AfterViewInit, HostListener, OnDestroy} from '@angular/core';
+import {Component, ElementRef, OnInit, AfterViewInit, HostListener, OnDestroy, ViewChild, ViewContainerRef} from '@angular/core';
 import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material';
 import { Portal, ComponentPortal } from '@angular/cdk/portal';
 import { ProfileComponent } from './profile.component';
@@ -21,7 +21,7 @@ import {Subject} from 'rxjs';
         <div>
             <ng-template [cdkPortalOutlet]="portal"></ng-template>
             <!--<amm-profile class="profileComp w-100" [@cartAnimations]="prflState"></amm-profile>-->
-            <amm-food-cart class="shoppingCart w-100" [@cartAnimations]="crtState" [amtItems4Plate]="amt4Plate" [amtItemsNot4Plate]="amtNot4Plate"></amm-food-cart>
+            <amm-food-cart #shoppingCart class="shoppingCart w-100" [@cartAnimations]="crtState" [amtItems4Plate]="amt4Plate" [amtItemsNot4Plate]="amtNot4Plate"></amm-food-cart>
         </div>
 
       `,
@@ -72,6 +72,7 @@ import {Subject} from 'rxjs';
     animations: [ lift ]
 })
 export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
+    @ViewChild('shoppingCart', {read: ViewContainerRef, static: false}) shoppingCart: ViewContainerRef;
     private destroy$ = new Subject<any>();
     amt4Plate: number; amtNot4Plate: number;
     ftrState = 'hide';

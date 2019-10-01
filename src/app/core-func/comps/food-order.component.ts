@@ -7,18 +7,19 @@ import {
     ComponentRef,
     ElementRef,
     EmbeddedViewRef,
-    EventEmitter,
+    EventEmitter, Host,
     Injector,
     Input,
     OnDestroy,
     OnInit,
     Output,
-    Renderer2
+    Renderer2, ViewContainerRef
 } from '@angular/core';
 import {CartService} from '../srvcs/cart.service';
 import {CartItemData} from '../../amm.enum';
 import {Subject} from 'rxjs';
 import {CartItemComponent} from './cart-item.component';
+import {FooterBarComponent} from './footer-bar.component';
 
 declare var $: any;
 
@@ -58,7 +59,9 @@ declare var $: any;
         .notify { color:orangered; font-size: 75%; font-variant: small-caps }
         .colorWarn { background: #8fd450}
     `],
-    providers: [],
+    providers: [
+        FooterBarComponent
+    ],
     changeDetection: ChangeDetectionStrategy.Default
 })
 export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -98,6 +101,8 @@ export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     deleteItemBtn: any;
 
+    dShopCart: any;
+
 
 
     // static methods //
@@ -129,7 +134,6 @@ export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isInCart = false;
         this.randNum = Math.floor(Math.random() * 90 + 10);
         this.elem = this.elemRef.nativeElement;
-
     }
 
     //
@@ -238,17 +242,22 @@ export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         );
         const factory = this.resolver.resolveComponentFactory(CartItemComponent);
+        // this.compRef = this.dShopCart.createComponent(factory);
+        // this.compRef.instance.cartItem = this.newComp;
 
         this.compRef = factory.create(this.injector);
         this.compRef.instance.cartItem = this.newComp;
 
+
         this.appRef.attachView(this.compRef.hostView);
         // this.appRef.tick();
 
+
         const domElem = (this.compRef.hostView as EmbeddedViewRef<any>)
             .rootNodes[0] as HTMLElement;
-        const cart = document.getElementsByClassName('shoppingCart')[0];
-        FoodOrderComponent.insertAfter(cart.firstChild, domElem);
+        const cart = document.querySelector('.shoppingCart');
+        cart.insertBefore( domElem, cart.lastChild );
+        // FoodOrderComponent.insertAfter(cart.firstChild, domElem);
 
     }
 

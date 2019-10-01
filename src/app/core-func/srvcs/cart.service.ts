@@ -41,6 +41,7 @@ export class CartService {
         // console.log('dataname: ', data.cnm);
         if ( data.cnm === 'DINNER') { this.setCartItems4PlateCount(); } else { this.setCartItemsNot4PlateCount(); }
         // console.log('amt from srvc: ', this.getCartItems4PlateCount$);
+        // console.log('amtInPLT: ', document.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])') );
     }
 
     setCartItems4PlateCount() {

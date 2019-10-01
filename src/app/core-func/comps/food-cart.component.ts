@@ -22,8 +22,9 @@ import {PlateItemComponent} from './plate-item.component';
 @Component({
     selector: 'amm-food-cart',
     template: `
-        <div class="cartItemHldr">{{amtItems4Plate}}</div>
+        <div class="cartItemHldr">Shopping Cart</div>
         <ng-template #cart></ng-template>
+        <div class="checkout">total</div>
       `,
     styles: [`
         /*:host {
@@ -66,21 +67,22 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     forPlate: any; notForPlate: any; userOrderID: any;
 
     nonDinnerItemsInCart: any; dinnerItemsInCart: any; desertItemsInCart: any;
-    drinkItemsInCart: any; breakfastItemsInCart: any; dinnerItemsNotInPlate: any;
+    drinkItemsInCart: any; breakfastItemsInCart: any;
     foodPlate: any; foodPlateItemPrice: any; crntFoodPlate: any; lineItems4Bulk: any;
     orderTotal = 0.00; cartTotal: number; amtSubmitted4Payment: number;
 
-    pretotal: any = []; plateData: any = [];
+    pretotal: any = []; plateData: any = []; dinnerItemsNotInPlate: Array<any> = [];
     plateOrder: any = []; prodsInCart: any = [];
 
     orderSent: boolean; isOrderIdVisible = false; isPlateVisible = false;
     plateSize: string; deleteBtnListener: () => void;
 
+    something: any = [];
+
     private compRef: ComponentRef<PlateItemComponent>;
-    public static insertAfter(referenceNode, newNode) {
+    private static insertAfter(referenceNode, newNode) {
         referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     }
-
 
     constructor(
         private cs: CartService,
@@ -167,9 +169,8 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     createPlate(data): void {
-        if ( this.compRef ) { this.compRef.destroy(); }
-
         console.log('this is plate number ' + data.plateNum);
+        // == option one == //
         /*const fragment = document.createDocumentFragment();
         const myPlate = document.createElement('div');
         const plateHdr = document.createElement('div');
@@ -222,18 +223,24 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         }
         */
 
+        // == option two == //
         const factory = this.resolver.resolveComponentFactory(PlateItemComponent);
-        this.compRef = factory.create(this.injector);
+        this.compRef = this.cart.createComponent(factory);
         this.compRef.instance.plateItem = data;
 
-        this.appRef.attachView(this.compRef.hostView);
 
+        // == option three == //
+        /*const factory = this.resolver.resolveComponentFactory(PlateItemComponent);
+        this.compRef = factory.create(this.injector);
+        this.compRef.instance.plateItem = data;
+        this.appRef.attachView(this.compRef.hostView);
         const domElement = (this.compRef.hostView as EmbeddedViewRef<any>)
             .rootNodes[0] as HTMLElement;
-        const cart = document.getElementsByClassName('shoppingCart')[0];
-        FoodCartComponent.insertAfter(cart.firstChild, domElement);
-        // this.compRef.instance.plateItem
-        // return 1;
+
+        const cart = document.querySelector('.shoppingCart');
+        FoodCartComponent.insertAfter(cart.firstChild, domElement);*/
+
+        // == add items next == //
         this.injectItemsN2Plate(data);
 
     }
@@ -250,7 +257,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         }*/
 
         this.crntFoodPlate = this.elem.getElementsByTagName('amm-plate-item')[data.plateNum - 1];
-        this.dinnerItemsNotInPlate = this.elem.getElementsByTagName('amm-cart-item');
+        // this.dinnerItemsNotInPlate = this.elem.getElementsByTagName('amm-cart-item');
 
         console.log('fp: ', this.crntFoodPlate );
         console.log('not 1st plated ' + this.dinnerItemsNotInPlate.length);
@@ -271,8 +278,8 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         //     // this.crntFoodPlate.appendChild(x);
         // });
 
-        const platedItemsSM = this.crntFoodPlate.querySelectorAll('[aria-label="food-item"]');
-        platedItemsSM.forEach( (x) => {
+        const platedItemsSM = this.crntFoodPlate.querySelectorAll('amm-cart-item');
+        (platedItemsSM).forEach( (x) => {
             x.setAttribute('data-name', 'plated');
             if (x.children[1].classList.contains('price')) {
                 x.children[1].classList.remove('price');
@@ -435,8 +442,9 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         this.breakfastItemsInCart = this.elem.querySelectorAll('[title="BREAKFAST"]');
         // this.nonDinnerItemsInCart = this.elem.querySelectorAll('div[aria-label="food-item"]');
 
-        this.dinnerItemsNotInPlate = this.elem.querySelectorAll('[title="DINNER"]:not([data-name="plated"])');
         this.prodsInCart = this.elem.querySelectorAll('button.close');
+        this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
+
         // this.amtFoodItems = this.nonDinnerItemsInCart.length;
     }
 
@@ -444,10 +452,13 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         console.log( 'hit: ', this.amtItems4Plate);
         this.forPlate = this.amtItems4Plate;
         this.notForPlate = this.amtItemsNot4Plate;
+        this.prodsInCart = this.elem.querySelectorAll('button.close');
+        this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
 
 
         console.log(
             ' dinner items ', this.forPlate, ' \n',
+            ' dinner itemNIP ', this.dinnerItemsNotInPlate.length, ' \n',
             ' other items ', this.notForPlate, ' \n',
             ' total itams in cart ', this.prodsInCart.length
         );
@@ -461,9 +472,9 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                   break;
       */
             case (this.forPlate === 3):
-                // if (this.dinnerItemsNotInPlate.length === 3) {
-                this.changePlateSize('sm');
-                // }
+                if (this.dinnerItemsNotInPlate.length === 3) {
+                    this.changePlateSize('sm');
+                }
                 break;
 
             case (this.forPlate === 5):
