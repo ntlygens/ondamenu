@@ -21,17 +21,21 @@ export class CartService {
     readonly newCartItemData$: any;
     readonly getCartItems4PlateCount$: any;
     readonly getCartItemsNot4PlateCount$: any;
-    itemCount$ = 0; nonItemCount$ = 0;
+    readonly getCartItemsNotNPlateCount$: any;
+    itemCount$: number; nonItemCount$: number; nonPltdItemCount$: number;
 
     private setCartItem$: Subject<CartItemData> = new BehaviorSubject<CartItemData>(null);
     private setCartItems4PlateCount$: Subject<any> = new BehaviorSubject<any>(0);
     private setCartItemsNot4PlateCount$: Subject<any> = new BehaviorSubject<any>(0);
+    private setCartItemsNotNPlateCount$: Subject<any> = new BehaviorSubject<any>(0);
     private setCartViewContainerRef$: Subject<TemplateRef<any>> = new BehaviorSubject<TemplateRef<any>>(null);
+
 
     constructor() {
         this.newCartItemData$ = this.setCartItem$.asObservable();
         this.getCartItems4PlateCount$ = this.setCartItems4PlateCount$.asObservable();
         this.getCartItemsNot4PlateCount$ = this.setCartItemsNot4PlateCount$.asObservable();
+        this.getCartItemsNotNPlateCount$ = this.setCartItemsNotNPlateCount$.asObservable();
         this.cartViewContainer$ = this.setCartViewContainerRef$.asObservable();
     }
 
@@ -47,6 +51,9 @@ export class CartService {
     setCartItems4PlateCount() {
         this.getCartItems4PlateCount$.subscribe(res => { this.itemCount$ = res; });
         this.setCartItems4PlateCount$.next(this.itemCount$ + 1);
+
+        const data = document.getElementsByClassName('shoppingCart')[0].querySelectorAll('.dinner-item');
+        console.log('amt: ', data.length);
         // return this.itemCount$;
     }
 
@@ -54,6 +61,22 @@ export class CartService {
         this.getCartItemsNot4PlateCount$.subscribe(res => { this.nonItemCount$ = res; });
         this.setCartItemsNot4PlateCount$.next(this.nonItemCount$ + 1);
         // return this.itemCount$;
+    }
+
+    setCartItemsNotNPlateCount() {
+        this.getCartItemsNotNPlateCount$.subscribe(res => { this.nonPltdItemCount$ = res; });
+        this.setCartItemsNotNPlateCount$.next(this.nonPltdItemCount$ + 1);
+        // return this.itemCount$;
+    }
+
+    setElemAttributes( elem, attrs ): void {
+        for (const key in attrs) {
+            if (!elem.getAttribute(key)) {
+                elem.setAttribute(key, attrs[key]);
+            } else if ( elem.getAttribute(key) === 'class') {
+                elem.addClassName([key]);
+            }
+        }
     }
 
     // ==== WORKING RIGHT ==== //

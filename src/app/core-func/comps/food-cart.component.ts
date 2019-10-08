@@ -12,12 +12,15 @@ import {
     Renderer2,
     ViewChild,
     ViewContainerRef,
-    ApplicationRef, Injector, EmbeddedViewRef
+    ApplicationRef, Injector, EmbeddedViewRef, ChangeDetectorRef
 } from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {CartService} from '../srvcs/cart.service';
 import { PlateItemData } from '../../amm.enum';
 import {PlateItemComponent} from './plate-item.component';
+import {HttpParams} from '@angular/common/http';
+import {of} from 'rxjs';
+import {Arguments} from '@angular/cli/models/interface';
 
 @Component({
     selector: 'amm-food-cart',
@@ -47,24 +50,25 @@ import {PlateItemComponent} from './plate-item.component';
             }
         }*/
     `],
-    // changeDetection: ChangeDetectionStrategy.Default
+    changeDetection: ChangeDetectionStrategy.Default
 })
 
 export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     // @ViewChild('cartItem', {read: ViewContainerRef, static: true}) cartItem: ViewContainerRef;
     @ViewChild('cart', {read: ViewContainerRef, static: false}) cart: ViewContainerRef;
 
-    @Input() amtItems4Plate: any;
-    @Input() amtItemsNot4Plate: any;
-    // @Input() amtItemsNot4Plate: any;
+    @Input() amtItems4Plate: number;
+    @Input() amtItemsNCart: number;
+    @Input() amtItemsNotNPlate: number;
 
     @Output() cOrderID: EventEmitter<string> = new EventEmitter<string>();
     @Output() cOrderAmt: EventEmitter<number> = new EventEmitter<number>();
     @Output() closeOnSubmit = new EventEmitter();
+    @Output() pushEvent = new EventEmitter();
     @Output() rmvItemCounter: EventEmitter<string> = new EventEmitter<string>();
 
     elem: any; mID: any; fID: any; fAmt: any; item: any; itemTitle: any;
-    forPlate: any; notForPlate: any; userOrderID: any;
+    forPlate: any; notForPlate: any; notNPlate: any; userOrderID: any;
 
     nonDinnerItemsInCart: any; dinnerItemsInCart: any; desertItemsInCart: any;
     drinkItemsInCart: any; breakfastItemsInCart: any;
@@ -83,6 +87,37 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     private static insertAfter(referenceNode, newNode) {
         referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     }
+    private static getItemsInCart(elem: HTMLElement, ...args): Array<any> {
+        const splitArgs = (args.toString()).split(',');
+        const argArr: Array<any> = [];
+        for ( const arg of splitArgs) {
+            switch ( arg ) {
+                case 'NONDINNER':
+                    const nonDnrItems: any = elem.querySelectorAll('amm-cart-item:not([title^="DINNER"])');
+                    argArr.push({
+                        [arg]: nonDnrItems.length
+                    });
+                    break;
+                case 'ALL':
+                    const allCartItems: any = elem.querySelectorAll('amm-cart-item');
+                    argArr.push({
+                        [arg]: allCartItems.length
+                    });
+                    break;
+                default:
+                    const cartItem: any = elem.querySelectorAll(`[title^="${arg}"]`);
+                    argArr.push({
+                        [arg]: cartItem.length
+                    });
+                    break;
+            }
+
+        }
+
+        console.log('argArr: ', Object.values(argArr[0]));
+        return Object.values(argArr[0]);
+
+    }
 
     constructor(
         private cs: CartService,
@@ -91,6 +126,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         private dialog: MatDialog,
         private resolver: ComponentFactoryResolver,
         private appRef: ApplicationRef,
+        private cdrRef: ChangeDetectorRef,
         private injector: Injector
     ) {
         const params = (new URL(document.location.href)).searchParams;
@@ -103,29 +139,78 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         this.elem = this.elemRef.nativeElement;
         this.orderSent = false;
 
-        this.prodsInCart = this.elem.querySelectorAll('button.close');
-        (this.prodsInCart).forEach( (prod) => {
-            // if (this.deleteBtn_Listener) { this.deleteBtn_Listener(); prod.setAttribute('data-listen', false); }
-            if (prod.deleteBtn_Listener) { prod.deleteBtn_Listener(); }
-            // console.log('prodincart: ', this.prodsInCart.length);
-            if (prod.getAttribute('data-listen') !== true) {
-                prod.setAttribute('data-listen', true);
-                prod.deleteBtn_Listener = this.renderer.listen(prod, 'click', () => {
-                    this.removeItem(event);
-
-                });
-                // this.removeItem(event);
-            }
-            // console.log('u clicked on ', prod.title);
-
-
-        });
+        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('.dinner-item');
+        // this.prodsInCart = this.elem.querySelectorAll('button.close');
+        // (this.prodsInCart).forEach( (prod) => {
+        //     // if (this.deleteBtn_Listener) { this.deleteBtn_Listener(); prod.setAttribute('data-listen', false); }
+        //     if (prod.deleteBtn_Listener) { prod.deleteBtn_Listener(); }
+        //     // console.log('prodincart: ', this.prodsInCart.length);
+        //     if (prod.getAttribute('data-listen') !== true) {
+        //         prod.setAttribute('data-listen', true);
+        //         prod.deleteBtn_Listener = this.renderer.listen(prod, 'click', () => {
+        //             this.removeItem(event);
+        //
+        //         });
+        //         // this.removeItem(event);
+        //     }
+        //     // console.log('u clicked on ', prod.title);
+        //
+        //
+        // });
 
         // this.elem.setAttribute('[@cartAnimations]', 'state');
     }
 
 
     /// ======== APP FUNCTIONS ======== ///
+
+    getAllCartItems(): Array<any> {
+        return FoodCartComponent.getItemsInCart(this.elem, [
+            'ALL'
+        ]);
+    }
+
+    getBreakfastItems(): Array<any> {
+        return FoodCartComponent.getItemsInCart(this.elem, [
+            'BREAKFAST'
+        ]);
+    }
+
+    getLunchItems(): Array<any> {
+        return FoodCartComponent.getItemsInCart(this.elem, [
+            'LUNCH'
+        ]);
+    }
+
+    getDinnerItems(): Array<any> {
+        return FoodCartComponent.getItemsInCart(this.elem, [
+            'DINNER'
+        ]);
+    }
+
+
+
+    getNonDinnerItems(): Array<any> {
+        return FoodCartComponent.getItemsInCart(this.elem, [
+            'NONDINNER'
+        ]);
+    }
+
+    getDesertItems(): Array<any> {
+        return FoodCartComponent.getItemsInCart(this.elem, [
+            'DESERT'
+        ]);
+    }
+
+    getDrinkItems(): Array<any> {
+        return FoodCartComponent.getItemsInCart(this.elem, [
+            'DRINK'
+        ]);
+    }
+
+
+
+
     getOrderTotal() {
         // console.log('some');
         this.foodPlateItemPrice = this.elem.querySelector('.price');
@@ -432,36 +517,50 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
     ngOnInit() {
         // this.cs.setCartContainerRef(this.cart);
-    }
 
-    ngAfterViewInit(): void {
-        // this.allItemsInCart = this.elem.querySelectorAll('div[aria-label="food-item"]');
-        this.dinnerItemsInCart = this.elem.querySelectorAll('[title="DINNER"]');
-        this.desertItemsInCart = this.elem.querySelectorAll('[title="DESERT"]');
-        this.drinkItemsInCart = this.elem.querySelectorAll('[title="DRINKS"]');
-        this.breakfastItemsInCart = this.elem.querySelectorAll('[title="BREAKFAST"]');
-        // this.nonDinnerItemsInCart = this.elem.querySelectorAll('div[aria-label="food-item"]');
-
-        this.prodsInCart = this.elem.querySelectorAll('button.close');
-        this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
-
-        // this.amtFoodItems = this.nonDinnerItemsInCart.length;
     }
 
     ngOnChanges(changes): void {
         console.log( 'hit: ', this.amtItems4Plate);
         this.forPlate = this.amtItems4Plate;
-        this.notForPlate = this.amtItemsNot4Plate;
+        this.notForPlate = this.amtItemsNCart;
+
         this.prodsInCart = this.elem.querySelectorAll('button.close');
         this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
+
+        for ( const elem of this.prodsInCart ) {
+            const prod = elem.parentElement.title;
+            // if (this.deleteBtnListener) { this.deleteBtnListener(); elem.setAttribute('data-listen', false); }
+            if (elem.deleteBtn_Listener) { elem.deleteBtn_Listener(); }
+            // console.log('prodincart: ', this.prodsInCart.length);
+            if (elem.getAttribute('data-listen') !== true) {
+                elem.setAttribute('data-listen', true);
+                elem.deleteBtn_Listener = this.renderer.listen(elem, 'click', () => {
+                    this.removeItem(event);
+
+                });
+                // this.removeItem(event);
+            }
+            //     // console.log('u clicked on ', prod.title);
+            //
+            //
+            // });
+
+            // this.dinnerItemsNotInPlate.push(prod);
+            console.log('prod: ', prod);
+            // console.log( 'items: ', this.getCartItems() );
+        }
+        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
 
 
         console.log(
             ' dinner items ', this.forPlate, ' \n',
-            ' dinner itemNIP ', this.dinnerItemsNotInPlate.length, ' \n',
+            ' dinner items NIP ', this.dinnerItemsNotInPlate.length, ' \n',
             ' other items ', this.notForPlate, ' \n',
             ' total itams in cart ', this.prodsInCart.length
         );
+
+        // this.pushEvent.emit(null);
 
         switch (true) {
             /*case (this.notForPlate > 0):
@@ -530,6 +629,18 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 break;*/
         }
         // console.log('fd change: ', this.cart.element.nativeElement.children.count);
+    }
+
+    ngAfterViewInit(): void {
+        // this.allItemsInCart = this.elem.querySelectorAll('div[aria-label="food-item"]');
+
+
+        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('.dinner-item');
+        // this.prodsInCart = this.elem.querySelectorAll('button.close');
+        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
+        // this.dinnerItemsNotInPlate = this.elem.getElementsByClassName('dinner-item');
+        // this.amtFoodItems = this.nonDinnerItemsInCart.length;
+        // this.getCartItems();
     }
 
     ngOnDestroy(): void {

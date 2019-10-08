@@ -1,4 +1,14 @@
-import {Component, ElementRef, OnInit, AfterViewInit, HostListener, OnDestroy, ViewChild, ViewContainerRef} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    OnInit,
+    AfterViewInit,
+    HostListener,
+    OnDestroy,
+    ViewChild,
+    ViewContainerRef,
+    ComponentRef
+} from '@angular/core';
 import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material';
 import { Portal, ComponentPortal } from '@angular/cdk/portal';
 import { ProfileComponent } from './profile.component';
@@ -21,7 +31,8 @@ import {Subject} from 'rxjs';
         <div>
             <ng-template [cdkPortalOutlet]="portal"></ng-template>
             <!--<amm-profile class="profileComp w-100" [@cartAnimations]="prflState"></amm-profile>-->
-            <amm-food-cart #shoppingCart class="shoppingCart w-100" [@cartAnimations]="crtState" [amtItems4Plate]="amt4Plate" [amtItemsNot4Plate]="amtNot4Plate"></amm-food-cart>
+            <amm-food-cart #shoppingCart class="shoppingCart w-100" [@cartAnimations]="crtState" [amtItems4Plate]="amt4Plate" [amtItemsNCart]="cartUI.getCart()" [amtItemsNotNPlate]=""></amm-food-cart>
+            <amm-food-cart-ui #cartUI [dinnerSelection]="amt4Plate" [cartSelection]="shoppingCart.getAllCartItems()" [dinnerNotSelected]=""></amm-food-cart-ui>
         </div>
 
       `,
@@ -72,9 +83,9 @@ import {Subject} from 'rxjs';
     animations: [ lift ]
 })
 export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
-    @ViewChild('shoppingCart', {read: ViewContainerRef, static: false}) shoppingCart: ViewContainerRef;
+    @ViewChild('shoppingCart', {static: false}) shoppingCart;
     private destroy$ = new Subject<any>();
-    amt4Plate: number; amtNot4Plate: number;
+    amt4Plate: number; amtNot4Plate: number; amtNotNPlate: number;
     ftrState = 'hide';
     crtState = 'close';
     prflState = 'close';
@@ -102,6 +113,11 @@ export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.cs.getCartItemsNot4PlateCount$.pipe(takeUntil(this.destroy$)).subscribe(
             (res) => {
                 this.amtNot4Plate = res;
+            }
+        );
+        this.cs.getCartItemsNotNPlateCount$.pipe(takeUntil(this.destroy$)).subscribe(
+            (res) => {
+                this.amtNotNPlate = res;
             }
         );
 
@@ -164,13 +180,14 @@ export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     /* // ==================== // */
     ngOnInit() {
-        this.profileComponentPortal = new ComponentPortal(ProfileComponent);
-        this.cartComponentPortal = new ComponentPortal(FoodCartComponent);
+        // this.profileComponentPortal = new ComponentPortal(ProfileComponent);
+        // this.cartComponentPortal = new ComponentPortal(FoodCartComponent);
     }
 
     ngAfterViewInit(): void {
         // this.portal = this.cartSelectedPortal;
         // this.cartSelectedPortal = this.cartComponentPortal;
+        this.amt4Plate = this.shoppingCart.getDinnerItems();
     }
 
     ngOnDestroy(): void {

@@ -256,6 +256,7 @@ export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
         const domElem = (this.compRef.hostView as EmbeddedViewRef<any>)
             .rootNodes[0] as HTMLElement;
         const cart = document.querySelector('.shoppingCart');
+
         cart.insertBefore( domElem, cart.lastChild );
         // FoodOrderComponent.insertAfter(cart.firstChild, domElem);
 

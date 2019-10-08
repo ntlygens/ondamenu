@@ -2,6 +2,7 @@ import {Component, OnInit, Output, EventEmitter, AfterViewInit, ElementRef, OnDe
 import {takeUntil} from 'rxjs/operators';
 import {CartItemData} from '../../amm.enum';
 import {Subject} from 'rxjs';
+import { CartService } from '../srvcs/cart.service';
 
 @Component({
     selector: 'amm-cart-item',
@@ -35,28 +36,21 @@ export class CartItemComponent implements OnInit, OnDestroy {
 
 
     constructor(
-        private elemRef: ElementRef
+        private elemRef: ElementRef,
+        private cs: CartService
     ) {
         this.elem = this.elemRef.nativeElement;
         // console.log('cartitem: ', this.cartItem.pid);
     }
 
-    setElemAttributes( elem, attrs ): void {
-        for (const key in attrs) {
-            if (!elem.getAttribute(key)) {
-                elem.setAttribute(key, attrs[key]);
-            }
-        }
-    }
-
     ngOnInit() {
-
-
-        this.setElemAttributes(this.elem, {
+        this.cs.setElemAttributes(this.elem, {
             title: this.cartItem.cnm,
             role: 'group',
-            'aria-label': 'food-item'
+            'aria-label': 'food-item',
+            class: 'd-flex ' + this.cartItem.cnm.toLowerCase() + '-item'
         });
+
     }
 
     ngOnDestroy(): void {
