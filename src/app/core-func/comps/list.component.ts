@@ -1,4 +1,4 @@
-import {Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MerchantInfoData } from '../../amm.enum';
 import { LoginService } from '../srvcs/login.service';
@@ -58,12 +58,14 @@ export class ListComponent implements OnInit {
         private ls: LoginService,
         private ss: StorageService,
         private router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private elemRef: ElementRef,
     ) {
-        this.getMerchantsList();
+        this.elemRef.nativeElement.setAttribute('id',  'merchantList');
     }
 
     ngOnInit() {
+        this.getMerchantsList();
     }
 
     getMerchantsList() {

@@ -60,6 +60,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     @Input() amtItems4Plate: number;
     @Input() amtItemsNCart: number;
     @Input() amtItemsNotNPlate: number;
+    @Input() amtItemsNot4Plate: number;
 
     @Output() cOrderID: EventEmitter<string> = new EventEmitter<string>();
     @Output() cOrderAmt: EventEmitter<number> = new EventEmitter<number>();
@@ -68,7 +69,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     @Output() rmvItemCounter: EventEmitter<string> = new EventEmitter<string>();
 
     elem: any; mID: any; fID: any; fAmt: any; item: any; itemTitle: any;
-    forPlate: any; notForPlate: any; notNPlate: any; userOrderID: any;
+    forPlate: number; notForPlate: number; notNPlate: number; inCart: number; userOrderID: any;
 
     nonDinnerItemsInCart: any; dinnerItemsInCart: any; desertItemsInCart: any;
     drinkItemsInCart: any; breakfastItemsInCart: any;
@@ -87,35 +88,47 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     private static insertAfter(referenceNode, newNode) {
         referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     }
-    private static getItemsInCart(elem: HTMLElement, ...args): Array<any> {
-        const splitArgs = (args.toString()).split(',');
-        const argArr: Array<any> = [];
-        for ( const arg of splitArgs) {
-            switch ( arg ) {
-                case 'NONDINNER':
-                    const nonDnrItems: any = elem.querySelectorAll('amm-cart-item:not([title^="DINNER"])');
-                    argArr.push({
-                        [arg]: nonDnrItems.length
-                    });
-                    break;
-                case 'ALL':
-                    const allCartItems: any = elem.querySelectorAll('amm-cart-item');
-                    argArr.push({
-                        [arg]: allCartItems.length
-                    });
-                    break;
-                default:
-                    const cartItem: any = elem.querySelectorAll(`[title^="${arg}"]`);
-                    argArr.push({
-                        [arg]: cartItem.length
-                    });
-                    break;
-            }
+    private static getItemsInCart(elem: HTMLElement, arg: string): number {
+        // const splitArgs = (arg.toString()).split(',');
+        // const argArr: Array<any> = [];
+        // for ( const arg of splitArgs) {
+        let argArr: number;
+        switch ( arg ) {
 
+            case 'NONDINNER':
+                const nonDnrItems: any = elem.querySelectorAll('amm-cart-item:not([title^="DINNER"])');
+                argArr = nonDnrItems.length;
+                /*argArr.push({
+                    [arg]: nonDnrItems.length
+                });*/
+                break;
+            case 'NOTPLATED':
+                const notPltdItems: any = elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
+                argArr = notPltdItems.length;
+                /*argArr.push({
+                    [arg]: notPltdItems.length
+                });*/
+                break;
+            case 'ALL':
+                const allCartItems: any = elem.querySelectorAll('amm-cart-item');
+                argArr = allCartItems.length;
+                /*argArr.push({
+                    [arg]: allCartItems.length
+                });*/
+                break;
+            default:
+                const cartItem: any = elem.querySelectorAll(`[title^="${arg}"]`);
+                argArr = cartItem.length;
+                /*argArr.push({
+                    [arg]: cartItem.length
+                });*/
+                break;
         }
 
-        console.log('argArr: ', Object.values(argArr[0]));
-        return Object.values(argArr[0]);
+        // }
+
+        console.log('argArr: ', argArr);
+        return argArr;
 
     }
 
@@ -164,48 +177,36 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
     /// ======== APP FUNCTIONS ======== ///
 
-    getAllCartItems(): Array<any> {
-        return FoodCartComponent.getItemsInCart(this.elem, [
-            'ALL'
-        ]);
+    getAllCartItems(): number {
+        return FoodCartComponent.getItemsInCart(this.elem, 'ALL');
     }
 
-    getBreakfastItems(): Array<any> {
-        return FoodCartComponent.getItemsInCart(this.elem, [
-            'BREAKFAST'
-        ]);
+    getBreakfastItems(): number {
+        return FoodCartComponent.getItemsInCart(this.elem, 'BREAKFAST');
     }
 
-    getLunchItems(): Array<any> {
-        return FoodCartComponent.getItemsInCart(this.elem, [
-            'LUNCH'
-        ]);
+    getLunchItems(): number {
+        return FoodCartComponent.getItemsInCart(this.elem, 'LUNCH');
     }
 
-    getDinnerItems(): Array<any> {
-        return FoodCartComponent.getItemsInCart(this.elem, [
-            'DINNER'
-        ]);
+    getDinnerItems(): number {
+        return FoodCartComponent.getItemsInCart(this.elem, 'DINNER');
     }
 
-
-
-    getNonDinnerItems(): Array<any> {
-        return FoodCartComponent.getItemsInCart(this.elem, [
-            'NONDINNER'
-        ]);
+    getNonDinnerItems(): number {
+        return FoodCartComponent.getItemsInCart(this.elem, 'NONDINNER');
     }
 
-    getDesertItems(): Array<any> {
-        return FoodCartComponent.getItemsInCart(this.elem, [
-            'DESERT'
-        ]);
+    getNotPlatedItems(): number {
+        return FoodCartComponent.getItemsInCart(this.elem, 'NOTPLATED');
     }
 
-    getDrinkItems(): Array<any> {
-        return FoodCartComponent.getItemsInCart(this.elem, [
-            'DRINK'
-        ]);
+    getDesertItems(): number {
+        return FoodCartComponent.getItemsInCart(this.elem, 'DESERT');
+    }
+
+    getDrinkItems(): number {
+        return FoodCartComponent.getItemsInCart(this.elem, 'DRINK');
     }
 
 
@@ -512,6 +513,49 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
 
+    /*getItemsInCart(elem: HTMLElement, arg: string): number {
+        // const splitArgs = (arg.toString()).split(',');
+        // const argArr: Array<any> = [];
+        // for ( const arg of splitArgs) {
+        let argArr: number;
+        switch ( arg ) {
+
+            case 'NONDINNER':
+                const nonDnrItems: any = elem.querySelectorAll('amm-cart-item:not([title^="DINNER"])');
+                argArr = nonDnrItems.length;
+                /!*argArr.push({
+                    [arg]: nonDnrItems.length
+                });*!/
+                break;
+            case 'NOTPLATED':
+                const notPltdItems: any = elem.querySelectorAll('amm-cart-item:not([title^="DINNER"]:not([data-name*="plated"])');
+                argArr = notPltdItems.length;
+                /!*argArr.push({
+                    [arg]: notPltdItems.length
+                });*!/
+                break;
+            case 'ALL':
+                const allCartItems: any = elem.querySelectorAll('amm-cart-item');
+                argArr = allCartItems.length;
+                /!*argArr.push({
+                    [arg]: allCartItems.length
+                });*!/
+                break;
+            default:
+                const cartItem: any = elem.querySelectorAll(`[title^="${arg}"]`);
+                argArr = cartItem.length;
+                /!*argArr.push({
+                    [arg]: cartItem.length
+                });*!/
+                break;
+        }
+
+        // }
+
+        console.log('argArr: ', argArr);
+        return argArr;
+
+    }*/
 
     /// ======== LIFE CYCLE HOOKS ======== ///
 
@@ -523,7 +567,9 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     ngOnChanges(changes): void {
         console.log( 'hit: ', this.amtItems4Plate);
         this.forPlate = this.amtItems4Plate;
-        this.notForPlate = this.amtItemsNCart;
+        this.notForPlate = this.amtItemsNot4Plate;
+        this.notNPlate = this.amtItemsNotNPlate;
+        this.inCart = this.amtItemsNCart;
 
         this.prodsInCart = this.elem.querySelectorAll('button.close');
         this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
@@ -555,9 +601,9 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
         console.log(
             ' dinner items ', this.forPlate, ' \n',
-            ' dinner items NIP ', this.dinnerItemsNotInPlate.length, ' \n',
+            ' dinner items NIP ', this.notNPlate, ' \n',
             ' other items ', this.notForPlate, ' \n',
-            ' total itams in cart ', this.prodsInCart.length
+            ' total itams in cart ', this.inCart
         );
 
         // this.pushEvent.emit(null);

@@ -204,8 +204,8 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     minimizeUI(e) {
-        console.log('this footer btn open');
-        const cntnr = this.elem.querySelector('#mainClientCntnr');
+        console.log('this footer btn open - ', e );
+        /*const cntnr = this.elem.querySelector('#mainClientCntnr');
         const img = this.elem.querySelector('.imgStngs');
         const info = this.elem.querySelector('.iteminfo');
         const doh = this.elem.querySelector('.dohSrvcs');
@@ -217,7 +217,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         doh.setAttribute('style', 'top: 82px; right: 130px');
         rate.setAttribute('style', 'width: fit-content; padding: 0.325rem 0.45rem 0.245rem;');
         rate.previousSibling.setAttribute('style', 'display: none');
-        rate.firstElementChild.setAttribute('style', 'font-size: 1rem');
+        rate.firstElementChild.setAttribute('style', 'font-size: 1rem');*/
         /*Array.from([cntnr, img, info, doh]).forEach( (x) => {
             x.classList.add('mini');
         });*/

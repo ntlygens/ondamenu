@@ -14,7 +14,7 @@ import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/overlay';
 })
 export class AmmComponent implements OnInit, OnDestroy {
     @ViewChildren('scrolllist') scrolllist: CdkScrollable;
-    @ViewChild('footer', {static: true}) footer: ElementRef;
+    @ViewChild('footer', {static: true}) footer;
 
     private destroy$ = new Subject<any>();
     isStartPg: boolean;
@@ -31,8 +31,23 @@ export class AmmComponent implements OnInit, OnDestroy {
 
     @HostListener('window:scroll', ['$event'])
         onWindowScroll(e) {
-            const bnr = document.getElementById('miBnr');
-            const mnu = document.getElementById('clientMenu');
+            // const bnr = document.getElementById('miBnr');
+            // const mnu = document.getElementById('clientMenu');
+            const scrld = window.pageYOffset;
+            switch (true) {
+                case scrld > 20:
+                    this.footer.ftrState = 'show';
+                    break;
+                default:
+                    this.footer.ftrState = 'hide';
+                    break;
+            }
+
+            // if (true === window.pageYOffset > 20) {
+            //     this.footer.toggleFooter();
+            // } else {
+            //     this.footer.toggleFooter();
+            // }
 
             /*if (bnr) {
                 if (window.pageYOffset > 148) {
@@ -43,7 +58,6 @@ export class AmmComponent implements OnInit, OnDestroy {
                     mnu.classList.remove('sticky-btns');
                 }
             }*/
-
         }
 
     ngOnInit(): void {
@@ -65,8 +79,5 @@ export class AmmComponent implements OnInit, OnDestroy {
         return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
     }
 
-    openFtrBar() {
-        this.footer.nativeElement.openCart();
-    }
 
 }

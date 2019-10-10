@@ -1,19 +1,9 @@
-import {
-    Component,
-    ElementRef,
-    OnInit,
-    AfterViewInit,
-    HostListener,
-    OnDestroy,
-    ViewChild,
-    ViewContainerRef,
-    ComponentRef
-} from '@angular/core';
-import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material';
-import { Portal, ComponentPortal } from '@angular/cdk/portal';
-import { ProfileComponent } from './profile.component';
-import { FoodCartComponent } from './food-cart.component';
-import { lift } from '../animations/animations.component';
+import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {MatBottomSheet, MatBottomSheetConfig} from '@angular/material';
+import {ComponentPortal, Portal} from '@angular/cdk/portal';
+import {ProfileComponent} from './profile.component';
+import {FoodCartComponent} from './food-cart.component';
+import {lift} from '../animations/animations.component';
 import {CartService} from '../srvcs/cart.service';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
@@ -31,8 +21,15 @@ import {Subject} from 'rxjs';
         <div>
             <ng-template [cdkPortalOutlet]="portal"></ng-template>
             <!--<amm-profile class="profileComp w-100" [@cartAnimations]="prflState"></amm-profile>-->
-            <amm-food-cart #shoppingCart class="shoppingCart w-100" [@cartAnimations]="crtState" [amtItems4Plate]="amt4Plate" [amtItemsNCart]="cartUI.getCart()" [amtItemsNotNPlate]=""></amm-food-cart>
-            <amm-food-cart-ui #cartUI [dinnerSelection]="amt4Plate" [cartSelection]="shoppingCart.getAllCartItems()" [dinnerNotSelected]=""></amm-food-cart-ui>
+            <amm-food-cart
+                #shoppingCart class="shoppingCart w-100"
+                [@cartAnimations]="crtState"
+                [amtItems4Plate]="shoppingCart.getDinnerItems()"
+                [amtItemsNot4Plate]="shoppingCart.getNonDinnerItems()"
+                [amtItemsNCart]="shoppingCart.getAllCartItems()"
+                [amtItemsNotNPlate]="shoppingCart.getNotPlatedItems()"
+            ></amm-food-cart>
+            <amm-food-cart-ui #cartUI [dinnerSelection]="shoppingCart.getDinnerItems()" [cartSelection]="shoppingCart.getAllCartItems()" [dinnerNotSelected]=""></amm-food-cart-ui>
         </div>
 
       `,
@@ -80,12 +77,13 @@ import {Subject} from 'rxjs';
     providers: [
         MatBottomSheetConfig
     ],
-    animations: [ lift ]
+    animations: [ lift ],
+    changeDetection: ChangeDetectionStrategy.Default
 })
 export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('shoppingCart', {static: false}) shoppingCart;
     private destroy$ = new Subject<any>();
-    amt4Plate: number; amtNot4Plate: number; amtNotNPlate: number;
+    amt4Plate: number; amtNot4Plate: number; amtNCart: number; amtNotNPlate: number;
     ftrState = 'hide';
     crtState = 'close';
     prflState = 'close';
@@ -104,31 +102,14 @@ export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
         private searchCnfg: MatBottomSheetConfig<ProfileComponent>,
         private filterCnfg: MatBottomSheetConfig<ProfileComponent>,
         private cartCnfg: MatBottomSheetConfig<FoodCartComponent>,
-    ) {
-        this.cs.getCartItems4PlateCount$.pipe(takeUntil(this.destroy$)).subscribe(
-            (res) => {
-                this.amt4Plate = res;
-            }
-        );
-        this.cs.getCartItemsNot4PlateCount$.pipe(takeUntil(this.destroy$)).subscribe(
-            (res) => {
-                this.amtNot4Plate = res;
-            }
-        );
-        this.cs.getCartItemsNotNPlateCount$.pipe(takeUntil(this.destroy$)).subscribe(
-            (res) => {
-                this.amtNotNPlate = res;
-            }
-        );
+    ) {}
 
-    }
-
-    @HostListener('window:scroll', ['$event'])
+    /*@HostListener('window:scroll', ['$event'])
         onWindowScroll(e) {
             if (true === window.pageYOffset > 20) {
                 this.ftrState = 'show';
             }
-    }
+    }*/
 
     openProfile() {
         this.profileCnfg = {
@@ -175,6 +156,15 @@ export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.crtState = 'close';
         }
+
+    }
+
+    toggleFooter() {
+        if ( this.ftrState === 'hide') {
+            this.ftrState = 'show';
+        } else if ( this.ftrState === 'show' ) {
+            this.ftrState = 'hide';
+        }
     }
 
 
@@ -187,7 +177,24 @@ export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         // this.portal = this.cartSelectedPortal;
         // this.cartSelectedPortal = this.cartComponentPortal;
+        /*this.cs.getCartItems4PlateCount$.pipe(takeUntil(this.destroy$)).subscribe(
+            (res) => {
+                this.amt4Plate = res;
+            }
+        );
+        this.cs.getCartItemsNot4PlateCount$.pipe(takeUntil(this.destroy$)).subscribe(
+            (res) => {
+                this.amtNot4Plate = res;
+            }
+        );
+        this.cs.getCartItemsNotNPlateCount$.pipe(takeUntil(this.destroy$)).subscribe(
+            (res) => {
+                this.amtNotNPlate = res;
+            }
+        );
+        */
         this.amt4Plate = this.shoppingCart.getDinnerItems();
+        this.amtNCart = this.shoppingCart.getAllCartItems();
     }
 
     ngOnDestroy(): void {

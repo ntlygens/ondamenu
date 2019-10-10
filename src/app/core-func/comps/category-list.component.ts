@@ -118,7 +118,7 @@ export class CategoryListComponent implements OnInit, AfterViewInit {
             filter(event => this.virtualScroll.measureScrollOffset('top') > 150)
             // filter(event => this.virtualScroll.getRenderedRange().end === this.virtualScroll.getDataLength())
         ).subscribe(event => {
-            this.emitFtrBarOpen.emit(event);
+            this.emitFtrBarOpen.emit('scrolled');
             // console.log('data: ', this.virtualScroll.measureScrollOffset('top'));
             // this.searchPageNumber++;
             // this.nextSearchPage(this.searchPageNumber);
