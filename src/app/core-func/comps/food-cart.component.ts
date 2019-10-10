@@ -678,15 +678,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     ngAfterViewInit(): void {
-        // this.allItemsInCart = this.elem.querySelectorAll('div[aria-label="food-item"]');
 
-
-        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('.dinner-item');
-        // this.prodsInCart = this.elem.querySelectorAll('button.close');
-        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
-        // this.dinnerItemsNotInPlate = this.elem.getElementsByClassName('dinner-item');
-        // this.amtFoodItems = this.nonDinnerItemsInCart.length;
-        // this.getCartItems();
     }
 
     ngOnDestroy(): void {

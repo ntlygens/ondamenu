@@ -79,5 +79,8 @@ export class AmmComponent implements OnInit, OnDestroy {
         return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
     }
 
+    setInst(e) {
+        console.log('emitted: ', e);
+    }
 
 }

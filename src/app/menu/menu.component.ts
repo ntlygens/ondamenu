@@ -246,6 +246,8 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         // console.log('isAllBtnActive: ', this.isAllBtnActive);
         // console.log('AllBtn: ', this.allItemsBtn.classList);
         // this.fullMenuBtn.isActive = true;
+        // this.dFtr.emit('show');
+        // this.compRef.instance.dFtr = 'setInst($event)';
     }
 
     ngOnDestroy(): void {
