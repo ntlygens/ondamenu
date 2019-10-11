@@ -9,7 +9,8 @@ import {
     ViewContainerRef,
     ComponentFactory, ComponentRef
 } from '@angular/core';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import { CartItemData } from '../../amm.enum';
 import { CartItemComponent } from '../comps/cart-item.component';
 
@@ -30,8 +31,11 @@ export class CartService {
     private setCartItemsNotNPlateCount$: Subject<any> = new BehaviorSubject<any>(0);
     private setCartViewContainerRef$: Subject<TemplateRef<any>> = new BehaviorSubject<TemplateRef<any>>(null);
 
+    private dQueryURL = 'https://smashradio1fm.com/php/';
 
-    constructor() {
+    constructor(
+        private http: HttpClient
+    ) {
         this.newCartItemData$ = this.setCartItem$.asObservable();
         this.getCartItems4PlateCount$ = this.setCartItems4PlateCount$.asObservable();
         this.getCartItemsNot4PlateCount$ = this.setCartItemsNot4PlateCount$.asObservable();
@@ -39,16 +43,75 @@ export class CartService {
         this.cartViewContainer$ = this.setCartViewContainerRef$.asObservable();
     }
 
+    createJSONPostHeader(headers: HttpHeaders) {
+        headers.append('Content-Type', 'application/json');
+    }
+
     setCartItemData(data) {
         // this.setCartItem$.complete();
         this.setCartItem$.next(data);
         // console.log('dataname: ', data.cnm);
-        if ( data.cnm === 'DINNER') { this.setCartItems4PlateCount(); } else { this.setCartItemsNot4PlateCount(); }
+        // if ( data.cnm === 'DINNER') { this.setCartItems4PlateCount(); } else { this.setCartItemsNot4PlateCount(); }
         // console.log('amt from srvc: ', this.getCartItems4PlateCount$);
         // console.log('amtInPLT: ', document.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])') );
     }
 
-    setCartItems4PlateCount() {
+    getOrderId(mID: string): Observable<any> {
+        /// USE BELOW FOR DEVELOPMENT ///
+        // this.dURL = this.API_PAY_url + this.API_orders + this.openState + '&' + this.API_tempAccess;
+        // console.log('url: ', this.dURL);
+        const nuParamGetOrderID = new HttpParams()
+            .set('getOrderID', mID );
+
+        // let headers = new HttpHeaders();
+        // this.createJSONPostHeader(headers);
+
+        return this.http.get(this.dQueryURL, { params: nuParamGetOrderID});
+        /// ------------------------ ///
+
+        // let headers = new HttpHeaders();
+        // headers.append('state', 'open ');
+
+        /// USE BELOW FOR PRODUCTION ///
+        // this.dURL = this.API_base+this.API_orders+this.openState;
+        // this.dURL = this.queryUrl + this.API_orders + this.openState;
+        // return this.http.get(this.queryUrl);
+        /// ------------------------ ///
+    }
+
+    getAllOrders(mID: string) {
+        const nuParamGetAllOrders = new HttpParams()
+            .set('getAllOrders', mID );
+
+        // let headers = new HttpHeaders();
+        // this.createJSONPostHeader(headers);
+
+        return this.http.get(this.dQueryURL, { params: nuParamGetAllOrders});
+    }
+
+    addItems2Order(items) {
+        // console.log('items: ' + JSON.stringify(items));
+        // this.dURL = this.API_PAY_url + this.API_orders + '/' + orderid + this.API_bulk_lineItems + '?' + this.API_tempAccess + this.authService.oauthToken;
+        /*let body = {
+          'items': items,
+          'orderid': orderid
+
+        };*/
+
+        let nuParamsAddItems2Order = new HttpParams();
+        // .set('items', items);
+        // .set('orderid', orderid);
+        nuParamsAddItems2Order = items;
+
+        const headers = new HttpHeaders();
+        this.createJSONPostHeader(headers);
+
+        // console.log('bdy \n' + JSON.stringify(body));
+        // console.log('foodOrder2Send: ', nuParamsAddItems2Order );
+        return this.http.post(`${this.dQueryURL}`, [nuParamsAddItems2Order], { headers });
+    }
+
+    /*setCartItems4PlateCount() {
         this.getCartItems4PlateCount$.subscribe(res => { this.itemCount$ = res; });
         this.setCartItems4PlateCount$.next(this.itemCount$ + 1);
 
@@ -67,7 +130,7 @@ export class CartService {
         this.getCartItemsNotNPlateCount$.subscribe(res => { this.nonPltdItemCount$ = res; });
         this.setCartItemsNotNPlateCount$.next(this.nonPltdItemCount$ + 1);
         // return this.itemCount$;
-    }
+    }*/
 
     setElemAttributes( elem, attrs ): void {
         for (const key in attrs) {

@@ -27,7 +27,10 @@ import {Arguments} from '@angular/cli/models/interface';
     template: `
         <div class="cartItemHldr">Shopping Cart</div>
         <ng-template #cart></ng-template>
-        <div class="checkout">total</div>
+        <div id="tabulator" class="btn-group justify-content-start btn-group-vertical" role="group" aria-label="orderAmt" style="width: inherit;">
+            <button id="orderAmt" class="btn btn-sm cartSumTotal btn-default">{{orderTotal | cloverUserPrice}}</button>
+            <button type="submit" id="submit" value="Submit" (click)="createOrder($event);" class="btn btn-sm btn btn-success">submit</button>
+        </div>
       `,
     styles: [`
         /*:host {
@@ -61,6 +64,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     @Input() amtItemsNCart: number;
     @Input() amtItemsNotNPlate: number;
     @Input() amtItemsNot4Plate: number;
+    @Input() amtPlatesNCart: number;
 
     @Output() cOrderID: EventEmitter<string> = new EventEmitter<string>();
     @Output() cOrderAmt: EventEmitter<number> = new EventEmitter<number>();
@@ -69,12 +73,13 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     @Output() rmvItemCounter: EventEmitter<string> = new EventEmitter<string>();
 
     elem: any; mID: any; fID: any; fAmt: any; item: any; itemTitle: any;
-    forPlate: number; notForPlate: number; notNPlate: number; inCart: number; userOrderID: any;
+    forPlate: number; notForPlate: number; notNPlate: number; inCart: number;
+    plateAmt: number;
 
     nonDinnerItemsInCart: any; dinnerItemsInCart: any; desertItemsInCart: any;
     drinkItemsInCart: any; breakfastItemsInCart: any;
-    foodPlate: any; foodPlateItemPrice: any; crntFoodPlate: any; lineItems4Bulk: any;
-    orderTotal = 0.00; cartTotal: number; amtSubmitted4Payment: number;
+    foodPlates: any; foodPlateItemPrice: any; crntFoodPlate: any; lineItems4Bulk: any;
+    orderTotal = 0.00; cartTotal: number; userOrderID: any; amtSubmitted4Payment: number;
 
     pretotal: any = []; plateData: any = []; dinnerItemsNotInPlate: Array<any> = [];
     plateOrder: any = []; prodsInCart: any = [];
@@ -94,7 +99,13 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         // for ( const arg of splitArgs) {
         let argArr: number;
         switch ( arg ) {
-
+            case 'ALL':
+                const allCartItems: any = elem.querySelectorAll('amm-cart-item');
+                argArr = allCartItems.length;
+                /*argArr.push({
+                    [arg]: allCartItems.length
+                });*/
+                break;
             case 'NONDINNER':
                 const nonDnrItems: any = elem.querySelectorAll('amm-cart-item:not([title^="DINNER"])');
                 argArr = nonDnrItems.length;
@@ -109,11 +120,11 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                     [arg]: notPltdItems.length
                 });*/
                 break;
-            case 'ALL':
-                const allCartItems: any = elem.querySelectorAll('amm-cart-item');
-                argArr = allCartItems.length;
+            case 'PLATES':
+                const amtPlates: any = elem.querySelectorAll('amm-plate-item');
+                argArr = amtPlates.length;
                 /*argArr.push({
-                    [arg]: allCartItems.length
+                    [arg]: notPltdItems.length
                 });*/
                 break;
             default:
@@ -209,8 +220,153 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         return FoodCartComponent.getItemsInCart(this.elem, 'DRINK');
     }
 
+    getAmtPlates(): number {
+        return FoodCartComponent.getItemsInCart(this.elem, 'PLATES');
+    }
 
 
+    /* // selection OR ordering methods // */
+    generateOrderPackage(orderid) {
+        // this.myOrderItems = this.nonDinnerItemsInCart;
+        // console.log(this.myOrderItems.length);
+        // this.allItemsInCart = this.elem.querySelectorAll('div[aria-label="food-item"]');
+        const foodPlates = this.elem.querySelectorAll('amm-plate-item[data-name^="food-plate"]');
+        if (foodPlates.length > 0) {
+            foodPlates.forEach( (x, i) => {
+                const plateTitle = x.querySelector('#plateSize').innerHTML;
+                // console.log('plateTitle = ', plateTitle);
+                let plateSizeID: string;
+                switch (plateTitle) {
+                    case 'small':
+                        plateSizeID = 'F3XC2THF9BQ4C';
+                        break;
+                    case 'meduim':
+                        plateSizeID = 'EZTKBJ49KH8P0';
+                        break;
+                    case 'large':
+                        plateSizeID = 'YJ4QNB4CP21DT';
+                        break;
+                }
+                const plateSizes = x.children[0].children[0].innerHTML;
+                const plateCost = x.children[0].children[1].innerHTML * 100;
+
+                const itemsInPlate = x.querySelectorAll('amm-cart-item');
+                itemsInPlate.forEach( (y, j) => {
+                    const itemTitle = y.querySelector('.title').innerHTML;
+                    const itemCost = Math.round(y.querySelector('.amt').innerHTML * 100);
+                    const itemID = y.querySelector('.close').getAttribute('title');
+
+                    this.plateData[j] = {modifier: { name: itemTitle, price: itemCost, modifierGroup: { id: 'TN6XPNQWH0XK4' }, id: itemID }, quantitySold: '1' };
+
+                    // this.plateOrder.push({[plateSizes]: this.plateData[j] });
+                });
+                /// USE THIS /// == this.plateOrder.push({'orderid': `${orderid}`, 'mID': `${this.mID}`, 'items': [ {'item': {'id': this.plateSizeID}, 'name': plateSizes.toUpperCase() + ' DINNER', 'price': plateCost, 'printed': true, 'modifications': this.plateData }]});
+                this.plateOrder.push( {item: {id: plateSizeID}, name: plateSizes.toUpperCase() + ' DINNER', price: plateCost, printed: true, modifications: this.plateData } );
+                // ### ---- console.log('ll '+itemsInPlate.length);
+                console.log('plateSizeId: ', plateSizeID);
+
+                // this.plateData[i] = x.children[0].children[0].innerHTML;
+                // this.plateOrder.push(this.plateData[i]);
+            });
+            // console.log('plateD: ' + JSON.stringify(this.plateOrder));
+        }
+        // console.log('amt of plates: ' + foodPlates.length);
+
+        this.nonDinnerItemsInCart = this.elem.querySelectorAll('amm-cart-item:not([title^="DINNER"])');
+        this.nonDinnerItemsInCart.forEach( (x) => {
+            const itemTitle = x.querySelector('.title').innerHTML;
+            const itemCost = Math.round(x.querySelector('.amt').innerHTML * 100);
+            const itemID = x.querySelector('.close').getAttribute('title');
+
+            this.plateOrder.push( {item: {id: itemID }, name: itemTitle, price: itemCost});
+            // console.log('mi - '+JSON.stringify(this.myOrderItems));
+            // ### ---- console.log(itemTitle + ' cost = ' + itemCost);
+        });
+
+        /*this.allItemsInCart.forEach( (x) => {
+            let itemTitle = x.querySelector('button.title').innerHTML;
+            let itemCost = Math.round(x.querySelector('button.amt').innerHTML * 100);
+            let itemID = x.querySelector('button.close').getAttribute('title');
+
+            this.myOrderItems.push({"name": itemTitle, "price": itemCost, "item": {"id": itemID } });
+            // console.log('mi - '+JSON.stringify(this.myOrderItems));
+            console.log(itemTitle + ' cost = ' + itemCost);
+
+        });*/
+        // ### ---- console.log('full order: ' + JSON.stringify(this.plateOrder));
+        // console.log('mi - '+JSON.stringify(this.myOrderItems));
+        const fullOrder = {orderid, mID: this.mID, items: this.plateOrder };
+        // console.log('fullOrder: ', fullOrder);
+        return fullOrder;
+    }
+
+    createOrder(evt) {
+        console.log('mID: ', this.mID);
+
+        this.cs.getOrderId(`${this.mID}`).subscribe( res => {
+                // let resBody = JSON.parse(res['_body']);
+                // this.userOrderID = JSON.stringify(res);
+                this.userOrderID = res;
+
+                // console.log('ngOrderID: ' + this.userOrderID);
+            },
+            err => {
+                console.log('getOrderID_Error: ' + err);
+            },
+            () => {
+                console.log('success getting orderID - ' + this.userOrderID);
+
+
+                const dOrderAmt = this.elem.querySelector('#orderAmt');
+                this.cOrderID.emit(this.userOrderID);
+                // console.log('log ID: '+this.userOrderID);
+                this.lineItems4Bulk = this.generateOrderPackage(this.userOrderID);
+                /// === /// console.log('lineItems: == ', JSON.stringify(this.lineItems4Bulk));
+                // console.log('l4b: ', this.lineItems4Bulk['items']);
+                const pricedItems = this.lineItems4Bulk.items;
+
+                pricedItems.forEach( (x) => {
+                    this.pretotal.push(x.price);
+                });
+
+                this.cartTotal = this.pretotal.reduce((a, b) => a + b, 0);
+                console.log('sum ' + Number(this.cartTotal));
+                // this.amtSubmitted4Payment = this.cartTotal;
+                // console.log('lineItems : ', this.lineItems4Bulk);
+
+                // this.c_orderAmt.emit(dOrderAmt.innerHTML);
+                // this.cOrderAmt.emit(this.amtSubmitted4Payment);
+                this.cOrderAmt.emit(this.cartTotal);
+                this.closeOnSubmit.emit(null);
+
+                this.cs.addItems2Order(this.lineItems4Bulk).subscribe( res => {
+                        /// ==== /// console.log('addItemsResponse: ' + JSON.stringify(res));
+                        const numItemsInOrder = Object.keys(res);
+                        // console.log('res length: = ', Object.keys(res).length);
+                        /// === /// console.log('obj key name - ', numItemsInOrder[0]);
+                        if ( numItemsInOrder[0] !== 'message' || numItemsInOrder[0] === '0' ) {
+                            console.log('Worked: ', numItemsInOrder.length, ' items added to order; \n');
+                        } else {
+                            console.log('Something went wrong. No Items added to order');
+                        }
+                    },
+                    err => {
+                        console.log('addItems2Order_Error: ' + err);
+                    },
+                    () => {
+                        this.clearCart();
+                        evt.target.previousSibling.innerHTML = '0.00';
+                        this.orderSent = true;
+
+                        // TODO: add login before sendOrder.
+                        // TODO: User must SignUp or SignIn before moving on to Payment
+                        // == *** == this.openDialog(); == *** == //
+
+                        // this.sendOrder();
+                    });
+            });
+
+    }
 
     getOrderTotal() {
         // console.log('some');
@@ -220,33 +376,130 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
             this.foodPlateItemPrice.classList.remove('price');
             this.foodPlateItemPrice.classList.add('priceAdded');
             // this.orderTotal += Number(this.foodPlateItemPrice.innerHTML);
-            this.orderTotal += Number(this.foodPlateItemPrice.innerHTML * 100);
+            this.orderTotal += Number(this.foodPlateItemPrice.innerHTML);
         } else {
             return;
         }
 
     }
 
+    sendOrder() {
+        // console.log('isDOrderSubmited: ', this.orderSent);
+        return this.orderSent;
+    }
+
+    clearCart() {
+        const platesNCart = this.elem.querySelectorAll('amm-plate-item[data-name^="food-plate"]');
+        // const plates = this.elem.querySelectorAll('amm-plate-item[data-name^="food-plate"]');
+
+        // const platesNCart = this.amtPlatesNCart;
+        const nonDItemsNCart = this.amtItemsNot4Plate;
+
+        console.log('Amt# non-Dinner items in cart = ', nonDItemsNCart, ';\n');
+        console.log('Amt# Dinner plates in cart = ', this.amtPlatesNCart, ';\n');
+
+        if (this.amtPlatesNCart !== 0 ) {
+            platesNCart.forEach( (x) => {
+                x.remove();
+            });
+        }
+
+        console.log('Cart cleared');
+        // this.viewCart();
+    }
+
+
+    /* // data injection and query methods // */
     checkForExistingPlates() {
         // const num = 0;
-        this.foodPlate = this.elem.querySelectorAll('div[data-name^="food-plate_"]');
-        if (this.foodPlate.length > 0) {
-            console.log('amt Plates: ' + this.foodPlate.length);
-            return this.foodPlate.length;
+        this.foodPlates = this.elem.querySelectorAll('amm-plate-item[data-name^="food-plate_"]');
+        if (this.foodPlates.length > 0) {
+            console.log('amt Plates: ' + this.foodPlates.length);
+            return this.foodPlates.length;
         } else {
             return 0;
         }
 
     }
 
+    changePlateSize(size) {
+        const amtPlates: number = this.checkForExistingPlates();
+        const plateNum: number = (amtPlates + 1);
+        console.log('amt-crnt-plates = ', amtPlates, ' next-plate-num = ', plateNum);
+
+        this.dinnerItemsNotInPlate = this.elem.querySelectorAll('[title="DINNER"]:not([data-name])');
+        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('[title*="DINNER"]');
+
+        switch (size) {
+            case 'none':
+                this.isPlateVisible = false;
+                this.getOrderTotal();
+                // console.log('item added ' + size);
+                break;
+            case 'sm':
+                this.createPlate({plateSize: 'small', plateNum, platePrice: 800});
+                // console.log('not plated ' + this.dinnerItemsNotInPlate.length);
+                break;
+            case 'md':
+                this.crntFoodPlate = this.elem.querySelector(`amm-plate-item[data-name^="food-plate_${this.plateAmt}"]`);
+                // this.crntFoodPlate = this.elem.getElementsByTagName('amm-plate-item')[amtPlates];
+                console.log('plateAmt: = ', this.plateAmt);
+                this.crntFoodPlate.querySelector('#platePrice').innerHTML = '10.00';
+                this.crntFoodPlate.querySelector('#platePrice').className = 'price';
+                this.crntFoodPlate.querySelector('#plateSize').innerHTML = 'medium';
+                this.orderTotal -= 7;
+                console.log('mdNIP: ', this.notNPlate);
+                this.dinnerItemsNotInPlate.forEach((x, i) => {
+                    this.crntFoodPlate.appendChild(x);
+                    // console.log('plates: '+this.foodPlates.childList);
+                });
+
+                const platedItemsMD = this.crntFoodPlate.querySelectorAll('amm-cart-item[aria-label*="food-item"]');
+                platedItemsMD.forEach( (x, i) => {
+                    x.setAttribute('data-name', 'plated');
+                    if (x.children[1].classList.contains('price')) {
+                        x.children[1].classList.remove('price');
+                        x.children[1].classList.add('priceAdded');
+                    }
+                });
+
+                this.getOrderTotal();
+                break;
+            case 'lg':
+                this.crntFoodPlate = this.elem.getElementsByTagName('amm-plate-item')[amtPlates];
+                this.crntFoodPlate.querySelector('#platePrice').innerHTML = '13.00';
+                this.crntFoodPlate.querySelector('#platePrice').className = 'price';
+                this.crntFoodPlate.querySelector('#plateSize').innerHTML = 'large';
+                this.orderTotal -= 10;
+                console.log('mdNIP: ', this.notNPlate);
+                this.dinnerItemsNotInPlate.forEach((x, i) => {
+                    this.crntFoodPlate.appendChild(x);
+                    // console.log('plates: '+this.foodPlates.childList);
+                });
+
+                const platedItemsLG = this.crntFoodPlate.querySelectorAll('amm-cart-item[aria-label*="food-item"]');
+                platedItemsLG.forEach( (x, i) => {
+                    x.setAttribute('data-name', 'plated');
+                    if (x.children[1].classList.contains('price')) {
+                        x.children[1].classList.remove('price');
+                        x.children[1].classList.add('priceAdded');
+                    }
+                });
+
+                this.getOrderTotal();
+                break;
+        }
+    }
+
     newPlateQuery(size) {
         // if(this.orderItemsForPlate < 8) {
-        if ( window.confirm('Add to Existing Plate?') ) {
+        if ( window.confirm(`"OK": Upgrade to ${size.toUpperCase()} Plate? \n "CANCEL" Create New SM Plate?`) ) {
+            // console.log('You\'ve changed to ' + size + ' plate');
             this.changePlateSize(size);
-            console.log('You\'ve changed to ' + size + ' plate');
         } else {
+            alert('You have confirmed to start a new SM plate');
+            // console.log('You have confirmed to start a new plate');
             // this.changePlateSize('sm');
-            console.log('You have confirmed to start a new plate');
         }
         // } else {
         //   this.changePlateSize('sm');
@@ -341,12 +594,14 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 this.crntFoodPlate = foodPlates[i];
             }
         }*/
+        console.log('pltNum: ', data.plateNum);
 
+        // this.crntFoodPlate = this.elem.querySelector('amm-plate-item[data-name^="food-plate_' + (data.plateNum - 1) + '"]');
         this.crntFoodPlate = this.elem.getElementsByTagName('amm-plate-item')[data.plateNum - 1];
         // this.dinnerItemsNotInPlate = this.elem.getElementsByTagName('amm-cart-item');
 
         console.log('fp: ', this.crntFoodPlate );
-        console.log('not 1st plated ' + this.dinnerItemsNotInPlate.length);
+        console.log('not 1st plated ' + this.notNPlate);
 
         for (const plate of this.dinnerItemsNotInPlate) {
             console.log('j: ', plate.getAttribute('aria-label'));
@@ -376,77 +631,6 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         this.getOrderTotal();
     }
 
-    changePlateSize(size) {
-        const amtPlates: number = this.checkForExistingPlates();
-        const plateNum: number = (amtPlates + 1);
-        console.log('prev-plates = ', amtPlates, ' crnt-plates = ', plateNum);
-
-        this.dinnerItemsNotInPlate = this.elem.querySelectorAll('[title="DINNER"]:not([data-name])');
-        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('[title*="DINNER"]');
-
-        switch (size) {
-            case 'none':
-                this.isPlateVisible = false;
-                this.getOrderTotal();
-                // console.log('item added ' + size);
-                break;
-            case 'sm':
-                this.createPlate({plateSize: 'small', plateNum, platePrice: 800});
-                // console.log('not plated ' + this.dinnerItemsNotInPlate.length);
-                break;
-            case 'md':
-                this.crntFoodPlate = this.elem.getElementsByTagName('amm-plate-item')[amtPlates];
-                this.crntFoodPlate.querySelector('#platePrice').innerHTML = '10.00';
-                this.crntFoodPlate.querySelector('#platePrice').className = 'price';
-                this.crntFoodPlate.querySelector('#plateSize').innerHTML = 'medium';
-                this.orderTotal -= 7;
-                console.log('const: ', this.dinnerItemsNotInPlate.length);
-                this.dinnerItemsNotInPlate.forEach((x, i) => {
-                    this.crntFoodPlate.appendChild(x);
-                    // console.log('plates: '+this.foodPlate.childList);
-                });
-
-                const platedItemsMD = this.crntFoodPlate.querySelectorAll('div[aria-label="food-item"]');
-                platedItemsMD.forEach( (x, i) => {
-                    x.setAttribute('name', 'plated');
-                    if (x.children[1].classList.contains('price')) {
-                        x.children[1].classList.remove('price');
-                        x.children[1].classList.add('priceAdded');
-                    }
-                });
-
-                this.getOrderTotal();
-                break;
-            /*case 'lg':
-                this.crntFoodPlate = this.elem.querySelector('[data-title="food-plate_' + amtPlates + '"]');
-                this.crntFoodPlate.querySelector('#platePrice').innerHTML = '13.00';
-                this.crntFoodPlate.querySelector('#platePrice').className = 'price';
-                this.crntFoodPlate.querySelector('#plateSize').innerHTML = 'large';
-                this.orderTotal -= 10;
-                this.dinnerItemsNotInPlate.forEach((x, i) => {
-                    this.crntFoodPlate.appendChild(x);
-                    // console.log('plates: '+this.foodPlate.childList);
-                });
-
-                const platedItems_lg = this.crntFoodPlate.querySelectorAll('[aria-label="food-item"]');
-                platedItems_lg.forEach( (x, i) => {
-                    x.setAttribute('name', 'plated');
-                    if (x.children[1].classList.contains('price')) {
-                        x.children[1].classList.remove('price');
-                        x.children[1].classList.add('priceAdded');
-                    }
-                });
-
-                this.getOrderTotal();
-                break;*/
-        }
-    }
-
-    sendOrder() {
-        // console.log('isDOrderSubmited: ', this.orderSent);
-        return this.orderSent;
-    }
-
     removeItem(e): any {
         const item = e.target;
         const itemTitle = e.target.title;
@@ -466,7 +650,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
         const item2Sub: number = Number(e.target.previousElementSibling.textContent * 100);
         // let itemParent = e.target.parentElement;
-        const platedItemName = itemParent.getAttribute('name');
+        const platedItemName = itemParent.getAttribute('data-name');
         // console.log('items2Rmv: ', items2Rmv.length);
         // console.log('sub ' + item2Sub);
 
@@ -488,9 +672,9 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
             const platePrice = Number(platedParent.querySelector('.priceAdded').textContent * 100) ;
             // console.log(e.target.parentElement.parentElement.getAttribute('name'));
-            const orderPlate = platedParent.querySelectorAll('div[data-title="plated"]');
+            const orderPlate = platedParent.querySelectorAll('[title^="DINNER"][data-name*="plated"]');
             orderPlate.forEach( (x) => {
-                x.removeAttribute('name');
+                x.removeAttribute('data-name');
                 x.children[1].classList.remove('priceAdded');
                 x.children[1].classList.add('price');
                 this.elem.insertBefore(x, this.elem.lastElementChild);
@@ -570,9 +754,10 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         this.notForPlate = this.amtItemsNot4Plate;
         this.notNPlate = this.amtItemsNotNPlate;
         this.inCart = this.amtItemsNCart;
+        this.plateAmt = this.amtPlatesNCart;
 
         this.prodsInCart = this.elem.querySelectorAll('button.close');
-        this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
+        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
 
         for ( const elem of this.prodsInCart ) {
             const prod = elem.parentElement.title;
@@ -583,102 +768,118 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 elem.setAttribute('data-listen', true);
                 elem.deleteBtn_Listener = this.renderer.listen(elem, 'click', () => {
                     this.removeItem(event);
-
                 });
-                // this.removeItem(event);
             }
-            //     // console.log('u clicked on ', prod.title);
-            //
-            //
-            // });
-
-            // this.dinnerItemsNotInPlate.push(prod);
             console.log('prod: ', prod);
-            // console.log( 'items: ', this.getCartItems() );
         }
-        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
-
 
         console.log(
             ' dinner items ', this.forPlate, ' \n',
             ' dinner items NIP ', this.notNPlate, ' \n',
             ' other items ', this.notForPlate, ' \n',
-            ' total itams in cart ', this.inCart
+            ' total itams in cart ', this.inCart, ' \n',
+            ' plates in cart ', this.plateAmt, ' \n'
         );
 
         // this.pushEvent.emit(null);
 
         switch (true) {
-            /*case (this.notForPlate > 0):
-                  // if ( this.notForPlate.length > 0)) {
-                  this.changePlateSize('none');
-                      console.log('got em');
-                  // }
-                  break;
-      */
-            case (this.forPlate === 3):
-                if (this.dinnerItemsNotInPlate.length === 3) {
+            case (this.notNPlate === 2):
+                if (this.forPlate < 5) {
+                    this.changePlateSize('none');
+                } else if ( this.forPlate === 5 ) {
+                    this.newPlateQuery('md');
+                } else if ( this.forPlate === 7 ) {
+                    this.newPlateQuery('lg');
+                } else if ( this.forPlate === 8 ) {
+                    this.newPlateQuery('md');
+                } else if ( this.forPlate === 10 ) {
+                    this.newPlateQuery('md');
+                }
+                break;
+            case (this.notNPlate === 3):
+                if (this.forPlate === 3) {
+                    this.changePlateSize('sm');
+                } else if ( this.forPlate === 6 ) {
+                    this.changePlateSize('sm');
+                } else if ( this.forPlate === 8 ) {
+                    this.changePlateSize('sm');
+                } else if ( this.forPlate === 9 ) {
+                    this.changePlateSize('sm');
+                } else if ( this.forPlate === 10 ) {
+                    this.changePlateSize('sm');
+                } else if ( this.forPlate === 11 ) {
                     this.changePlateSize('sm');
                 }
                 break;
-
-            case (this.forPlate === 5):
+            /*case (this.notNPlate === 2):
                 // if (this.notForPlate > 0) {
-                // this.changePlateSize('none');
+                if ( this.forPlate === 5 ) {
+                    this.newPlateQuery('md');
+                }*/
+                //     this.changePlateSize('none');
+                    // this.newPlateQuery('md');
                 // } else {
-                this.newPlateQuery('md');
+                // this.newPlateQuery('md');
                 // }
-                break;
+                // break;
 
-            case (this.forPlate === 6):
-                if (this.dinnerItemsNotInPlate.length === 3) {
+            /*case (this.forPlate === 6):
+                if (this.notNPlate === 3) {
                     this.changePlateSize('sm');
                 }
                 break;
 
-            /*case (this.forPlate === 7):
-                if (this.dinnerItemsNotInPlate.length === 2) {
+            case (this.forPlate === 7):
+                if (this.notNPlate === 2) {
                     this.newPlateQuery('lg');
                 }
                 break;
 
             case (this.forPlate === 8):
-                if (this.dinnerItemsNotInPlate.length === 2) {
+                if (this.notNPlate === 2) {
                     this.newPlateQuery('md');
-                } else if (this.dinnerItemsNotInPlate.length === 3) {
+                } else if (this.notNPlate === 3) {
                     this.changePlateSize('sm');
                 }
                 break;
 
             case (this.forPlate === 9):
-                if (this.dinnerItemsNotInPlate.length === 3) {
+                if (this.notNPlate === 3) {
                     this.changePlateSize('sm');
                 }
                 break;
 
             case (this.forPlate === 10):
-                if (this.dinnerItemsNotInPlate.length === 2) {
+                if (this.notNPlate === 2) {
                     this.newPlateQuery('md');
-                } else if (this.dinnerItemsNotInPlate.length === 3) {
+                } else if (this.notNPlate === 3) {
                     this.changePlateSize('sm');
                 }
                 break;
 
             case (this.forPlate === 11):
-                if (this.dinnerItemsNotInPlate.length === 3) {
+                if (this.notNPlate === 3) {
                     this.changePlateSize('sm');
                 }
-                break;
+                break;*/
 
             default:
                 this.changePlateSize('none');
-                break;*/
+                break;
         }
-        // console.log('fd change: ', this.cart.element.nativeElement.children.count);
     }
 
     ngAfterViewInit(): void {
+        /*this.forPlate = this.amtItems4Plate;
+        this.notForPlate = this.amtItemsNot4Plate;
+        this.notNPlate = this.amtItemsNotNPlate;
+        this.inCart = this.amtItemsNCart;
+        this.plateAmt = this.amtPlatesNCart;
 
+        this.prodsInCart = this.elem.querySelectorAll('button.close');*/
+        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
+        console.log('alert: ', this.mID);
     }
 
     ngOnDestroy(): void {

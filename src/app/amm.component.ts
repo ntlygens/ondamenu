@@ -39,7 +39,7 @@ export class AmmComponent implements OnInit, OnDestroy {
                     this.footer.ftrState = 'show';
                     break;
                 default:
-                    this.footer.ftrState = 'hide';
+                    this.footer.ftrState = 'show';
                     break;
             }
 

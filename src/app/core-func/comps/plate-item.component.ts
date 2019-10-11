@@ -34,7 +34,7 @@ export class PlateItemComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.elem.setAttribute('data-title', 'food-plate_' + this.plateItem.plateNum );
+        this.elem.setAttribute('data-name', 'food-plate_' + this.plateItem.plateNum );
     }
 
 }

@@ -28,6 +28,7 @@ import {Subject} from 'rxjs';
                 [amtItemsNot4Plate]="shoppingCart.getNonDinnerItems()"
                 [amtItemsNCart]="shoppingCart.getAllCartItems()"
                 [amtItemsNotNPlate]="shoppingCart.getNotPlatedItems()"
+                [amtPlatesNCart]="shoppingCart.getAmtPlates()"
             ></amm-food-cart>
             <amm-food-cart-ui #cartUI [dinnerSelection]="shoppingCart.getDinnerItems()" [cartSelection]="shoppingCart.getAllCartItems()" [dinnerNotSelected]=""></amm-food-cart-ui>
         </div>
