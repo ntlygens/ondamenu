@@ -225,10 +225,12 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         // console.log(this.myOrderItems.length);
         // this.allItemsInCart = this.elem.querySelectorAll('div[aria-label="food-item"]');
         const foodPlates = this.elem.querySelectorAll('amm-plate-item[data-name^="food-plate"]');
+        this.nonDinnerItemsInCart = this.elem.querySelectorAll('amm-cart-item:not([title*="DINNER"])');
+
         if (foodPlates.length > 0) {
             foodPlates.forEach( (x, i) => {
                 const plateTitle = x.querySelector('#plateSize').innerHTML;
-                const plateCost = x.querySelector('#platePrice').innerHTML;
+                const plateCost = x.querySelector('#platePrice').innerHTML * 100;
                 // console.log('plateTitle = ', plateTitle);
                 let plateSizeID: string;
                 switch (plateTitle) {
@@ -256,7 +258,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                     // this.plateOrder.push({[plateSizes]: this.plateData[j] });
                 });
                 /// USE THIS /// == this.plateOrder.push({'orderid': `${orderid}`, 'mID': `${this.mID}`, 'items': [ {'item': {'id': this.plateSizeID}, 'name': plateSizes.toUpperCase() + ' DINNER', 'price': plateCost, 'printed': true, 'modifications': this.plateData }]});
-                this.plateOrder.push( {item: {id: plateSizeID}, name: plateTitle.toUpperCase() + ' DINNER', price: (plateCost * 100), printed: true, modifications: this.plateData } );
+                this.plateOrder.push( {item: {id: plateSizeID}, name: plateTitle.toUpperCase() + ' DINNER', price: plateCost, printed: true, modifications: this.plateData } );
                 //////// ** this.plateOrder.push( {item: {id: plateSizeID}, name: plateTitle.toUpperCase() + ' DINNER', price: (plateCost * 100), printed: true } );
                 // ### ---- console.log('ll '+itemsInPlate.length);
                 // console.log('plateSizeId: ', plateSizeID);
@@ -268,10 +270,9 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         }
         // console.log('amt of plates: ' + foodPlates.length);
 
-        this.nonDinnerItemsInCart = this.elem.querySelectorAll('amm-cart-item:not([title^="DINNER"])');
         this.nonDinnerItemsInCart.forEach( (x) => {
             const itemTitle = x.querySelector('.title').innerHTML;
-            const itemCost = Math.round(x.querySelector('.amt').innerHTML * 100);
+            const itemCost = Math.round(x.querySelector('.amt').innerHTML);
             const itemID = x.querySelector('.close').getAttribute('title');
 
             this.plateOrder.push( {item: {id: itemID }, name: itemTitle, price: itemCost});
@@ -391,19 +392,32 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
     clearCart() {
         const platesNCart = this.elem.querySelectorAll('amm-plate-item[data-name^="food-plate"]');
+        const itemsNCart = this.elem.querySelectorAll('amm-cart-item:not([title*="DINNER"])');
         // const plates = this.elem.querySelectorAll('amm-plate-item[data-name^="food-plate"]');
 
         // const platesNCart = this.amtPlatesNCart;
-        const nonDItemsNCart = this.amtItemsNot4Plate;
+        // const nonDItemsNCart = this.amtItemsNot4Plate;
 
-        console.log('Amt# non-Dinner items in cart = ', nonDItemsNCart, ';\n');
+        console.log('Amt# non-Dinner items in cart = ', this.amtItemsNot4Plate, ';\n');
         console.log('Amt# Dinner plates in cart = ', this.amtPlatesNCart, ';\n');
 
-        if (this.amtPlatesNCart !== 0 ) {
-            platesNCart.forEach( (x) => {
-                x.remove();
-            });
-        }
+
+        // switch (true) {
+        //     case this.amtPlatesNCart !== 0:
+        platesNCart.forEach( (x) => {
+            x.remove();
+        });
+        //         break;
+        //     case this.amtItemsNot4Plate !== 0:
+        itemsNCart.forEach( (x) => {
+            x.remove();
+        });
+        //         break;
+        //     default:
+        //         return;
+        //
+        // }
+
 
         console.log('Cart cleared');
         // this.viewCart();
