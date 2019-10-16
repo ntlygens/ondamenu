@@ -106,8 +106,8 @@ export class CartService {
         const headers = new HttpHeaders();
         this.createJSONPostHeader(headers);
 
-        // console.log('bdy \n' + JSON.stringify(body));
-        // console.log('foodOrder2Send: ', nuParamsAddItems2Order );
+        console.log('bdy \n' + JSON.stringify(items));
+        console.log('foodOrder2Send: ', nuParamsAddItems2Order );
         return this.http.post(`${this.dQueryURL}`, [nuParamsAddItems2Order], { headers });
     }
 

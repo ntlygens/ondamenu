@@ -1,4 +1,14 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    HostListener,
+    OnDestroy,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import {MatBottomSheet, MatBottomSheetConfig} from '@angular/material';
 import {ComponentPortal, Portal} from '@angular/cdk/portal';
 import {ProfileComponent} from './profile.component';
@@ -20,7 +30,6 @@ import {Subject} from 'rxjs';
         </div>
         <div>
             <ng-template [cdkPortalOutlet]="portal"></ng-template>
-            <!--<amm-profile class="profileComp w-100" [@cartAnimations]="prflState"></amm-profile>-->
             <amm-food-cart
                 #shoppingCart class="shoppingCart w-100"
                 [@cartAnimations]="crtState"
@@ -32,7 +41,6 @@ import {Subject} from 'rxjs';
             ></amm-food-cart>
             <amm-food-cart-ui #cartUI [dinnerSelection]="shoppingCart.getDinnerItems()" [cartSelection]="shoppingCart.getAllCartItems()" [dinnerNotSelected]=""></amm-food-cart-ui>
         </div>
-
       `,
     styles: [`
         .footerbar {
@@ -99,6 +107,7 @@ export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
         private cs: CartService,
         private el: ElementRef,
         private btmSht: MatBottomSheet,
+        private cdRef: ChangeDetectorRef,
         private profileCnfg: MatBottomSheetConfig<ProfileComponent>,
         private searchCnfg: MatBottomSheetConfig<ProfileComponent>,
         private filterCnfg: MatBottomSheetConfig<ProfileComponent>,
@@ -194,8 +203,8 @@ export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         );
         */
-        this.amt4Plate = this.shoppingCart.getDinnerItems();
-        this.amtNCart = this.shoppingCart.getAllCartItems();
+        // this.amt4Plate = this.shoppingCart.getDinnerItems();
+        // this.amtNCart = this.shoppingCart.getAllCartItems();
     }
 
     ngOnDestroy(): void {

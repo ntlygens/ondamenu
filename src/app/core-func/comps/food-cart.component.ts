@@ -21,6 +21,7 @@ import {PlateItemComponent} from './plate-item.component';
 import {HttpParams} from '@angular/common/http';
 import {of} from 'rxjs';
 import {Arguments} from '@angular/cli/models/interface';
+import { CloverDbPrice } from '../price-change.pipe';
 
 @Component({
     selector: 'amm-food-cart',
@@ -53,7 +54,7 @@ import {Arguments} from '@angular/cli/models/interface';
             }
         }*/
     `],
-    changeDetection: ChangeDetectionStrategy.Default
+    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
@@ -79,7 +80,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     nonDinnerItemsInCart: any; dinnerItemsInCart: any; desertItemsInCart: any;
     drinkItemsInCart: any; breakfastItemsInCart: any;
     foodPlates: any; foodPlateItemPrice: any; crntFoodPlate: any; lineItems4Bulk: any;
-    orderTotal = 0.00; cartTotal: number; userOrderID: any; amtSubmitted4Payment: number;
+    orderTotal = 0; cartTotal: number; userOrderID: any; amtSubmitted4Payment: number;
 
     pretotal: any = []; plateData: any = []; dinnerItemsNotInPlate: Array<any> = [];
     plateOrder: any = []; prodsInCart: any = [];
@@ -94,9 +95,6 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     }
     private static getItemsInCart(elem: HTMLElement, arg: string): number {
-        // const splitArgs = (arg.toString()).split(',');
-        // const argArr: Array<any> = [];
-        // for ( const arg of splitArgs) {
         let argArr: number;
         switch ( arg ) {
             case 'ALL':
@@ -135,12 +133,8 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 });*/
                 break;
         }
-
-        // }
-
         console.log('argArr: ', argArr);
         return argArr;
-
     }
 
     constructor(
@@ -150,15 +144,15 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         private dialog: MatDialog,
         private resolver: ComponentFactoryResolver,
         private appRef: ApplicationRef,
-        private cdrRef: ChangeDetectorRef,
+        private cdRef: ChangeDetectorRef,
         private injector: Injector
     ) {
-        const params = (new URL(document.location.href)).searchParams;
+        /*const params = (new URL(document.location.href)).searchParams;
         const searchParams = new URLSearchParams(params);
 
         if ( searchParams.has( 'clid')) {
             this.mID = searchParams.get('clid');
-        }
+        }*/
 
         this.elem = this.elemRef.nativeElement;
         this.orderSent = false;
@@ -234,6 +228,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         if (foodPlates.length > 0) {
             foodPlates.forEach( (x, i) => {
                 const plateTitle = x.querySelector('#plateSize').innerHTML;
+                const plateCost = x.querySelector('#platePrice').innerHTML;
                 // console.log('plateTitle = ', plateTitle);
                 let plateSizeID: string;
                 switch (plateTitle) {
@@ -247,8 +242,8 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                         plateSizeID = 'YJ4QNB4CP21DT';
                         break;
                 }
-                const plateSizes = x.children[0].children[0].innerHTML;
-                const plateCost = x.children[0].children[1].innerHTML * 100;
+                // const plateSizes = x.children[0].children[0].innerHTML;
+                // const plateCost = x.children[0].children[1].innerHTML * 100;
 
                 const itemsInPlate = x.querySelectorAll('amm-cart-item');
                 itemsInPlate.forEach( (y, j) => {
@@ -261,9 +256,10 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                     // this.plateOrder.push({[plateSizes]: this.plateData[j] });
                 });
                 /// USE THIS /// == this.plateOrder.push({'orderid': `${orderid}`, 'mID': `${this.mID}`, 'items': [ {'item': {'id': this.plateSizeID}, 'name': plateSizes.toUpperCase() + ' DINNER', 'price': plateCost, 'printed': true, 'modifications': this.plateData }]});
-                this.plateOrder.push( {item: {id: plateSizeID}, name: plateSizes.toUpperCase() + ' DINNER', price: plateCost, printed: true, modifications: this.plateData } );
+                this.plateOrder.push( {item: {id: plateSizeID}, name: plateTitle.toUpperCase() + ' DINNER', price: (plateCost * 100), printed: true, modifications: this.plateData } );
+                //////// ** this.plateOrder.push( {item: {id: plateSizeID}, name: plateTitle.toUpperCase() + ' DINNER', price: (plateCost * 100), printed: true } );
                 // ### ---- console.log('ll '+itemsInPlate.length);
-                console.log('plateSizeId: ', plateSizeID);
+                // console.log('plateSizeId: ', plateSizeID);
 
                 // this.plateData[i] = x.children[0].children[0].innerHTML;
                 // this.plateOrder.push(this.plateData[i]);
@@ -301,6 +297,11 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     createOrder(evt) {
+        const params = (new URL(document.location.href)).searchParams;
+        const searchParams = new URLSearchParams(params);
+        if ( searchParams.has( 'clid')) {
+            this.mID = searchParams.get('clid');
+        }
         console.log('mID: ', this.mID);
 
         this.cs.getOrderId(`${this.mID}`).subscribe( res => {
@@ -336,8 +337,8 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
                 // this.c_orderAmt.emit(dOrderAmt.innerHTML);
                 // this.cOrderAmt.emit(this.amtSubmitted4Payment);
-                this.cOrderAmt.emit(this.cartTotal);
-                this.closeOnSubmit.emit(null);
+                // this.cOrderAmt.emit(this.cartTotal);
+                // this.closeOnSubmit.emit(null);
 
                 this.cs.addItems2Order(this.lineItems4Bulk).subscribe( res => {
                         /// ==== /// console.log('addItemsResponse: ' + JSON.stringify(res));
@@ -743,13 +744,9 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
     /// ======== LIFE CYCLE HOOKS ======== ///
 
-    ngOnInit() {
-        // this.cs.setCartContainerRef(this.cart);
-
-    }
+    ngOnInit() {}
 
     ngOnChanges(changes): void {
-        console.log( 'hit: ', this.amtItems4Plate);
         this.forPlate = this.amtItems4Plate;
         this.notForPlate = this.amtItemsNot4Plate;
         this.notNPlate = this.amtItemsNotNPlate;
@@ -870,17 +867,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         }
     }
 
-    ngAfterViewInit(): void {
-        /*this.forPlate = this.amtItems4Plate;
-        this.notForPlate = this.amtItemsNot4Plate;
-        this.notNPlate = this.amtItemsNotNPlate;
-        this.inCart = this.amtItemsNCart;
-        this.plateAmt = this.amtPlatesNCart;
-
-        this.prodsInCart = this.elem.querySelectorAll('button.close');*/
-        // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
-        console.log('alert: ', this.mID);
-    }
+    ngAfterViewInit(): void {}
 
     ngOnDestroy(): void {
     }
