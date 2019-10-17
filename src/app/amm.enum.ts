@@ -115,3 +115,20 @@ export interface SubCategoryData {
     scval: string;
     sortOrder: number;
 }
+
+
+export interface MerchantLoginForm {
+    mid?: string;
+    mpw?: string;
+    name?: string;
+    animal?: string;
+}
+
+export interface UserLoginForm {
+    uid?: string;
+    upw?: string;
+    confirm_upw?: string;
+    name?: string;
+    email?: string;
+    confirm_email?: string;
+}

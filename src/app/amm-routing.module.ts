@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { AmmRouteInterface } from './amm.enum';
 import { ListComponent } from './core-func/comps/list.component';
 import { MenuComponent } from './menu/menu.component';
+import {FoodPaymentComponent} from './core-func/comps/food-payment.component';
 
 const MAINROUTES: AmmRouteInterface[] = [
     {
@@ -30,6 +31,15 @@ const MAINROUTES: AmmRouteInterface[] = [
         data: {
             state: 'ClientMode',
             animation: 'isLeft'
+        },
+        outlets: [ 'mainAppRO' ]
+    },
+    {
+        path: 'p',
+        component: FoodPaymentComponent,
+        data: {
+            state: 'PaymentMode',
+            animation: 'isRight'
         },
         outlets: [ 'mainAppRO' ]
     },

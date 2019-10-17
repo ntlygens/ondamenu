@@ -14,14 +14,19 @@ import {
     ViewContainerRef,
     ApplicationRef, Injector, EmbeddedViewRef, ChangeDetectorRef
 } from '@angular/core';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatDialogConfig} from '@angular/material';
 import {CartService} from '../srvcs/cart.service';
 import { PlateItemData } from '../../amm.enum';
 import {PlateItemComponent} from './plate-item.component';
+
+import { UserLoginModalComponent } from '../modal/user-login-modal/user-login-modal.component';
+import { ModalComponent } from '../modal/modal.component';
+
 import {HttpParams} from '@angular/common/http';
 import {of} from 'rxjs';
 import {Arguments} from '@angular/cli/models/interface';
 import { CloverDbPrice } from '../price-change.pipe';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector: 'amm-food-cart',
@@ -143,6 +148,8 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         private renderer: Renderer2,
         private dialog: MatDialog,
         private resolver: ComponentFactoryResolver,
+        private router: Router,
+        private route: ActivatedRoute,
         private appRef: ApplicationRef,
         private cdRef: ChangeDetectorRef,
         private injector: Injector
@@ -364,7 +371,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                         // TODO: User must SignUp or SignIn before moving on to Payment
                         // == *** == this.openDialog(); == *** == //
 
-                        // this.sendOrder();
+                        this.openDialog();
                     });
             });
 
@@ -383,6 +390,44 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
             return;
         }
 
+    }
+
+    orderAmount(amt) {
+        // console.log('test1 '+amt);
+        this.fAmt = amt;
+        return this.fAmt;
+    }
+
+    orderID(id) {
+        // console.log('test2 '+id);
+        this.fID = id;
+        return this.fID;
+    }
+
+    openDialog(): void {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.autoFocus = true;
+        dialogConfig.hasBackdrop = true;
+        dialogConfig.disableClose = true;
+        dialogConfig.closeOnNavigation = false;
+        dialogConfig.height = '400';
+        dialogConfig.width = '300';
+        dialogConfig.data = {
+            name: 'Biota',
+            email: 'user@email.com',
+            uid: 'u_00000',
+            upw: 'userpass'
+        };
+        const dialogRef = this.dialog.open(UserLoginModalComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog referenced by: ', result.email, '\n' );
+            console.log('Who confirmed: ', result.confirm_email, ' as their email. \n');
+            console.log('And uses: ', result.confirm_upw, ' as their passcode \n');
+            // this.sendOrder();
+            this.router.navigate(['p'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
+
+            // this.animal = result;
+        });
     }
 
     sendOrder() {

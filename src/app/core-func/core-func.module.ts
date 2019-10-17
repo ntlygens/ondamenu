@@ -13,13 +13,15 @@ import { MenuItemComponent } from './comps/menu-item.component';
 import { CategoryListComponent } from './comps/category-list.component';
 import { FoodOrderComponent } from './comps/food-order.component';
 // import { FoodCartComponent } from './comps/food-cart.component';
-import { FoodPaymentComponent } from './comps/food-payment.component';
+// import { FoodPaymentComponent } from './comps/food-payment.component';
 import { CloverUserPrice, CloverDbPrice } from './price-change.pipe';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { FoodCartUiComponent } from './comps/food-cart-ui.component';
 // import { PlateItemComponent } from './comps/plate-item.component';
 // import { CartItemComponent } from './comps/cart-item.component';
-
+import { UserLoginModalComponent } from './modal/user-login-modal/user-login-modal.component';
+import { MerchantLoginModalComponent } from './modal/merchant-login-modal/merchant-login-modal.component';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
     declarations: [
@@ -33,12 +35,15 @@ import { FoodCartUiComponent } from './comps/food-cart-ui.component';
         CategoryListComponent,
         FoodOrderComponent,
         // FoodCartComponent,
-        FoodPaymentComponent,
+        // FoodPaymentComponent,
         CloverUserPrice,
         CloverDbPrice,
         FoodCartUiComponent,
         // PlateItemComponent,
-        // CartItemComponent
+        // CartItemComponent,
+        UserLoginModalComponent,
+        MerchantLoginModalComponent,
+        ModalComponent,
     ],
     exports: [
         NydohComponent,
@@ -50,6 +55,9 @@ import { FoodCartUiComponent } from './comps/food-cart-ui.component';
         CloverUserPrice,
         FoodCartUiComponent,
         // CartItemComponent,
+        UserLoginModalComponent,
+        MerchantLoginModalComponent,
+        ModalComponent,
     ],
     imports: [
         CommonModule,
@@ -57,6 +65,10 @@ import { FoodCartUiComponent } from './comps/food-cart-ui.component';
         ReactiveFormsModule,
         ScrollingModule,
         NgMatModule
+    ],
+    entryComponents: [
+        ModalComponent,
+        UserLoginModalComponent,
     ]
 })
 export class CoreFuncModule { }

@@ -108,6 +108,7 @@ export class FoodPaymentComponent implements OnInit, AfterViewInit {
         private ps: PaymentService
     ) {
         this.elem = this.elemRef.nativeElement;
+        this.orderSbmtd = true;
     }
 
 
