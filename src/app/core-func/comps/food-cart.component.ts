@@ -34,7 +34,7 @@ import {ActivatedRoute, Router} from '@angular/router';
         <div class="cartItemHldr">Shopping Cart</div>
         <ng-template #cart></ng-template>
         <div id="tabulator" class="btn-group justify-content-start btn-group-vertical" role="group" aria-label="orderAmt" style="width: inherit;">
-            <button id="orderAmt" class="btn btn-sm cartSumTotal btn-default">{{orderTotal | cloverUserPrice}}</button>
+            <div id="orderAmt" class="btn btn-sm cartSumTotal btn-default">{{amtOrderTotal}}</div>
             <button type="submit" id="submit" value="Submit" (click)="createOrder($event);" class="btn btn-sm btn btn-success">submit</button>
         </div>
       `,
@@ -71,6 +71,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     @Input() amtItemsNotNPlate: number;
     @Input() amtItemsNot4Plate: number;
     @Input() amtPlatesNCart: number;
+    @Input() amtOrderTotal: number;
 
     @Output() cOrderID: EventEmitter<string> = new EventEmitter<string>();
     @Output() cOrderAmt: EventEmitter<number> = new EventEmitter<number>();
@@ -80,12 +81,12 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
     elem: any; mID: any; fID: any; fAmt: any; item: any; itemTitle: any;
     forPlate: number; notForPlate: number; notNPlate: number; inCart: number;
-    plateAmt: number;
+    plateAmt: number; cartAmtTotal: number;
 
     nonDinnerItemsInCart: any; dinnerItemsInCart: any; desertItemsInCart: any;
     drinkItemsInCart: any; breakfastItemsInCart: any;
     foodPlates: any; foodPlateItemPrice: any; crntFoodPlate: any; lineItems4Bulk: any;
-    orderTotal = 0; cartTotal: number; userOrderID: any; amtSubmitted4Payment: number;
+    orderTotal: number; userOrderID: any; amtSubmitted4Payment: number;
 
     pretotal: any = []; plateData: any = []; dinnerItemsNotInPlate: Array<any> = [];
     plateOrder: any = []; prodsInCart: any = [];
@@ -98,6 +99,28 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     private compRef: ComponentRef<PlateItemComponent>;
     private static insertAfter(referenceNode, newNode) {
         referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    }
+    private static getCartTotal(elem: HTMLElement, arg: string): number {
+        const prices: Array<number> = [];
+        let subTotal: number;
+        const cartItem = elem.querySelector(arg);
+        if ( cartItem ) {
+            cartItem.setAttribute('aria-label', 'checked');
+            const allItems: any = cartItem.closest('.shoppingCart').querySelectorAll('[aria-label="checked"]');
+            allItems.forEach( (x, i) => {
+               console.log('xx:', i, ', ', x.getAttribute('data-price'));
+               prices.push(Number(x.getAttribute('data-price')));
+
+            });
+            subTotal = prices.reduce((a, b) => a + b);
+
+            // const itemPrice: number = Number(cartItem.getAttribute('data-price'));
+            // const subTotal: number = Number(cartItem.parentElement.querySelector('.cartSumTotal').getAttribute('data-total'));
+            // const cartSubTotal: number = (itemPrice + subTotal);
+
+            console.log('ele: ', subTotal);
+            return subTotal;
+        }
     }
     private static getItemsInCart(elem: HTMLElement, arg: string): number {
         let argArr: number;
@@ -138,9 +161,10 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 });*/
                 break;
         }
-        console.log('argArr: ', argArr);
+        // ** console.log('argArr: ', argArr);
         return argArr;
     }
+
 
     constructor(
         private cs: CartService,
@@ -163,6 +187,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
         this.elem = this.elemRef.nativeElement;
         this.orderSent = false;
+        this.cartAmtTotal = this.getOrderTotal();
 
         // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('.dinner-item');
         // this.prodsInCart = this.elem.querySelectorAll('button.close');
@@ -225,8 +250,25 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         return FoodCartComponent.getItemsInCart(this.elem, 'PLATES');
     }
 
+    getOrderTotal(): number {
+        const itemCost = FoodCartComponent.getCartTotal(this.elem, '[aria-label*="orderAmt"]');
+        return itemCost;
+
+        /*pricedItems.forEach( (x, i) => {
+            console.log('pi_ ', x.innerHTML);
+            // this.pretotal.push(x.innerHTML);
+        });*/
+        // this.cartTotal = this.pretotal.reduce((a, b) => a + b, 0);
+        // console.log('ordertotal: ', this.orderTotal);
+        // console.log('carttotal: ' + Number(this.cartTotal));
+
+
+    }
+
+
 
     /* // selection OR ordering methods // */
+
     generateOrderPackage(orderid) {
         // this.myOrderItems = this.nonDinnerItemsInCart;
         // console.log(this.myOrderItems.length);
@@ -326,26 +368,28 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 console.log('success getting orderID - ' + this.userOrderID);
 
 
-                const dOrderAmt = this.elem.querySelector('#orderAmt');
-                this.cOrderID.emit(this.userOrderID);
+                // const dOrderAmt = this.elem.querySelector('#orderAmt');
+                this.cs.setOrderId(this.userOrderID);
+                console.log('id: ', this.userOrderID);
+                /// ** this.cOrderID.emit(this.userOrderID);
+                /// ** this.cOrderAmt.emit(this.cartTotal);
                 // console.log('log ID: '+this.userOrderID);
                 this.lineItems4Bulk = this.generateOrderPackage(this.userOrderID);
                 /// === /// console.log('lineItems: == ', JSON.stringify(this.lineItems4Bulk));
                 // console.log('l4b: ', this.lineItems4Bulk['items']);
-                const pricedItems = this.lineItems4Bulk.items;
+                /*const pricedItems = this.lineItems4Bulk.items;
 
                 pricedItems.forEach( (x) => {
                     this.pretotal.push(x.price);
                 });
 
                 this.cartTotal = this.pretotal.reduce((a, b) => a + b, 0);
-                console.log('sum ' + Number(this.cartTotal));
+                console.log('sum ' + Number(this.cartTotal));*/
                 // this.amtSubmitted4Payment = this.cartTotal;
                 // console.log('lineItems : ', this.lineItems4Bulk);
 
                 // this.c_orderAmt.emit(dOrderAmt.innerHTML);
                 // this.cOrderAmt.emit(this.amtSubmitted4Payment);
-                // this.cOrderAmt.emit(this.cartTotal);
                 // this.closeOnSubmit.emit(null);
 
                 this.cs.addItems2Order(this.lineItems4Bulk).subscribe( res => {
@@ -371,24 +415,10 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                         // TODO: User must SignUp or SignIn before moving on to Payment
                         // == *** == this.openDialog(); == *** == //
 
+                        this.pushEvent.emit(null);
                         this.openDialog();
                     });
             });
-
-    }
-
-    getOrderTotal() {
-        // console.log('some');
-        this.foodPlateItemPrice = this.elem.querySelector('.price');
-        // console.log('p: '+this.foodPlateItemPrice);
-        if (this.foodPlateItemPrice) {
-            this.foodPlateItemPrice.classList.remove('price');
-            this.foodPlateItemPrice.classList.add('priceAdded');
-            // this.orderTotal += Number(this.foodPlateItemPrice.innerHTML);
-            this.orderTotal += Number(this.foodPlateItemPrice.innerHTML);
-        } else {
-            return;
-        }
 
     }
 
@@ -410,18 +440,18 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         dialogConfig.hasBackdrop = true;
         dialogConfig.disableClose = true;
         dialogConfig.closeOnNavigation = false;
-        dialogConfig.height = '400';
+        dialogConfig.height = '500';
         dialogConfig.width = '300';
         dialogConfig.data = {
-            name: 'Biota',
-            email: 'user@email.com',
+            name: 'OnDaMenu',
+            email: 'example@youremail.com',
             uid: 'u_00000',
-            upw: 'userpass'
+            upw: 'your_password'
         };
         const dialogRef = this.dialog.open(UserLoginModalComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog referenced by: ', result.email, '\n' );
-            console.log('Who confirmed: ', result.confirm_email, ' as their email. \n');
+            console.log('Who confirmed: ', result.upw, ' as their email. \n');
             console.log('And uses: ', result.confirm_upw, ' as their passcode \n');
             // this.sendOrder();
             this.router.navigate(['p'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
@@ -494,10 +524,11 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
             case 'none':
                 this.isPlateVisible = false;
                 this.getOrderTotal();
-                // console.log('item added ' + size);
+                console.log('item added ' + size);
                 break;
             case 'sm':
                 this.createPlate({plateSize: 'small', plateNum, platePrice: 800});
+                // this.getOrderTotal();
                 // console.log('not plated ' + this.dinnerItemsNotInPlate.length);
                 break;
             case 'md':
@@ -803,7 +834,10 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
     /// ======== LIFE CYCLE HOOKS ======== ///
 
-    ngOnInit() {}
+    ngOnInit() {
+        // this.orderTotal = 0;
+        // this.cartTotal = 0;
+    }
 
     ngOnChanges(changes): void {
         this.forPlate = this.amtItems4Plate;
@@ -811,6 +845,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         this.notNPlate = this.amtItemsNotNPlate;
         this.inCart = this.amtItemsNCart;
         this.plateAmt = this.amtPlatesNCart;
+        // this.orderTotal = this.amtOrderTotal;
 
         this.prodsInCart = this.elem.querySelectorAll('button.close');
         // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])');
@@ -829,15 +864,9 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
             console.log('prod: ', prod);
         }
 
-        console.log(
-            ' dinner items ', this.forPlate, ' \n',
-            ' dinner items NIP ', this.notNPlate, ' \n',
-            ' other items ', this.notForPlate, ' \n',
-            ' total itams in cart ', this.inCart, ' \n',
-            ' plates in cart ', this.plateAmt, ' \n'
-        );
-
-        // this.pushEvent.emit(null);
+        if (this.notForPlate > 0) {
+            this.changePlateSize('none');
+        }
 
         switch (true) {
             case (this.notNPlate === 2):
@@ -921,12 +950,26 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 break;*/
 
             default:
-                this.changePlateSize('none');
+                // this.changePlateSize('none');
                 break;
         }
+
+        console.log(
+            ' dinner items ', this.forPlate, ' \n',
+            ' dinner items NIP ', this.notNPlate, ' \n',
+            ' other items ', this.notForPlate, ' \n',
+            ' total itams in cart ', this.inCart, ' \n',
+            ' plates in cart ', this.plateAmt, ' \n',
+            ' orderTotal ', this.amtOrderTotal, ' \n',
+        );
+
     }
 
-    ngAfterViewInit(): void {}
+    ngAfterViewInit(): void {
+        const preTotal: number = this.elem.getElementsByClassName('cartSumTotal')[0].innerHTML;
+        console.log('sumTotal: ', preTotal);
+
+    }
 
     ngOnDestroy(): void {
     }

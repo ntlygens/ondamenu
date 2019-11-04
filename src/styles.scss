@@ -489,7 +489,7 @@ input.mat-input-element {
 
 
 .price::before, .priceAdded::before, .cartSumTotal::before, .miPrice .rounded::before {
-    content: '$';
+    content:'$';
 }
 .miPrice .rounded { line-height: 17px}
 .miPrice .fOdrBtn { background: #8fd450; }

@@ -39,7 +39,7 @@ const MAINROUTES: AmmRouteInterface[] = [
         component: FoodPaymentComponent,
         data: {
             state: 'PaymentMode',
-            animation: 'isRight'
+            animation: 'isLeft'
         },
         outlets: [ 'mainAppRO' ]
     },

@@ -25,7 +25,7 @@ import {Subject} from 'rxjs';
             <div class="uProfile" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_account_circle_black_18dp@2x.png)'}" (click)="openProfile();"></div>
             <div class="uSearch" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_search_black_24dp.png)'}" (click)="openSearch();"></div>
             <div class="uFilter" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_tune_black_24dp.png)'}" (click)="openFilter();"></div>
-            <div class="uCart" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_shopping_cart_black_24dp.png)'}" (click)="openCart();"></div>
+            <div class="uCart" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_shopping_cart_black_24dp.png)'}" (click)="toggleCart();"></div>
             <!--<div class="uCart" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_shopping_cart_black_24dp.png)'}" (click)="cartRef.viewCart(); toggleCartButton($event);"></div>-->
         </div>
         <div>
@@ -38,6 +38,8 @@ import {Subject} from 'rxjs';
                 [amtItemsNCart]="shoppingCart.getAllCartItems()"
                 [amtItemsNotNPlate]="shoppingCart.getNotPlatedItems()"
                 [amtPlatesNCart]="shoppingCart.getAmtPlates()"
+                [amtOrderTotal]="shoppingCart.getOrderTotal()"
+                (pushEvent)="toggleCart();"
             ></amm-food-cart>
             <amm-food-cart-ui #cartUI [dinnerSelection]="shoppingCart.getDinnerItems()" [cartSelection]="shoppingCart.getAllCartItems()" [dinnerNotSelected]=""></amm-food-cart-ui>
         </div>
@@ -158,7 +160,7 @@ export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.btmSht.open(comp, this.filterCnfg );
     }
 
-    openCart() {
+    toggleCart() {
         // this.portal = this.cartSelectedPortal;
         // this.cartSelectedPortal = this.cartComponentPortal;
         if ( this.crtState === 'close') {

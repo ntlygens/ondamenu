@@ -15,7 +15,6 @@ export class StorageService {
     private setPrflStatus$: Subject<boolean> = new BehaviorSubject<boolean>(false);
     private setMnuData$: Subject<MerchantInfoData> = new BehaviorSubject<MerchantInfoData>(null);
 
-
     constructor() {
         this.isStartPg$ = this.setStartPg$.asObservable();
         this.menuBnrData$ = this.setMnuData$.asObservable();

@@ -8,14 +8,14 @@ import { CustomValidators, ConfirmValidEmailMatcher, ConfirmValidModalEmailMatch
   selector: 'amm-user-login-modal',
   template: `
     <form *ngIf='!signUpForm' [formGroup]='userAuthForm' novalidate>
-      <h1 mat-dialog-title>{{data.name}}</h1>
-      <img src='../biota/assets/leaf_icon.jpg' class='modal_icon' />
+      <!--<img src='../biota/assets/backgrounds/mobile/bckgrnd-1-noBckgrnd.png' class='modal_icon' />-->
+        <div class="imgLOGO"></div>
       <p>Please sign in or sign up below</p>
       <div mat-dialog-content>
 
         <div formGroupName='submitLoginForm'>
           <mat-form-field>
-            <input matInput placeholder='enter your email' type='email' formControlName='email' name='email' [errorStateMatcher]='confirmValidEmailMatcher' />
+            <input matInput type='email' formControlName='email' name='email' [(ngModel)]='data.email' [errorStateMatcher]='confirmValidEmailMatcher' />
             <mat-error>
               {{errors[emailErrInst]}}
             </mat-error>
@@ -38,9 +38,8 @@ import { CustomValidators, ConfirmValidEmailMatcher, ConfirmValidModalEmailMatch
     </form>
 
     <form *ngIf='signUpForm' ngForm='userAuthForm' novalidate>
-      <h1 mat-dialog-title>{{data.name}}</h1>
-      <img src='../biota/assets/leaf_icon.jpg' class='modal_icon' />
-      <p>Please sign in or sign up below</p>
+        <div class="imgLOGO"></div>
+        <p>Please sign in or sign up below</p>
       <div mat-dialog-content>
 
           <div [ngModelGroup]='submitEmailGroup'>
@@ -81,10 +80,21 @@ import { CustomValidators, ConfirmValidEmailMatcher, ConfirmValidModalEmailMatch
   styles: [`
     form {
       text-align: center;
+        height: 100%;
     }
     .mat-dialog-actions {
       justify-content: center;
     }
+      .imgLOGO {
+          overflow: hidden;
+          width: 80%;
+          height: 120px;
+          text-align: center;
+          vertical-align: middle;
+          background: url('../../../../assets/backgrounds/mobile/bckgrnd-1-noBckgrnd.png') 50% 40% no-repeat;
+          background-size: cover;
+          margin: auto;
+      }
   `]
 })
 export class UserLoginModalComponent implements OnInit {

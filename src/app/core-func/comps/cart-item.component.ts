@@ -10,9 +10,7 @@ import { CartService } from '../srvcs/cart.service';
         <div class="cartItem title">
           {{cartItem.prod_name}} x {{cartItem.amt}}
         </div>
-        <div class="cartItem amt price">
-          {{cartItem.price}}
-        </div>
+        <div class="cartItem amt price">{{cartItem.price | cloverUserPrice}}</div>
         <button
             class="btn btn-sm btn-xs rmvBtn close btn-warning"
             id="deleteBtn"
@@ -48,7 +46,8 @@ export class CartItemComponent implements OnInit, OnDestroy {
             title: this.cartItem.cnm,
             role: 'group',
             'aria-label': 'food-item',
-            class: 'd-flex ' + this.cartItem.cnm.toLowerCase() + '-item'
+            class: 'd-flex ' + this.cartItem.cnm.toLowerCase() + '-item',
+            'data-price': this.cartItem.price
         });
 
     }

@@ -115,7 +115,38 @@ export class FoodPaymentComponent implements OnInit, AfterViewInit {
     /// ======== APP FUNCTIONS ======== ///
 
     sendData4Payment(): void {
+        if (this.submitForm.dirty && this.submitForm.valid) {
+            this.orderSbmtd = false;
+            const cHldrName: string = this.submitForm.value.name.first + ' ' + this.submitForm.value.name.last;
+            const ccType: string = this.submitForm.value.ccdata.cardType;
+            const ccNmbr: string = this.submitForm.value.ccdata.cardNumber;
+            const ccCvv: string = this.submitForm.value.ccdata.cvv;
+            const ccZip: string = this.submitForm.value.ccdata.zip;
+            const ccExpMth: string = this.submitForm.value.ccdata.expMonth;
+            const ccExpYr: string = this.submitForm.value.ccdata.expYear;
+            const ccExpDate: string = ccExpMth + ccExpYr;
 
+            const oAmt: number = this.orderAmount;
+            const oID: string = this.orderId;
+
+            this.ps.sendPayment(`${oID}`, `${oAmt}`, `${this.mID}`, `${ccNmbr}`, `${ccExpMth}`, `${ccExpYr}`, `${ccCvv}`, `${ccZip}` )
+                .subscribe(  res => {
+                        if (res === Object) {
+                            console.log( 'obj res: ', JSON.stringify(res));
+                        } else {
+                            console.log( 'res: ', res);
+                        }
+                    },
+                    (err) => {
+                        console.log('sendPayment_Error: ', err);
+                    },
+                    () => {
+                        console.log('Success, submitted payment;');
+                    });
+
+
+
+        }
     }
 
     cancelOrder() {

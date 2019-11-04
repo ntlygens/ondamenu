@@ -23,6 +23,8 @@ export class CartService {
     readonly getCartItems4PlateCount$: any;
     readonly getCartItemsNot4PlateCount$: any;
     readonly getCartItemsNotNPlateCount$: any;
+    readonly orderID$: any;
+    readonly orderAmt$: any;
     itemCount$: number; nonItemCount$: number; nonPltdItemCount$: number;
 
     private setCartItem$: Subject<CartItemData> = new BehaviorSubject<CartItemData>(null);
@@ -30,8 +32,14 @@ export class CartService {
     private setCartItemsNot4PlateCount$: Subject<any> = new BehaviorSubject<any>(0);
     private setCartItemsNotNPlateCount$: Subject<any> = new BehaviorSubject<any>(0);
     private setCartViewContainerRef$: Subject<TemplateRef<any>> = new BehaviorSubject<TemplateRef<any>>(null);
+    private setOrderID$: Subject<string> = new BehaviorSubject<string>(null);
+    private setOrderAmt$: Subject<number> = new BehaviorSubject<number>(null);
 
     private dQueryURL = 'https://smashradio1fm.com/php/';
+
+    private static createJSONPostHeader(headers: HttpHeaders) {
+        headers.append('Content-Type', 'application/json');
+    }
 
     constructor(
         private http: HttpClient
@@ -41,10 +49,9 @@ export class CartService {
         this.getCartItemsNot4PlateCount$ = this.setCartItemsNot4PlateCount$.asObservable();
         this.getCartItemsNotNPlateCount$ = this.setCartItemsNotNPlateCount$.asObservable();
         this.cartViewContainer$ = this.setCartViewContainerRef$.asObservable();
-    }
 
-    createJSONPostHeader(headers: HttpHeaders) {
-        headers.append('Content-Type', 'application/json');
+        this.orderID$ = this.setOrderID$.asObservable();
+        this.orderAmt$ = this.setOrderAmt$.asObservable();
     }
 
     setCartItemData(data) {
@@ -55,6 +62,15 @@ export class CartService {
         // console.log('amt from srvc: ', this.getCartItems4PlateCount$);
         // console.log('amtInPLT: ', document.querySelectorAll('amm-cart-item[title^="DINNER"]:not([data-name*="plated"])') );
     }
+
+    setOrderId(orderid) {
+        this.setOrderID$.next(orderid);
+    }
+
+    setOrderAmt(orderamt) {
+        this.setOrderAmt$.next(orderamt);
+    }
+
 
     getOrderId(mID: string): Observable<any> {
         /// USE BELOW FOR DEVELOPMENT ///
@@ -104,7 +120,7 @@ export class CartService {
         nuParamsAddItems2Order = items;
 
         const headers = new HttpHeaders();
-        this.createJSONPostHeader(headers);
+        CartService.createJSONPostHeader(headers);
 
         console.log('bdy \n' + JSON.stringify(items));
         console.log('foodOrder2Send: ', nuParamsAddItems2Order );

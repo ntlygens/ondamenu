@@ -235,7 +235,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // TODO: setup matchmedia for mobile test //
         this.mobileOn = true;
-        // this.elem.setAttribute('dFtr', 'footer.openCart()');
+        // this.elem.setAttribute('dFtr', 'footer.toggleCart()');
 
     }
 
@@ -248,6 +248,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.fullMenuBtn.isActive = true;
         // this.dFtr.emit('show');
         // this.compRef.instance.dFtr = 'setInst($event)';
+        // this.dFtr.emit(null);
     }
 
     ngOnDestroy(): void {
