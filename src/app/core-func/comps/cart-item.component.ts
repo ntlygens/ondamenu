@@ -46,8 +46,8 @@ export class CartItemComponent implements OnInit, OnDestroy {
             title: this.cartItem.cnm,
             role: 'group',
             'aria-label': 'food-item',
-            class: 'd-flex ' + this.cartItem.cnm.toLowerCase() + '-item',
-            'data-price': this.cartItem.price
+            class: 'd-flex revenue ' + this.cartItem.cnm.toLowerCase() + '-item',
+            'data-price': this.cartItem.price,
         });
 
     }

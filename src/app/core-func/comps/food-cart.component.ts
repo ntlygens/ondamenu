@@ -33,8 +33,8 @@ import {ActivatedRoute, Router} from '@angular/router';
     template: `
         <div class="cartItemHldr">Shopping Cart</div>
         <ng-template #cart></ng-template>
-        <div id="tabulator" class="btn-group justify-content-start btn-group-vertical" role="group" aria-label="orderAmt" style="width: inherit;">
-            <div id="orderAmt" class="btn btn-sm cartSumTotal btn-default">{{amtOrderTotal}}</div>
+        <div id="tabulator" class="btn-group justify-content-start btn-group-vertical" role="group" aria-label="" style="width: inherit;">
+            <div id="orderAmt" class="btn btn-sm cartSumTotal btn-default">{{amtOrderTotal | cloverUserPrice}}</div>
             <button type="submit" id="submit" value="Submit" (click)="createOrder($event);" class="btn btn-sm btn btn-success">submit</button>
         </div>
       `,
@@ -102,24 +102,30 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
     private static getCartTotal(elem: HTMLElement, arg: string): number {
         const prices: Array<number> = [];
-        let subTotal: number;
-        const cartItem = elem.querySelector(arg);
-        if ( cartItem ) {
-            cartItem.setAttribute('aria-label', 'checked');
-            const allItems: any = cartItem.closest('.shoppingCart').querySelectorAll('[aria-label="checked"]');
-            allItems.forEach( (x, i) => {
+        let subTotal: number; let total: number; const origCartAmt = 0;
+        // const cartItems = elem.querySelectorAll(arg);
+        const cartItems = elem.querySelectorAll(arg);
+        if ( cartItems ) {
+            /// cartItem.setAttribute('aria-label', 'checked');
+            // const allItems: any = cartItem.closest('.shoppingCart').querySelectorAll('[aria-label="checked"]');
+            cartItems.forEach( (x, i) => {
                console.log('xx:', i, ', ', x.getAttribute('data-price'));
                prices.push(Number(x.getAttribute('data-price')));
-
             });
-            subTotal = prices.reduce((a, b) => a + b);
+            if ( prices.length === 0 ) {
+                total = 0;
+            } else {
+                subTotal = prices.reduce((a, b) => a + b);
+                total = subTotal + origCartAmt;
+            }
+
 
             // const itemPrice: number = Number(cartItem.getAttribute('data-price'));
             // const subTotal: number = Number(cartItem.parentElement.querySelector('.cartSumTotal').getAttribute('data-total'));
             // const cartSubTotal: number = (itemPrice + subTotal);
 
-            console.log('ele: ', subTotal);
-            return subTotal;
+            console.log('ele: ', subTotal, ' tle: ', total);
+            return total;
         }
     }
     private static getItemsInCart(elem: HTMLElement, arg: string): number {
@@ -251,8 +257,8 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     getOrderTotal(): number {
-        const itemCost = FoodCartComponent.getCartTotal(this.elem, '[aria-label*="orderAmt"]');
-        return itemCost;
+        // const itemCost
+        return FoodCartComponent.getCartTotal(this.elem, '.revenue');
 
         /*pricedItems.forEach( (x, i) => {
             console.log('pi_ ', x.innerHTML);
@@ -547,6 +553,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
                 const platedItemsMD = this.crntFoodPlate.querySelectorAll('amm-cart-item[aria-label*="food-item"]');
                 platedItemsMD.forEach( (x, i) => {
+                    x.classList.remove('revenue');
                     x.setAttribute('data-name', 'plated');
                     if (x.children[1].classList.contains('price')) {
                         x.children[1].classList.remove('price');
@@ -570,6 +577,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
                 const platedItemsLG = this.crntFoodPlate.querySelectorAll('amm-cart-item[aria-label*="food-item"]');
                 platedItemsLG.forEach( (x, i) => {
+                    x.classList.remove('revenue');
                     x.setAttribute('data-name', 'plated');
                     if (x.children[1].classList.contains('price')) {
                         x.children[1].classList.remove('price');
@@ -712,6 +720,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
         const platedItemsSM = this.crntFoodPlate.querySelectorAll('amm-cart-item');
         (platedItemsSM).forEach( (x) => {
+            x.classList.remove('revenue');
             x.setAttribute('data-name', 'plated');
             if (x.children[1].classList.contains('price')) {
                 x.children[1].classList.remove('price');

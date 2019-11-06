@@ -29,12 +29,15 @@ export class PlateItemComponent implements OnInit {
     ) {
         this.elem = this.elemRef.nativeElement;
         this.cs.setElemAttributes(this.elem, {
-            class: 'd-flex flex-column'
+            class: 'd-flex flex-column revenue'
         });
     }
 
     ngOnInit() {
-        this.elem.setAttribute('data-name', 'food-plate_' + this.plateItem.plateNum );
+        this.cs.setElemAttributes(this.elem,{
+            'data-name': 'food-plate_' + this.plateItem.plateNum,
+            'data-price': this.plateItem.platePrice
+        } );
     }
 
 }
