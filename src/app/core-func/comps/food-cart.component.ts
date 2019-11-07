@@ -1,6 +1,6 @@
 import {
     AfterViewInit,
-    ChangeDetectionStrategy,
+    // ChangeDetectionStrategy,
     Component, ComponentFactoryResolver, ComponentRef,
     ElementRef,
     EventEmitter,
@@ -12,21 +12,21 @@ import {
     Renderer2,
     ViewChild,
     ViewContainerRef,
-    ApplicationRef, Injector, EmbeddedViewRef, ChangeDetectorRef
+    // ApplicationRef, Injector, EmbeddedViewRef, ChangeDetectorRef
 } from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {CartService} from '../srvcs/cart.service';
-import { PlateItemData } from '../../amm.enum';
+// import { PlateItemData } from '../../amm.enum';
 import {PlateItemComponent} from './plate-item.component';
 
 import { UserLoginModalComponent } from '../modal/user-login-modal/user-login-modal.component';
-import { ModalComponent } from '../modal/modal.component';
+// import { ModalComponent } from '../modal/modal.component';
 
-import {HttpParams} from '@angular/common/http';
-import {of} from 'rxjs';
-import {Arguments} from '@angular/cli/models/interface';
-import { CloverDbPrice } from '../price-change.pipe';
-import {ActivatedRoute, Router} from '@angular/router';
+// import {HttpParams} from '@angular/common/http';
+// import {of} from 'rxjs';
+// import {Arguments} from '@angular/cli/models/interface';
+// import { CloverDbPrice } from '../price-change.pipe';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'amm-food-cart',
@@ -180,9 +180,9 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         private resolver: ComponentFactoryResolver,
         private router: Router,
         private route: ActivatedRoute,
-        private appRef: ApplicationRef,
-        private cdRef: ChangeDetectorRef,
-        private injector: Injector
+        // private appRef: ApplicationRef,
+        // private cdRef: ChangeDetectorRef,
+        // private injector: Injector
     ) {
         /*const params = (new URL(document.location.href)).searchParams;
         const searchParams = new URLSearchParams(params);
@@ -283,7 +283,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         this.nonDinnerItemsInCart = this.elem.querySelectorAll('amm-cart-item:not([title*="DINNER"])');
 
         if (foodPlates.length > 0) {
-            foodPlates.forEach( (x, i) => {
+            foodPlates.forEach( (x) => {
                 const plateTitle = x.querySelector('#plateSize').innerHTML;
                 const plateCost = x.querySelector('#platePrice').innerHTML * 100;
                 // console.log('plateTitle = ', plateTitle);
@@ -347,9 +347,9 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         });*/
         // ### ---- console.log('full order: ' + JSON.stringify(this.plateOrder));
         // console.log('mi - '+JSON.stringify(this.myOrderItems));
-        const fullOrder = {orderid, mID: this.mID, items: this.plateOrder };
+        // const fullOrder = {orderid, mID: this.mID, items: this.plateOrder };
         // console.log('fullOrder: ', fullOrder);
-        return fullOrder;
+        return {orderid, mID: this.mID, items: this.plateOrder };
     }
 
     createOrder(evt) {
@@ -546,13 +546,13 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 this.crntFoodPlate.querySelector('#plateSize').innerHTML = 'medium';
                 this.orderTotal -= 7;
                 console.log('mdNIP: ', this.notNPlate);
-                this.dinnerItemsNotInPlate.forEach((x, i) => {
+                this.dinnerItemsNotInPlate.forEach((x) => {
                     this.crntFoodPlate.appendChild(x);
                     // console.log('plates: '+this.foodPlates.childList);
                 });
 
                 const platedItemsMD = this.crntFoodPlate.querySelectorAll('amm-cart-item[aria-label*="food-item"]');
-                platedItemsMD.forEach( (x, i) => {
+                platedItemsMD.forEach( (x) => {
                     x.classList.remove('revenue');
                     x.setAttribute('data-name', 'plated');
                     if (x.children[1].classList.contains('price')) {
@@ -570,13 +570,13 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 this.crntFoodPlate.querySelector('#plateSize').innerHTML = 'large';
                 this.orderTotal -= 10;
                 console.log('mdNIP: ', this.notNPlate);
-                this.dinnerItemsNotInPlate.forEach((x, i) => {
+                this.dinnerItemsNotInPlate.forEach((x) => {
                     this.crntFoodPlate.appendChild(x);
                     // console.log('plates: '+this.foodPlates.childList);
                 });
 
                 const platedItemsLG = this.crntFoodPlate.querySelectorAll('amm-cart-item[aria-label*="food-item"]');
-                platedItemsLG.forEach( (x, i) => {
+                platedItemsLG.forEach( (x) => {
                     x.classList.remove('revenue');
                     x.setAttribute('data-name', 'plated');
                     if (x.children[1].classList.contains('price')) {
@@ -878,12 +878,23 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         }
 
         switch (true) {
-            case (this.notNPlate === 2):
-                if (this.forPlate < 5) {
+            case (this.plateAmt < 1 ):
+                if (this.notNPlate === 3) {
+                    this.changePlateSize('sm');
+                }
+                break;
+            case (this.plateAmt >= 1):
+                /*if (this.forPlate < 5) {
                     this.changePlateSize('none');
-                } else if ( this.forPlate === 5 ) {
+                } else */
+                if ( this.forPlate < 6 && this.notNPlate === 2) {
                     this.newPlateQuery('md');
-                } else if ( this.forPlate === 7 ) {
+                } else if ( (this.forPlate < 8 && this.forPlate > 5) && this.notNPlate === 2 ) {
+                    this.newPlateQuery('lg');
+                } else if (this.notNPlate === 3) {
+                    this.changePlateSize('sm');
+                }
+                /* else if ( this.forPlate === 7 ) {
                     this.newPlateQuery('lg');
                 } else if ( this.forPlate === 8 ) {
                     this.newPlateQuery('md');
@@ -904,8 +915,14 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                     this.changePlateSize('sm');
                 } else if ( this.forPlate === 11 ) {
                     this.changePlateSize('sm');
-                }
+                }*/
                 break;
+            /*case (this.forPlate === 6):
+                if (this.notNPlate === 3) {
+                    this.changePlateSize('sm');
+                }
+                break;*/
+
             /*case (this.notNPlate === 2):
                 // if (this.notForPlate > 0) {
                 if ( this.forPlate === 5 ) {
