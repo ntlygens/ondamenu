@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
-import { StorageService } from '../../core-func/srvcs/storage.service';
+import { GuiService } from '../../core-func/srvcs/gui.service';
 
 @Component({
     selector: 'amm-splash',
@@ -26,15 +26,18 @@ export class SplashComponent implements OnInit {
     mURL: any;
     mURL2: any;
     elem: any;
+    redirect1 = 'https://smashradio1fm.com/biota/signin';
+    redirect2 = 'http://localhost:4200/signin';
+    redirect3 = 'http://192.168.1.151:4200/signin';
 
     constructor(
-        private ss: StorageService,
+        private gs: GuiService,
         private route: ActivatedRoute,
         private router: Router,
         private elemRef: ElementRef
 
     ) {
-        this.mURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=http://192.168.1.151:4200/signin'; // Local Mobile/Phone Testing
+        this.mURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=' + this.redirect2; // Local Mobile/Phone Testing
         // this.mURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=http://localhost:4200/signin'; // local Computer Testing
         // this.mURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=https://smashradio1fm.com/biota/signin';
         this.mURL2 = 'https://api.clover.com/auth/authorize?client_id=Y805R8C741M54';
@@ -59,13 +62,13 @@ export class SplashComponent implements OnInit {
     }
 
     startUserXp() {
-        this.ss.setStartPg(false);
+        this.gs.setStartPg(false);
         this.router.navigate(['u'], {relativeTo: this.route});
     }
 
     startMrchntXp() {
         console.log('accessed from web');
-        this.ss.setStartPg(false);
+        this.gs.setStartPg(false);
         window.open(`${this.mURL}`, '_self');
     }
 

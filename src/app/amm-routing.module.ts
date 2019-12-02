@@ -43,6 +43,15 @@ const MAINROUTES: AmmRouteInterface[] = [
         },
         outlets: [ 'mainAppRO' ]
     },
+    {
+        path: 'm',
+        loadChildren: './merchant/merchant.module#MerchantModule',
+        data: {
+            state: 'MerchantMode',
+            animation: 'isLeft'
+        },
+        outlets: [ 'mainAppRO' ]
+    },
     { path: '**', redirectTo: '', pathMatch: 'full'}
 
 ];

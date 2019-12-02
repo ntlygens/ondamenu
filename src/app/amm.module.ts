@@ -13,6 +13,7 @@ import { NgMatModule } from './ng-mat/ng-mat.module';
 import { PortalModule } from '@angular/cdk/portal';
 
 import { IntroModule } from './intro/intro.module';
+import { MerchantModule } from './merchant/merchant.module';
 
 import { AmmComponent } from './amm.component';
 import { HeaderBarComponent } from './core-func/comps/header-bar.component';
@@ -51,6 +52,7 @@ import { FoodPaymentComponent } from './core-func/comps/food-payment.component';
         // ScrollingModule,
         PortalModule,
         IntroModule,
+        MerchantModule
 
     ],
     providers: [

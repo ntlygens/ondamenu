@@ -27,7 +27,7 @@ import { UserLoginModalComponent } from '../modal/user-login-modal/user-login-mo
 // import {Arguments} from '@angular/cli/models/interface';
 // import { CloverDbPrice } from '../price-change.pipe';
 import { ActivatedRoute, Router } from '@angular/router';
-    
+
 @Component({
     selector: 'amm-food-cart',
     template: `
@@ -124,7 +124,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
             // const subTotal: number = Number(cartItem.parentElement.querySelector('.cartSumTotal').getAttribute('data-total'));
             // const cartSubTotal: number = (itemPrice + subTotal);
 
-            console.log('ele: ', subTotal, ' tle: ', total);
+            // console.log('ele: ', subTotal, ' tle: ', total);
             return total;
         }
     }

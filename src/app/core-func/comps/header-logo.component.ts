@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { StorageService } from '../srvcs/storage.service';
+import { GuiService } from '../srvcs/gui.service';
 
 @Component({
     selector: 'amm-header-logo',
@@ -22,7 +22,7 @@ import { StorageService } from '../srvcs/storage.service';
 export class HeaderLogoComponent implements OnInit {
 
     constructor(
-        private ss: StorageService,
+        private gs: GuiService,
         private router: Router,
         private route: ActivatedRoute
     ) { }
@@ -31,7 +31,7 @@ export class HeaderLogoComponent implements OnInit {
     }
 
     goHome() {
-        this.ss.setStartPg(true);
+        this.gs.setStartPg(true);
         this.router.navigate([''], {});
     }
 

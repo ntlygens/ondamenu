@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit, HostListener, ViewChildren, ViewContainerRef, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnDestroy, OnInit, HostListener, ViewChildren, ViewContainerRef, ViewChild, ElementRef, NgZone} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { slider } from './core-func/animations/animations.component';
-import { StorageService } from './core-func/srvcs/storage.service';
+import { GuiService } from './core-func/srvcs/gui.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/overlay';
@@ -18,13 +18,27 @@ export class AmmComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<any>();
     isStartPg: boolean;
+    isMobile: boolean;
     state = 'show';
 
+    private static getScreenSize(mql: MediaQueryList) {
+        return mql.matches;
+    }
+
+
     constructor(
-        private ss: StorageService,
+        private zone: NgZone,
+        private gs: GuiService,
         public scroll: ScrollDispatcher
     ) {
         // this.scrolllist.scrollable.elementScrolled();
+        /// MOBILE SCREEN SIZE QUERY ///
+        const mql: MediaQueryList = window.matchMedia('(max-width: 765px)');
+        this.isMobile = AmmComponent.getScreenSize(mql);
+        console.log('isMobile: ', this.isMobile);
+        this.gs.setMediaDevice(this.isMobile);
+        /// MOBILE SCREEN SIZE END ///
+
     }
 
 
@@ -61,12 +75,13 @@ export class AmmComponent implements OnInit, OnDestroy {
         }
 
     ngOnInit(): void {
-        this.ss.isStartPg$.pipe(takeUntil(this.destroy$)).subscribe(
+        this.gs.isStartPg$.pipe(takeUntil(this.destroy$)).subscribe(
             (res) => {
                 this.isStartPg = res;
                 console.log('issplash res: ', this.isStartPg);
             }
         );
+
     }
 
     ngOnDestroy(): void {
