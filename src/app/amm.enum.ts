@@ -45,6 +45,7 @@ export interface AmmRouteInterface {
 }
 
 export interface MerchantInfoData {
+    grade: string;
     client_id: string;
     logo?: string;
     username: string;
@@ -71,8 +72,33 @@ export interface MerchantInfoData {
     food?: LocFoodType;
 }
 
-export interface MerchantDOHRating {
-    rating: string;
+export interface MerchantDOHRatingData {
+    camis: string;
+    dba: string;
+    boro: string;
+    building: number;
+    street: string;
+    zipcode: number;
+    phone: number;
+    cuisine_description: string;
+    inspection_date: string;
+    action: string;
+    violation_code: string;
+    violation_description: string;
+    critical_flag: string;
+    score: number;
+    grade: string;
+    grade_date: string;
+    record_date: string;
+    inspection_type: string;
+    latitude: number;
+    longitude: number;
+    community_board: number;
+    council_district: number;
+    census_tract: number;
+    bin: number;
+    bbl: number;
+    nta: string;
 }
 
 export interface CategoryProductsData {

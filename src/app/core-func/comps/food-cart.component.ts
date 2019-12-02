@@ -27,7 +27,7 @@ import { UserLoginModalComponent } from '../modal/user-login-modal/user-login-mo
 // import {Arguments} from '@angular/cli/models/interface';
 // import { CloverDbPrice } from '../price-change.pipe';
 import { ActivatedRoute, Router } from '@angular/router';
-
+    
 @Component({
     selector: 'amm-food-cart',
     template: `

@@ -16,6 +16,7 @@ import { StorageService } from '../srvcs/storage.service';
             >
                 <amm-list-item
                     [ngClass]='{ "first" : isFirst, "last" : isLast }'
+                    [itemGrade]='merchant.grade'
                     [itemID]='merchant.client_id'
                     [itemImage]='merchant.logo'
                     [itemTitle]='merchant.username'

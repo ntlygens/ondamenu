@@ -4,7 +4,9 @@ import { Component, OnInit, Input } from '@angular/core';
     selector: 'amm-list-item',
     template: `
         <div class="dohSrvcs">
-            <amm-nydoh></amm-nydoh>
+            <amm-nydoh
+                [merchantGrade]="itemGrade"
+            ></amm-nydoh>
         </div>
         <div class='imgStngs'>
             <img *ngIf='!itemImage' class="rounded logo" src="../../../assets/core-assets/escovich.png" />
@@ -239,6 +241,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ListItemComponent implements OnInit {
     @Input() itemID = 'defaultID';
+    @Input() itemGrade = 'P';
     @Input() itemImage = 'assets/core-assets/placeholder1.jpg';
     @Input() itemTitle = 'Item Title';
     @Input() itemSlogan = 'Item Slogan';
@@ -255,6 +258,7 @@ export class ListItemComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
+        // console.log('my camis = ', this.camis);
     }
 
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MerchantDOHRating } from '../../../amm.enum';
+import { Component, OnInit, Input } from '@angular/core';
+import { MerchantDOHRatingData } from '../../../amm.enum';
 import { DohService } from '../../srvcs/doh.service';
 
 
@@ -9,8 +9,8 @@ import { DohService } from '../../srvcs/doh.service';
           <div id="dohCntnr" class="flex-column">
               <h1>nydoh</h1>
               <div class="rounded rate">
-                  <h2 *ngIf="mDohData">{{mDohData.rating}}</h2>
-                  <h2 *ngIf="!mDohData">a</h2>
+                  <!--<h2 *ngIf="mDohData">{{merchantCAMIS}}</h2>-->
+                  <h2>{{merchantGrade}}</h2>
               </div>
           </div>
       `,
@@ -36,7 +36,8 @@ import { DohService } from '../../srvcs/doh.service';
       `]
 })
 export class NydohComponent implements OnInit {
-    mDohData: MerchantDOHRating;
+    @Input() merchantGrade: string;
+    mDohData: MerchantDOHRatingData;
 
     constructor(
         private DohSvc: DohService,
@@ -44,12 +45,13 @@ export class NydohComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-
+        // console.log('camis number: ', this.merchantCAMIS);
+        // this.getMerchantDOHData();
 
     }
     getMerchantDOHData() {
-        this.DohSvc.getMrchDOHData('merchantinfihere').then(
-            (res: MerchantDOHRating) => {
+        this.DohSvc.getMrchDOHData('41491419').then(
+            (res: MerchantDOHRatingData) => {
                 this.mDohData = res;
 
             },
