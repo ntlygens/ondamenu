@@ -14,7 +14,7 @@ import { CategoryListComponent } from './comps/category-list.component';
 import { FoodOrderComponent } from './comps/food-order.component';
 // import { FoodCartComponent } from './comps/food-cart.component';
 // import { FoodPaymentComponent } from './comps/food-payment.component';
-import { CloverUserPrice, CloverDbPrice } from './price-change.pipe';
+import { CloverUserPrice, CloverDbPrice, EnumToArrayPipe } from './amm-data.pipe';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { FoodCartUiComponent } from './comps/food-cart-ui.component';
 // import { PlateItemComponent } from './comps/plate-item.component';
@@ -38,6 +38,7 @@ import { ModalComponent } from './modal/modal.component';
         // FoodPaymentComponent,
         CloverUserPrice,
         CloverDbPrice,
+        EnumToArrayPipe,
         FoodCartUiComponent,
         // PlateItemComponent,
         // CartItemComponent,
@@ -53,6 +54,7 @@ import { ModalComponent } from './modal/modal.component';
         MenuComponent,
         FoodOrderComponent,
         CloverUserPrice,
+        EnumToArrayPipe,
         FoodCartUiComponent,
         // CartItemComponent,
         UserLoginModalComponent,

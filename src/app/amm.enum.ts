@@ -19,13 +19,46 @@ export enum LocSrvcStatus {
     CLOSED = 'closed' as any
 }
 
-export enum LocFoodType {
-    VEGAN = 'vegan' as any,
-    VEGETARIAN = 'vegetarian' as any,
-    PESCATARIAN = 'pescatarian' as any,
-    ETHNIC = 'ethnic' as any,
-    AMERICAN = 'american' as any,
+export enum LocSrvcModel {
+    BUFFET = 'Buffet',
+    PREFIXED = 'PreFixed',
+    DEFINED = 'Defined',
+    UNDEFINED = 'Undefined'
 }
+
+export enum LocSrvcCuisine {
+    ETHNIC = 'Ethnic',
+    AMERICAN = 'American',
+    ITALIAN = 'Italian',
+    FRENCH = 'French',
+    INDIAN = 'Indian',
+    GREEK = 'Greek',
+    AFRICAN = 'African',
+    CARIBBEAN = 'Caribbean',
+    MEDITERRANEAN = 'Mediterranean',
+    OTHER = 'Other',
+}
+
+export enum LocSrvcDining {
+    FAST_FOOD = 'Fast Food',
+    FAST_CASUAL = 'Fast Casual',
+    CASUAL_DINING = 'Casual Dining',
+    PREMIUM_CASUAL = 'Premium Casual',
+    FAMILY_DINING = 'Family Dining',
+    FINE_DINING = 'Fine Dining',
+    CAFE_BISTRO = 'Cafe / Bistro',
+    BUFFET = 'Buffet',
+    POPUP = 'PopUp',
+}
+
+export enum LocSrvcRstrctns {
+    VEGAN = 'vegan',
+    VEGETARIAN = 'vegetarian',
+    PESCATARIAN = 'pescatarian',
+    ETHNIC = 'ethnic',
+    AMERICAN = 'american',
+}
+
 
 export interface AmmRouteInterface {
   title?: string;
@@ -45,31 +78,39 @@ export interface AmmRouteInterface {
 }
 
 export interface MerchantInfoData {
-    grade: string;
     client_id: string;
-    logo?: string;
     username: string;
+    email: string;
+    goods: number;
+    produce: number;
+    fish: number;
+    meat: number;
+    halal: number;
+    kosher: number;
+    temp: number;
+    grade: string;
+    logo: string;
+    location: string;
+    promo: string;
+    banner: string;
+    employee_id: string;
     slogan?: string;
-    phone: string;
     bio?: string;
-    price?: string;
+    bldg_num: string;
     address: string;
+    boro: string;
     state: string;
     zip: number;
-    /*contact: {
-      email?: string;
-      phone: string;
-      address: {
-        street: string;
-        city: string;
-        state: string;
-        zip: string;
-      };
-    };*/
+    phone: string;
+    pos_sys: number;
+    food?: LocSrvcCuisine;
+    concept?: LocSrvcDining;
+    model?: LocSrvcModel;
+    restrictions?: LocSrvcRstrctns;
     delivery: boolean;
-    concept?: LocSrvcType;
-    status?: LocSrvcStatus;
-    food?: LocFoodType;
+    shipping: boolean;
+    loc_status: LocSrvcStatus;
+
 }
 
 export interface MerchantDOHRatingData {

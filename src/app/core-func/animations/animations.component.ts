@@ -4,7 +4,8 @@ import {
     query as q, transition, keyframes,
     animateChild, state
 } from '@angular/animations';
-const query = (s, a, o = { optional: true }) => q(s, a, o );
+const query = (s, a, o) => q(s, a, o );
+// const query = (s, a, o = { optional: true }) => q(s, a, o );
 
 export const fader =
     trigger('routeAnimations', [
@@ -17,12 +18,12 @@ export const fader =
                     opacity: 0,
                     transform: 'translateX(100%)'
                 }),
-            ]),
+            ], {optional: true}),
             query(':enter', [
                 animate('600ms ease',
                     style({ opacity: 1, transform: 'translateX(0)'})
                 ),
-            ])
+            ], {optional: true})
         ]),
     ]);
 
@@ -48,7 +49,7 @@ export const lift = [
             top: '130px',
             zIndex: 3
 
-})),
+        })),
         state('close', style({
             opacity: 0.9,
             /*transform: 'translateY(-30px)',*/
@@ -66,28 +67,11 @@ export const slider = [
         transition('* => isRight', slideTO('right')),
         transition('isRight => *', slideTO('left')),
         transition('isLeft => *', slideTO('right')),
-    ]),
-    /*trigger('userRouteAnimations',  [
-        transition('* => isLeft', slideTO('left')),
-        transition('* => isRight', slideTO('right')),
-        transition('isRight => *', slideTO('left')),
-        transition('isLeft => *', slideTO('right')),
-    ])*/
+    ])
 ];
 
-/*
-export const userSlider =
-    trigger('userRouteAnimations',  [
-        transition('* => isLeft', slideTO('left')),
-        transition('* => isRight', slideTO('right')),
-        transition('isRight => *', slideTO('left')),
-        transition('isLeft => *', slideTO('right')),
-    ]);
-*/
-
-
-function slideTO(direction) {
-    const optional = { optional: true };
+export function slideTO(direction) {
+    // const optional = { optional: true };
     return [
         query(':enter, :leave', [
             style({
@@ -98,42 +82,20 @@ function slideTO(direction) {
                 'z-index': 2,
                 opacity: 1,
             })
-        ], optional),
+        ], {optional: true}),
         query(':enter', [
             style({ [direction]: '-100%', opacity: 0, 'z-index': 2 })
-        ]),
+        ], {optional: true}),
         query(':leave', [
             style({ [direction]: '100%', opacity: 0, 'z-index': 1 })
-        ]),
+        ], {optional: true}),
         group([
             query(':leave', [
                 animate('600ms ease', style({ [direction]: '100%', opacity: 0, 'z-index': 1}))
-            ], optional),
+            ], {optional: true}),
             query(':enter', [
                 animate('600ms ease', style({ [direction]: '0%', opacity: 1, 'z-index': 2}))
-            ], optional),
+            ], {optional: true}),
         ])
     ];
 }
-
-/*export const routeAnimations = animation ([
-    query( ':enter, :leave',
-        style({position: 'fixed', width: '100%'})),
-
-    sequence([
-        query(':leave', animateChild()),
-        group([
-            query(':leave', [
-                style({ transform: '{{transformStatic}}' }),
-                animate('{{timingOut}}',
-                    style({ transform: '{{transformOut}}' }))
-            ]),
-            query(':enter', [
-                style({ transform: '{{transformIn}}' }),
-                animate('{{timingIn}}',
-                    style({ transform: '{{transformStatic}}' })),
-            ]),
-        ]),
-        query(':enter', animateChild()),
-    ])
-]);*/

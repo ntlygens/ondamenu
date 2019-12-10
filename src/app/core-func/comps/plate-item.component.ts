@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, OnInit} from '@angular/core';
 import { PlateItemData } from '../../amm.enum';
 import { CartService } from '../srvcs/cart.service';
-import { CloverUserPrice } from '../price-change.pipe';
+import { CloverUserPrice } from '../amm-data.pipe';
 
 @Component({
     selector: 'amm-plate-item',
@@ -34,7 +34,7 @@ export class PlateItemComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.cs.setElemAttributes(this.elem,{
+        this.cs.setElemAttributes(this.elem, {
             'data-name': 'food-plate_' + this.plateItem.plateNum,
             'data-price': this.plateItem.platePrice
         } );

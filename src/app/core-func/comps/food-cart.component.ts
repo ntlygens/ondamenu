@@ -25,7 +25,7 @@ import { UserLoginModalComponent } from '../modal/user-login-modal/user-login-mo
 // import {HttpParams} from '@angular/common/http';
 // import {of} from 'rxjs';
 // import {Arguments} from '@angular/cli/models/interface';
-// import { CloverDbPrice } from '../price-change.pipe';
+// import { CloverDbPrice } from '../amm-data.pipe';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
