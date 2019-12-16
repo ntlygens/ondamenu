@@ -10,6 +10,7 @@ import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material';
 import { MerchantService } from '../../core-func/srvcs/merchant.service';
 import {LocSrvcCuisine, LocSrvcDining, LocSrvcModel, LocSrvcRstrctns, LocSrvcType, MerchantInfoData} from '../../amm.enum';
 import { Subject } from 'rxjs';
+import {GuiService} from '../../core-func/srvcs/gui.service';
 
 
 export function uploadProgress<T>( cb: ( progress: number ) => void ) {
@@ -96,6 +97,7 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
         private router: Router,
         // private ads: AppDataService,
         private ms: MerchantService,
+        private gs: GuiService,
         private fb: FormBuilder,
         private cd: ChangeDetectorRef,
         private http: HttpClient,
@@ -105,6 +107,28 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
         this.merchantID = this.route.snapshot.queryParams.mID;
         this.prflErrInst = 'profileError';
         console.log('id:= ', this.merchantID);
+        this.gs.isMobileDevice().subscribe(
+            (res) => {
+                console.log('this is mobile mSplashComp: ', res);
+                /*switch ( res ) {
+                    case true:
+                        this.isMobileDash = true;
+                        this.loadMobileDashBoard();
+                        break;
+                    case false:
+                        this.isMobileDash = false;
+                        this.loadDesktopDashBoard();
+                        break;
+                    default:
+                        this.loadDesktopDashBoard();
+                        break;
+
+                }*/
+            },
+            (err) => {
+                console.log('isMobileDevice_Error: ' + err);
+            }
+        );
         this.createProfileForm();
         this.fileSelected = false;
         // this.fileUpload.
@@ -170,8 +194,8 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
       // return control.hasError(error);
     }*/
 
-    getMerchandise() {
-        /*const username = this.profileFormArray.get([0, 'username']).value;
+    setMerchantDetails() {
+        const username = this.profileFormArray.get([0, 'username']).value;
         const email = this.profileFormArray.get([0, 'email']).value;
         const pwd = this.profileFormArray.get([0, 'password']).value;
         const slogan = this.profileFormArray.get([0, 'slogan']).value;
@@ -189,7 +213,7 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
         console.log('this right here');
 
         if ( this.profileSubmitForm.dirty ) {
-            this.ads.sendMerchantProfileData(
+            this.ms.sendMerchantProfileData(
                 `${this.merchantID}`,
                 `${username}`,
                 `${email}`,
@@ -206,16 +230,18 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
                 // formData
             ).subscribe(
                 (res) => {
+                    console.log( 'res from setData: ', res);
 
                 },
                 (err) => {
                     console.log('SendMerchantProfile_Error: ', err);
                 },
                 () => {
-                    this.router.navigate(['../../', 'merchandise' ], {relativeTo: this.route, queryParamsHandling: 'preserve' });
+                    // this.router.navigate(['../../', 'merchandise' ], {relativeTo: this.route, queryParamsHandling: 'preserve' });
+                    this.router.navigate(['/m'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
                     console.log('it completed');
                 });
-        }*/
+        }
         // this.router.navigate(['../../', 'b', 'merchandise' ], {relativeTo: this.route, queryParamsHandling: 'preserve' });
         // this.router.navigate(['../../', 'merchandise' ], {relativeTo: this.route, queryParamsHandling: 'preserve' });
     }
@@ -273,7 +299,7 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
         this.ms.getMerchantDetails(`${this.merchantID}`).then(
             (mNfo: MerchantInfoData[]) => {
                 this.merchantDetails = mNfo;
-                // console.log('md1: ', this.merchantDetails);
+                console.log('md1: ', this.merchantDetails);
             },
             (err) => {
                 console.log('getMerchantDetail_Error: ' + err);

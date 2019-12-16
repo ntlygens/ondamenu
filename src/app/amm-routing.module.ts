@@ -3,7 +3,8 @@ import { RouterModule } from '@angular/router';
 import { AmmRouteInterface } from './amm.enum';
 import { ListComponent } from './core-func/comps/list.component';
 import { MenuComponent } from './menu/menu.component';
-import {FoodPaymentComponent} from './core-func/comps/food-payment.component';
+import { FoodPaymentComponent } from './core-func/comps/food-payment.component';
+import { GuiService } from './core-func/srvcs/gui.service';
 
 const MAINROUTES: AmmRouteInterface[] = [
     {
@@ -48,7 +49,8 @@ const MAINROUTES: AmmRouteInterface[] = [
         loadChildren: './merchant/merchant.module#MerchantModule',
         data: {
             state: 'MerchantMode',
-            animation: 'isLeft'
+            animation: 'isLeft',
+            mobile: GuiService.prototype.isMobileDevice()
         },
         outlets: [ 'mainAppRO' ]
     },

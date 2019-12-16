@@ -27,7 +27,12 @@ export class GuiService {
 
 
     // *** get data fns *** //
-    isMobileDevice(): Observable<any> {
-        return this.isMobile$;
+    isMobileDevice() {
+        const isDeviceMobile = this.isMobile$;
+        if (!isDeviceMobile) {
+            return;
+        }
+        return isDeviceMobile;
+        // return this.isMobile$;
     }
 }

@@ -14,11 +14,11 @@
                 </mat-expansion-panel-header>
 
                 <mat-form-field>
-                    <input matInput type='text' formControlName='username' name='username' [placeholder]="mDetail.username">
+                    <input matInput type='text' formControlName='username' name='username' [placeholder]="mDetail.username || 'Enter Username'">
                 </mat-form-field>
 
                 <mat-form-field>
-                    <input matInput type="email" formControlName='email' name='email' [placeholder]="mDetail.email">
+                    <input matInput type="email" formControlName='email' name='email' [placeholder]="mDetail.email || 'Enter Email'">
                 </mat-form-field>
 
                 <mat-form-field>
@@ -28,19 +28,19 @@
                 <mat-divider></mat-divider>
 
                 <mat-form-field>
-                    <input matInput type='text' formControlName='slogan' name='slogan' placeholder='Slogan'>
+                    <input matInput type='text' formControlName='slogan' name='slogan' [placeholder]='mDetail.slogan || "Slogan Here"'>
                 </mat-form-field>
 
                 <mat-form-field>
-                    <textarea matInput type='text' formControlName='bio' name='bio' placeholder='Enter company bio'></textarea>
+                    <textarea matInput type='text' formControlName='bio' name='bio' [placeholder]='mDetail.bio || "Enter Bio"'></textarea>
                 </mat-form-field>
 
                 <mat-form-field>
-                    <input matInput type='text' formControlName='address' name='address' placeholder='Address'>
+                    <input matInput type='text' formControlName='address' name='address' [placeholder]='mDetail.address || "Example Ave"'>
                 </mat-form-field>
 
                 <mat-form-field>
-                    <input matInput type='tel' formControlName='phone' name='phone' placeholder='(555) 555-5555'>
+                    <input matInput type='tel' formControlName='phone' name='phone' [placeholder]='mDetail.phone || "(555) 555-5555"'>
                 </mat-form-field>
 
                 <mat-action-row>
@@ -126,7 +126,7 @@
 
                 <mat-action-row>
                     <button mat-button color="warn" (click)="prevStep()">Previous</button>
-                    <button mat-button color="primary" (click)="getMerchandise()" routerLinkActive='true'>End</button>
+                    <button mat-button color="primary" (click)="setMerchantDetails()" routerLinkActive='true'>End</button>
                 </mat-action-row>
             </mat-expansion-panel>
 

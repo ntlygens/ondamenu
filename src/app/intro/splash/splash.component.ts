@@ -37,7 +37,7 @@ export class SplashComponent implements OnInit {
         private elemRef: ElementRef
 
     ) {
-        this.mURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=' + this.redirect2; // Local Mobile/Phone Testing
+        this.mURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=' + this.redirect3; // Local Mobile/Phone Testing
         // this.mURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=http://localhost:4200/signin'; // local Computer Testing
         // this.mURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=https://smashradio1fm.com/biota/signin';
         this.mURL2 = 'https://api.clover.com/auth/authorize?client_id=Y805R8C741M54';

@@ -32,6 +32,10 @@ export class MerchantComponent implements AfterViewInit, OnDestroy, OnInit {
     isMobileDash: boolean;
 
     private destroy$ = new Subject<any>();
+    private static getScreenSize(mql: MediaQueryList) {
+        return mql.matches;
+    }
+
     constructor(
         private gs: GuiService,
         private router: Router,
@@ -40,15 +44,24 @@ export class MerchantComponent implements AfterViewInit, OnDestroy, OnInit {
         private loc: Location
     ) {
         this.elem = this.elemRef.nativeElement;
-        this.gs.isMobileDevice().pipe(takeUntil(this.destroy$)).subscribe(
+        const mql: MediaQueryList = window.matchMedia('(max-width: 765px)');
+        this.isMobileDash = MerchantComponent.getScreenSize(mql);
+        console.log('isMobileDash: ', this.isMobileDash);
+        this.gs.setMediaDevice(this.isMobileDash);
+        /*this.gs.isMobileDevice().then(
             (res) => {
                 this.isMobileDash = res;
+                console.log('is it Mobile: ', res);
+            },
+            (err) => {
+                console.log('isMobileDevice_M_Error: ' + err);
             }
-        );
+        );*/
     }
 
     ngOnInit() {
-
+        // this.route.snapshot.data
+        // console.log('state = ', this.route.activatedRouteData.mobile);
     }
 
     ngAfterViewInit() {

@@ -70,6 +70,7 @@ export interface AmmRouteInterface {
   data?: {
       state: string;
       animation: string;
+      mobile?: any;
   };
   children?: any;
   outlets?: any;

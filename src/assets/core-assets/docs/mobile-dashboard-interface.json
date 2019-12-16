@@ -1,0 +1,13 @@
+[
+    {"text": "five", "cols": 1, "rows": 2, "display": "visible", "color": "lightpink", "href": "merchandise", "img": "assets/core-assets/imgs/merchant_gui/Tour_Splash.png", "activeCell": true},
+    {"text": "ten", "cols": 1, "rows": 1, "display": "visible", "color": "#DDBDF1", "href": "profile", "img": "assets/core-assets/imgs/merchant_gui/Home_Btn.png", "activeCell": true},
+    {"text": "six", "cols": 1, "rows": 1, "display": "visible", "color": "#DDBDF1", "href": "meat", "img": "assets/core-assets/imgs/merchant_gui/Meat_Btn.png", "activeCell": true},
+
+    {"text": "seven", "cols": 1, "rows": 1, "display": "visible", "color": "lightpink", "href": "seafood", "img": "assets/core-assets/imgs/merchant_gui/Seafood_Btn.png", "activeCell": true},
+    {"text": "eight", "cols": 1, "rows": 1, "display": "visible", "color": "#DDBDF1", "href": "grains", "img": "assets/core-assets/imgs/merchant_gui/Grains_Btn.png", "activeCell": true},
+    {"text": "nine", "cols": 1, "rows": 1, "display": "visible", "color": "#DDBDF1", "href": "vegetables", "img": "assets/core-assets/imgs/merchant_gui/Vegetable_Btn.png", "activeCell": true},
+
+    {"text": "eleven", "cols": 1, "rows": 1, "display": "visible", "color": "#DDBDF1", "href": "liquids", "img": "assets/core-assets/imgs/merchant_gui/Liquids.png", "activeCell": true},
+    {"text": "thirteen", "cols": 1, "rows": 1, "display": "visible", "color": "#DDBDF1", "href": "stats", "img": "assets/core-assets/imgs/merchant_gui/Stats.png", "activeCell": true},
+    {"text": "fourteen", "cols": 1, "rows": 1, "display": "visible", "color": "#DDBDF1", "href": "shop4home", "img": "assets/core-assets/imgs/merchant_gui/Shop4Home.png", "activeCell": true}
+]

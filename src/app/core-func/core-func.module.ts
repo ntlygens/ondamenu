@@ -22,6 +22,8 @@ import { FoodCartUiComponent } from './comps/food-cart-ui.component';
 import { UserLoginModalComponent } from './modal/user-login-modal/user-login-modal.component';
 import { MerchantLoginModalComponent } from './modal/merchant-login-modal/merchant-login-modal.component';
 import { ModalComponent } from './modal/modal.component';
+// import { EditorComponent } from './editor/editor.component';
+// import { EditSelBtnComponent } from './editor/edit-sel-btn/edit-sel-btn.component';
 
 @NgModule({
     declarations: [
@@ -45,6 +47,8 @@ import { ModalComponent } from './modal/modal.component';
         UserLoginModalComponent,
         MerchantLoginModalComponent,
         ModalComponent,
+        // EditorComponent,
+        // EditSelBtnComponent,
     ],
     exports: [
         NydohComponent,
