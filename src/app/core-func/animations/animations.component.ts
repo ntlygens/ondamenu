@@ -4,7 +4,9 @@ import {
     query as q, transition, keyframes,
     animateChild, state
 } from '@angular/animations';
-const query = (s, a, o) => q(s, a, o );
+export function query(s, a, o) {
+    return q(s, a, o );
+}
 // const query = (s, a, o = { optional: true }) => q(s, a, o );
 
 export const fader =
@@ -70,31 +72,31 @@ export const slider = [
     ])
 ];
 
-export function slideTO(direction) {
+export function slideTO(direction: string): any[] {
     // const optional = { optional: true };
     return [
         query(':enter, :leave', [
             style({
                 position: 'absolute',
                 top: 0,
-                [direction]: 0,
+                [`direction`]: 0,
                 width: '100%',
                 'z-index': 2,
                 opacity: 1,
             })
         ], {optional: true}),
         query(':enter', [
-            style({ [direction]: '-100%', opacity: 0, 'z-index': 2 })
+            style({ direction: '-100%', opacity: 0, 'z-index': 2 })
         ], {optional: true}),
         query(':leave', [
-            style({ [direction]: '100%', opacity: 0, 'z-index': 1 })
+            style({ direction: '100%', opacity: 0, 'z-index': 1 })
         ], {optional: true}),
         group([
             query(':leave', [
-                animate('600ms ease', style({ [direction]: '100%', opacity: 0, 'z-index': 1}))
+                animate('600ms ease', style({ direction: '100%', opacity: 0, 'z-index': 1}))
             ], {optional: true}),
             query(':enter', [
-                animate('600ms ease', style({ [direction]: '0%', opacity: 1, 'z-index': 2}))
+                animate('600ms ease', style({ direction: '0%', opacity: 1, 'z-index': 2}))
             ], {optional: true}),
         ])
     ];

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, HostListener, ViewChildren, ViewContainerRef, ViewChild, ElementRef, NgZone} from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, OnInit, HostListener, ViewChildren, ViewContainerRef, ViewChild, ElementRef, NgZone} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { slider } from './core-func/animations/animations.component';
 import { GuiService } from './core-func/srvcs/gui.service';
@@ -12,7 +12,7 @@ import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/overlay';
     styleUrls: ['./amm.component.scss'],
     animations: [ slider ]
 })
-export class AmmComponent implements OnInit, OnDestroy {
+export class AmmComponent implements AfterViewInit, OnInit, OnDestroy {
     @ViewChildren('scrolllist') scrolllist: CdkScrollable;
     @ViewChild('footer', {static: true}) footer;
 
@@ -83,6 +83,8 @@ export class AmmComponent implements OnInit, OnDestroy {
         );
 
     }
+
+    ngAfterViewInit(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

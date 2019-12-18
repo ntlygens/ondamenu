@@ -48,6 +48,7 @@ export class MerchantComponent implements AfterViewInit, OnDestroy, OnInit {
         this.isMobileDash = MerchantComponent.getScreenSize(mql);
         console.log('isMobileDash: ', this.isMobileDash);
         this.gs.setMediaDevice(this.isMobileDash);
+        this.gs.setStartPg(false);
         /*this.gs.isMobileDevice().then(
             (res) => {
                 this.isMobileDash = res;
@@ -59,14 +60,9 @@ export class MerchantComponent implements AfterViewInit, OnDestroy, OnInit {
         );*/
     }
 
-    ngOnInit() {
-        // this.route.snapshot.data
-        // console.log('state = ', this.route.activatedRouteData.mobile);
-    }
+    ngOnInit() {}
 
-    ngAfterViewInit() {
-
-    }
+    ngAfterViewInit() {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

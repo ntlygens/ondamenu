@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MerchantInfoData } from '../../amm.enum';
 import { LoginService } from '../srvcs/login.service';
 import { StorageService } from '../srvcs/storage.service';
+import { GuiService } from '../srvcs/gui.service';
 
 @Component({
     selector: 'amm-list',
@@ -27,7 +28,7 @@ import { StorageService } from '../srvcs/storage.service';
                     [itemLocState]='merchant.state'
                     [itemLocZip]='merchant.zip'
                     [itemSrvcType]='merchant.concept'
-                    [itemSrvcStat]='merchant.status'
+                    [itemSrvcStat]='merchant.loc_status'
                     [itemFoodType]='merchant.food'
                     [itemDelivery]='merchant.delivery'
                     (click)='getMerchantMenu(merchants[idx])'
@@ -58,11 +59,13 @@ export class ListComponent implements OnInit {
     constructor(
         private ls: LoginService,
         private ss: StorageService,
+        private gs: GuiService,
         private router: Router,
         private route: ActivatedRoute,
         private elemRef: ElementRef,
     ) {
         this.elemRef.nativeElement.setAttribute('id',  'merchantList');
+        this.gs.setStartPg(false);
     }
 
     ngOnInit() {
