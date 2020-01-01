@@ -1,18 +1,20 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { lift } from '../animations/animations.component';
 
 @Component({
     selector: 'amm-list-item',
     template: `
-        <div class="dohSrvcs">
+        <div class="dohSrvcs" [@mnmzeDohAnimations]="itemUIToggle">
             <amm-nydoh
                 [merchantGrade]="itemGrade"
             ></amm-nydoh>
         </div>
-        <div class='imgStngs'>
-            <img *ngIf='!itemImage' class="rounded logo" src="../../../assets/core-assets/escovich.png" />
+        <div class='imgStngs' [@mnmzeImgAnimations]="itemUIToggle">
+            <img *ngIf='!itemImage' class="rounded logo" src="assets/core-assets/escovich.png" />
             <img class="rounded logo" src="{{itemImage}}" />
         </div>
-        <div id='baseURL' class='iteminfo gradient d-flex'>
+        <!--<div id='baseURL' class='iteminfo gradient d-flex' >-->
+        <div id='baseURL' class='iteminfo gradient d-flex' [@mnmzeAnimations]="itemUIToggle">
             <section class='cardTxt d-flex w-100 justify-content-between'>
                 <div class="">
                     <h5 matLine class="card-name">{{itemTitle}}</h5>
@@ -237,7 +239,8 @@ import { Component, OnInit, Input } from '@angular/core';
         }
 
 
-    `]
+    `],
+    animations: [ lift ]
 })
 export class ListItemComponent implements OnInit {
     @Input() itemID = 'defaultID';
@@ -253,7 +256,8 @@ export class ListItemComponent implements OnInit {
     @Input() itemFoodType = 'american';
     @Input() itemSrvcType = 'eatin';
     @Input() itemSrvcStat = 'closed';
-    @Input() itemDelivery = 0;
+    @Input() itemDelivery = false;
+    @Input() itemUIToggle = 'normal';
 
     constructor() { }
 

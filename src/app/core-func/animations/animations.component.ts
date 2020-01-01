@@ -60,43 +60,121 @@ export const lift = [
         })),
         transition('open => close', animate('500ms ease-out')),
         transition('close => open', animate('300ms ease-out'))
+    ]),
+    trigger('mnmzeAnimations', [
+        state('normal', style({
+            transform: 'translateY(0)',
+        })),
+        state('minimized', style({
+            transform: 'translateY(-150px)',
+        })),
+        transition('normal => minimized', animate('500ms ease-out')),
+        transition('minimized => normal', animate('300ms ease-out'))
+    ]),
+    trigger('mnmzeDohAnimations', [
+        state('normal',
+            style({
+                transform: 'translate(0, 0)'
+            })),
+        state('minimized', style({
+            transform: ('translate(-100px, 22px)'),
+            // top: '720px',
+        })),
+        transition('normal => minimized', animate('300ms ease')),
+        transition('minimized => normal', animate('200ms ease'))
+    ]),
+    trigger('mnmzeImgAnimations', [
+        state('normal',
+            style({
+                transform: 'translate(0, 0)'
+            })),
+        state('minimized', style({
+            transform: ('translate(0, -150px)'),
+            // top: '720px',
+        })),
+        transition('normal => minimized', animate('300ms ease')),
+        transition('minimized => normal', animate('200ms ease'))
+    ]),
+    trigger('mnmzeCntnrAnimations', [
+        state('normal',
+            style({
+                transform: 'translate(0, 0)'
+            })),
+        state('minimized',
+            style({
+            transform: ('translate(0, -151px)'),
+            // top: '720px',
+        })),
+        transition('normal => minimized', animate('400ms ease-in')),
+        transition('minimized => normal', animate('200ms ease'))
     ])
 ];
 
 export const slider = [
     trigger('routeAnimations',  [
-        transition('* => isLeft', slideTO('left')),
-        transition('* => isRight', slideTO('right')),
-        transition('isRight => *', slideTO('left')),
-        transition('isLeft => *', slideTO('right')),
+        transition('* => isLeft', slideToLeft()),
+        transition('* => isRight', slideToRight()),
+        transition('isRight => *', slideToLeft()),
+        transition('isLeft => *', slideToRight()),
     ])
 ];
 
-export function slideTO(direction: string): any[] {
+
+export function slideToRight(): any[] {
     // const optional = { optional: true };
     return [
         query(':enter, :leave', [
             style({
                 position: 'absolute',
                 top: 0,
-                [`direction`]: 0,
+                right: 0,
                 width: '100%',
                 'z-index': 2,
                 opacity: 1,
-            })
+            }),
         ], {optional: true}),
         query(':enter', [
-            style({ direction: '-100%', opacity: 0, 'z-index': 2 })
+            style({ right: '-100%', opacity: 0, 'z-index': 2 })
         ], {optional: true}),
         query(':leave', [
-            style({ direction: '100%', opacity: 0, 'z-index': 1 })
+            style({ right: '100%', opacity: 0, 'z-index': 1 })
         ], {optional: true}),
         group([
             query(':leave', [
-                animate('600ms ease', style({ direction: '100%', opacity: 0, 'z-index': 1}))
+                animate('600ms ease', style({ right: '100%', opacity: 0, 'z-index': 1}))
             ], {optional: true}),
             query(':enter', [
-                animate('600ms ease', style({ direction: '0%', opacity: 1, 'z-index': 2}))
+                animate('600ms ease', style({ right: '0%', opacity: 1, 'z-index': 2}))
+            ], {optional: true}),
+        ])
+    ];
+}
+
+export function slideToLeft(): any[] {
+    // const optional = { optional: true };
+    return [
+        query(':enter, :leave', [
+            style({
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                'z-index': 2,
+                opacity: 1,
+            }),
+        ], {optional: true}),
+        query(':enter', [
+            style({ left: '-100%', opacity: 0, 'z-index': 2 })
+        ], {optional: true}),
+        query(':leave', [
+            style({ left: '100%', opacity: 0, 'z-index': 1 })
+        ], {optional: true}),
+        group([
+            query(':leave', [
+                animate('600ms ease', style({ left: '100%', opacity: 0, 'z-index': 1}))
+            ], {optional: true}),
+            query(':enter', [
+                animate('600ms ease', style({ left: '0%', opacity: 1, 'z-index': 2}))
             ], {optional: true}),
         ])
     ];

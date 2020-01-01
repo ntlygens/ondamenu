@@ -5,13 +5,15 @@
     [itemID]="bnrData.client_id"
     [itemImage]="bnrData.logo"
     [itemPhone]="bnrData.phone"
+    [itemGrade]="bnrData.grade"
     [itemSlogan]="bnrData.slogan"
     [itemDelivery]="bnrData.delivery"
     [itemTitle]="bnrData.username"
     [itemFoodType]="bnrData.food"
     [itemSrvcType]="bnrData.concept"
+    [itemUIToggle]="dUITgle"
 ></amm-list-item>
-<div id="mainClientCntnr" class="navigation">
+<div id="mainClientCntnr" class="navigation" [@mnmzeCntnrAnimations]="dUITgle">
     <div id="clientMenu" class='clientMenu pt-sm-1'>
         <div id="navbar" class="d-flex justify-content-center">
             <amm-category-btn
@@ -48,7 +50,7 @@
             [menuID]="dCat['cid']"
             [clientID]="dCat['client_id']"
             [isIncremental]="(dCat['cid'] !== ( 'MJ7M88JTG3QF8' )) && (dCat['cid'] !== ( '215B0KSFN91GM' ))"
-            (emitFtrBarOpen)="minimizeUI($event)"
+            (mnmzeListItem)="minimizeUI($event)"
         ></amm-category-list>
     </div>
 </div>

@@ -17,12 +17,14 @@ import { StorageService } from '../core-func/srvcs/storage.service';
 import {CategoryData, MerchantInfoData, SubCategoryData} from '../amm.enum';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {lift} from '../core-func/animations/animations.component';
 
 @Component({
     selector: 'amm-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss'],
-    providers: [ MenuService ]
+    providers: [ MenuService ],
+    animations: [ lift ]
 })
 export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('cartRef', {static: true}) cartRef: ElementRef;
@@ -51,6 +53,8 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     Arr = Array;
     nMbr = 20;
 
+    dUITgle: string;
+
     private destroy$ = new Subject<any>();
 
     SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight'};
@@ -70,6 +74,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         this.ss.menuBnrData$.pipe(takeUntil(this.destroy$)).subscribe( (res: MerchantInfoData) => {
             console.log('data_Eg: = ', res.username);
             this.bnrData = res;
+            this.dUITgle = 'normal';
             this.getCats(res.client_id);
 
         });
@@ -205,19 +210,20 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
     minimizeUI(e) {
         console.log('this footer btn open - ', e );
-        /*const cntnr = this.elem.querySelector('#mainClientCntnr');
-        const img = this.elem.querySelector('.imgStngs');
-        const info = this.elem.querySelector('.iteminfo');
-        const doh = this.elem.querySelector('.dohSrvcs');
+        this.dUITgle = 'minimized';
+        // const cntnr = this.elem.querySelector('#mainClientCntnr');
+        // const img = this.elem.querySelector('.imgStngs');
+        // const info = this.elem.querySelector('.iteminfo');
+        // const doh = this.elem.querySelector('.dohSrvcs');
         const rate = this.elem.querySelector('.rate');
 
-        cntnr.classList.add('mini');
-        img.setAttribute('style', 'top: -148px');
-        info.setAttribute('style', 'top: -218px');
-        doh.setAttribute('style', 'top: 82px; right: 130px');
+        // cntnr.classList.add('mini');
+        // img.setAttribute('style', 'top: -148px');
+        // info.setAttribute('style', 'top: -218px');
+        // doh.setAttribute('style', 'top: 82px; right: 130px');
         rate.setAttribute('style', 'width: fit-content; padding: 0.325rem 0.45rem 0.245rem;');
         rate.previousSibling.setAttribute('style', 'display: none');
-        rate.firstElementChild.setAttribute('style', 'font-size: 1rem');*/
+        rate.firstElementChild.setAttribute('style', 'font-size: 1rem');
         /*Array.from([cntnr, img, info, doh]).forEach( (x) => {
             x.classList.add('mini');
         });*/

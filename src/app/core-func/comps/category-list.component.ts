@@ -56,7 +56,7 @@ export class CategoryListComponent implements OnInit, AfterViewInit {
     @Input() menuOpen: boolean;
     @Input() isIncremental: boolean;
     @Output() emitRemoveClick3: EventEmitter<any> = new EventEmitter<any>();
-    @Output() emitFtrBarOpen: EventEmitter<any> = new EventEmitter<any>();
+    @Output() mnmzeListItem: EventEmitter<any> = new EventEmitter<any>();
 
     dMenuItems: CategoryProductsData[] = [];
     isMiEven: boolean;
@@ -90,7 +90,7 @@ export class CategoryListComponent implements OnInit, AfterViewInit {
                 }
             );
 
-            /* // working function // */
+            /* // previous instance // */
             /*this.ms.getCatProds(this.clientID, this.menuID).subscribe(
                 (res) => {
                     this.dMenuItems = res;
@@ -118,7 +118,7 @@ export class CategoryListComponent implements OnInit, AfterViewInit {
             filter(event => this.virtualScroll.measureScrollOffset('top') > 150)
             // filter(event => this.virtualScroll.getRenderedRange().end === this.virtualScroll.getDataLength())
         ).subscribe(event => {
-            this.emitFtrBarOpen.emit('scrolled');
+            this.mnmzeListItem.emit('scrolled');
             // console.log('data: ', this.virtualScroll.measureScrollOffset('top'));
             // this.searchPageNumber++;
             // this.nextSearchPage(this.searchPageNumber);

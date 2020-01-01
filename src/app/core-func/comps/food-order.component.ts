@@ -29,7 +29,7 @@ declare var $: any;
         <button
             *ngIf='isIncremental'
             mat-raised-button id="add2Order"
-            class="btn btn-outline-secondary btn-sm fOdrBtn"
+            class="btn btn-sm fOdrBtn"
 
             [title]="prodid"
             name='incr'

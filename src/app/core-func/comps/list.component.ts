@@ -44,7 +44,7 @@ import { GuiService } from '../srvcs/gui.service';
         }
 
         .last {
-            margin-bottom: 15%;
+            margin-bottom: 35%;
         }
 
         .mat-list .mat-list-item {
@@ -87,6 +87,7 @@ export class ListComponent implements OnInit {
     getMerchantMenu(merchant: MerchantInfoData) {
         this.ss.setBannerData({
             client_id: merchant.client_id,
+            grade: merchant.grade,
             username: merchant.username,
             logo: merchant.logo,
             phone: merchant.phone,
