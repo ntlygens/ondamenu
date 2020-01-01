@@ -24,11 +24,11 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                                 <amm-food-order [title]="miID" [isIncremental]='miIncr' [itemCount]='this.count' id="orderBtn" #orderBtn (toggleIncr)='toggleCounter()' (rmvBtn_emitter)='send4Removal($event)' [prodname]="miName" [prodid]="miID" [prodprice]="miPrice"></amm-food-order>
                             </div>
                         </div>
-                        <div class="miPic rounded" [ngStyle]="{'background-image': 'url(../../../' + this.miPic + ')'}"></div>
+                        <div class="miPic rounded" [ngStyle]="{'background-image': 'url(' + this.miPic + ')'}"></div>
                     </div>
 
                     <div *ngIf="!isEven" class="menuItem d-flex">
-                        <div class="miPic rounded" [ngStyle]="{'background-image': 'url(../../../' + this.miPic + ')'}"></div>
+                        <div class="miPic rounded" [ngStyle]="{'background-image': 'url(' + this.miPic + ')'}"></div>
                         <div class="miPrice col-sm">
                             <div class="rounded">{{miPrice * count | cloverUserPrice}}</div>
                             <div class='cta_btns flex-column'>
