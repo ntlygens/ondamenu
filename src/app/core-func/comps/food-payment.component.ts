@@ -1,10 +1,11 @@
-import {Component, OnInit, Input, ElementRef, AfterViewInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, Input, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentService } from '../srvcs/payment.service';
-import {CartService} from '../srvcs/cart.service';
-import {takeUntil} from 'rxjs/operators';
-import {MerchantInfoData} from '../../amm.enum';
-import {Subject} from 'rxjs';
+import { CartService } from '../srvcs/cart.service';
+import { takeUntil } from 'rxjs/operators';
+import { MerchantInfoData, PaymentResponseData } from '../../amm.enum';
+import { Subject } from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector: 'amm-food-payment',
@@ -111,7 +112,9 @@ export class FoodPaymentComponent implements OnInit, AfterViewInit, OnDestroy {
         private fb: FormBuilder,
         private elemRef: ElementRef,
         private ps: PaymentService,
-        private cs: CartService
+        private cs: CartService,
+        private router: Router,
+        private route: ActivatedRoute
     ) {
         this.elem = this.elemRef.nativeElement;
         this.orderSbmtd = true;
@@ -137,21 +140,26 @@ export class FoodPaymentComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
             this.ps.sendPayment(`${oID}`, `${oAmt}`, `${this.mID}`, `${ccNmbr}`, `${ccExpMth}`, `${ccExpYr}`, `${ccCvv}`, `${ccZip}` )
-                .subscribe(  res => {
-                        if (res === Object) {
+                .then(
+                    (res: PaymentResponseData) => {
+                        switch (res.result) {
+                            case 'DECLINED':
+                                alert('We\'re Sorry: ' + res.failureMessage + ' \n ');
+                                break;
+                            case 'APPROVED':
+                                alert('Thank You. Your Payment was Successful');
+                                this.router.navigate(['/u'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
+                        }
+                        /*if (res === Object) {
                             console.log( 'obj res: ', JSON.stringify(res));
                         } else {
                             console.log( 'res: ', res);
-                        }
+                        }*/
                     },
                     (err) => {
-                        console.log('sendPayment_Error: ', err);
-                    },
-                    () => {
-                        console.log('Success, submitted payment;');
-                    });
-
-
+                        console.log('sendPayment_Error: ' + err);
+                    }
+                );
 
         }
     }
@@ -210,7 +218,7 @@ export class FoodPaymentComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.cs.orderAmt$.pipe(takeUntil(this.destroy$)).subscribe( (res) => {
-            console.log('oid: = ', res);
+            console.log('oamt: = ', res);
             this.orderAmount = res;
         });
     }

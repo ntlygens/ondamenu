@@ -200,3 +200,13 @@ export interface UserLoginForm {
     email?: string;
     confirm_email?: string;
 }
+
+export interface PaymentResponseData {
+    authCode?: string;
+    failureMessage?: string;
+    token?: string;
+    result: string;
+    avsResult?: string;
+    paymentId: string;
+    cvvResult?: string;
+}

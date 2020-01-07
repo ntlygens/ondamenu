@@ -15,7 +15,7 @@ import { GuiService } from '../srvcs/gui.service';
         }
 
         .logoImg {
-            content: url("../../../assets/backgrounds/mobile/floatingLogo.png");
+            content: url("assets/backgrounds/mobile/floatingLogo.png");
         }
     `]
 })

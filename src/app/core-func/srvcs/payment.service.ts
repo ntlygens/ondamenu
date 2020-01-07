@@ -24,7 +24,7 @@ export class PaymentService {
         return this.http.get(`${this.keyURI}`, {params: getHKey});
     }
 
-    sendPayment(...args) {
+    async sendPayment(...args) {
         const splitArgs = (args.toString()).split(',');
         const postVars = [
             'oid4pymnt',
@@ -53,6 +53,8 @@ export class PaymentService {
         const headers = new HttpHeaders();
         PaymentService.createJSONPostHeader(headers);
 
-        return this.http.post( `${this.keyURI}`, [Params], {headers} );
+        const payResp = await this.http.post( `${this.keyURI}`, [Params], {headers} ).toPromise();
+        if (!payResp) { return; }
+        return payResp;
     }
 }
