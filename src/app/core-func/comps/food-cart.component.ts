@@ -308,6 +308,9 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                     const itemCost = Math.round(y.querySelector('.amt').innerHTML * 100);
                     const itemID = y.querySelector('.close').getAttribute('title');
 
+                    // TODO: Get modifierGroup id: from merchant db
+                    // TODO: Use only mGroupID for Dinner or equivalent
+
                     this.plateData[j] = {modifier: { name: itemTitle, price: itemCost, modifierGroup: { id: 'TN6XPNQWH0XK4' }, id: itemID }, quantitySold: '1' };
 
                     // this.plateOrder.push({[plateSizes]: this.plateData[j] });
@@ -376,7 +379,8 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
                 // const dOrderAmt = this.elem.querySelector('#orderAmt');
                 this.cs.setOrderId(this.userOrderID);
-                console.log('id: ', this.userOrderID);
+                this.cs.setOrderAmt(this.amtOrderTotal);
+                console.log('id: ', this.userOrderID, ' total: ', this.amtOrderTotal);
                 /// ** this.cOrderID.emit(this.userOrderID);
                 /// ** this.cOrderAmt.emit(this.cartTotal);
                 // console.log('log ID: '+this.userOrderID);

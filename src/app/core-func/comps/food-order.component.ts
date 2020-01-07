@@ -176,9 +176,9 @@ export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
         // == this one == //
         const navBtn = lineItem.closest('#menuRef');
         // const navBtn = document.querySelector('button:disabled:not(#touchNav)');
-        const catNm = navBtn.getAttribute('ng-reflect-menu-nav');
-        const catID = navBtn.getAttribute('ng-reflect-menu-i-d');
-        const clID = navBtn.getAttribute('ng-reflect-client-i-d');
+        const catNm = navBtn.getAttribute('data-menu-nav');
+        const catID = navBtn.getAttribute('data-menu-id');
+        const clID = navBtn.getAttribute('data-client-id');
         // this.menuCatName = document.querySelector('#DINNER');
 
         console.log('(', this.prodid, ')/', this.prodname, ' added from ', catNm, ' => ', this.itemCount, 'x for ', (this.prodprice * this.itemCount), '\n');

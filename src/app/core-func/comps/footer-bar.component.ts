@@ -22,10 +22,10 @@ import {Subject} from 'rxjs';
     selector: 'amm-footer-bar',
     template: `
         <div class="footerbar w-100 d-flex" [@footerAnimations]="ftrState">
-            <div class="uProfile" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_account_circle_black_18dp@2x.png)'}" (click)="openProfile();"></div>
-            <div class="uSearch" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_search_black_24dp.png)'}" (click)="openSearch();"></div>
-            <div class="uFilter" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_tune_black_24dp.png)'}" (click)="openFilter();"></div>
-            <div class="uCart" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_shopping_cart_black_24dp.png)'}" (click)="toggleCart();"></div>
+            <div class="uProfile" [ngStyle]="{backgroundImage: 'url(assets/backgrounds/mobile/baseline_account_circle_black_18dp@2x.png)'}" (click)="openProfile();"></div>
+            <div class="uSearch" [ngStyle]="{backgroundImage: 'url(assets/backgrounds/mobile/baseline_search_black_24dp.png)'}" (click)="openSearch();"></div>
+            <div class="uFilter" [ngStyle]="{backgroundImage: 'url(assets/backgrounds/mobile/baseline_tune_black_24dp.png)'}" (click)="openFilter();"></div>
+            <div class="uCart" [ngStyle]="{backgroundImage: 'url(assets/backgrounds/mobile/baseline_shopping_cart_black_24dp.png)'}" (click)="toggleCart();"></div>
             <!--<div class="uCart" [ngStyle]="{backgroundImage: 'url(../../../assets/backgrounds/mobile/baseline_shopping_cart_black_24dp.png)'}" (click)="cartRef.viewCart(); toggleCartButton($event);"></div>-->
         </div>
         <div>

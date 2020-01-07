@@ -1,6 +1,10 @@
-import { Component, OnInit, Input, ElementRef, AfterViewInit } from '@angular/core';
+import {Component, OnInit, Input, ElementRef, AfterViewInit, OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentService } from '../srvcs/payment.service';
+import {CartService} from '../srvcs/cart.service';
+import {takeUntil} from 'rxjs/operators';
+import {MerchantInfoData} from '../../amm.enum';
+import {Subject} from 'rxjs';
 
 @Component({
     selector: 'amm-food-payment',
@@ -93,7 +97,7 @@ import { PaymentService } from '../srvcs/payment.service';
       `],
     providers: [PaymentService]
 })
-export class FoodPaymentComponent implements OnInit, AfterViewInit {
+export class FoodPaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() orderSbmtd: boolean;
 
     pResult = false; elem: any; mID: any;
@@ -101,11 +105,13 @@ export class FoodPaymentComponent implements OnInit, AfterViewInit {
     orderId: string;
 
     submitForm: FormGroup;
+    private destroy$ = new Subject<any>();
 
     constructor(
         private fb: FormBuilder,
         private elemRef: ElementRef,
-        private ps: PaymentService
+        private ps: PaymentService,
+        private cs: CartService
     ) {
         this.elem = this.elemRef.nativeElement;
         this.orderSbmtd = true;
@@ -128,6 +134,7 @@ export class FoodPaymentComponent implements OnInit, AfterViewInit {
 
             const oAmt: number = this.orderAmount;
             const oID: string = this.orderId;
+
 
             this.ps.sendPayment(`${oID}`, `${oAmt}`, `${this.mID}`, `${ccNmbr}`, `${ccExpMth}`, `${ccExpYr}`, `${ccCvv}`, `${ccZip}` )
                 .subscribe(  res => {
@@ -195,6 +202,22 @@ export class FoodPaymentComponent implements OnInit, AfterViewInit {
         if ( searchParams.has( 'clid')) {
             this.mID = searchParams.get('clid');
         }
+
+
+        this.cs.orderID$.pipe(takeUntil(this.destroy$)).subscribe( (res) => {
+            console.log('oid: = ', res);
+            this.orderId = res;
+        });
+
+        this.cs.orderAmt$.pipe(takeUntil(this.destroy$)).subscribe( (res) => {
+            console.log('oid: = ', res);
+            this.orderAmount = res;
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
 }

@@ -3,6 +3,7 @@ import { MenuService } from '../srvcs/menu.service';
 import { CategoryProductsData } from '../../amm.enum';
 import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
 import {filter} from 'rxjs/operators';
+import {CartService} from '../srvcs/cart.service';
 
 @Component({
     selector: 'amm-category-list',
@@ -64,6 +65,7 @@ export class CategoryListComponent implements OnInit, AfterViewInit {
 
     constructor(
         private ms: MenuService,
+        private cs: CartService,
         private elemRef: ElementRef,
         private scrollDispatcher: ScrollDispatcher
     ) {
@@ -79,6 +81,14 @@ export class CategoryListComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         if (this.menuNav) {
+            this.cs.setElemAttributes(this.elem, {
+                'data-menu-nav': this.menuNav,
+                role: 'group',
+                'data-menu-id': this.menuID,
+                'data-client-id': this.clientID,
+                'data-is-mobile': this.isMobile
+            });
+
             ///// ## /// console.log('foodCard: clid - ', this.clientID, ' -- menuID - ', this.menuID);
             this.ms.getCatProds(this.clientID, this.menuID).then(
                 (res: CategoryProductsData[]) => {
