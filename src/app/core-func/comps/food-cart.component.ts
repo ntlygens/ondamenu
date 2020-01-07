@@ -330,7 +330,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
         this.nonDinnerItemsInCart.forEach( (x) => {
             const itemTitle = x.querySelector('.title').innerHTML;
-            const itemCost = Math.round(x.querySelector('.amt').innerHTML);
+            const itemCost = Math.round(x.querySelector('.amt').innerHTML * 100);
             const itemID = x.querySelector('.close').getAttribute('title');
 
             this.plateOrder.push( {item: {id: itemID }, name: itemTitle, price: itemCost});

@@ -91,7 +91,7 @@ import { CustomValidators, ConfirmValidEmailMatcher, ConfirmValidModalEmailMatch
           height: 120px;
           text-align: center;
           vertical-align: middle;
-          background: url('../../../../assets/backgrounds/mobile/bckgrnd-1-noBckgrnd.png') 50% 40% no-repeat;
+          background: url('assets/backgrounds/mobile/bckgrnd-1-noBckgrnd.png') 50% 40% no-repeat;
           background-size: cover;
           margin: auto;
       }
