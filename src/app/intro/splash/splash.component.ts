@@ -26,7 +26,7 @@ export class SplashComponent implements OnInit {
     mURL: any;
     mURL2: any;
     elem: any;
-    redirect1 = 'https://smashradio1fm.com/biota/signin';
+    // redirect1 = 'https://smashradio1fm.com/biota/signin';
     redirect2 = 'http://localhost:4200/signin';
     redirect3 = 'http://192.168.1.151:4200/signin';
     redirect4 = 'https://smashradio1fm.com/ondamenu/signin';

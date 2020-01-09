@@ -8,8 +8,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class LoginService {
     baseURL;
-    emailValidate;
-    newUser;
+    // emailValidate;
+    // newUser;
     clientType;
     CloverAuth;
 
@@ -20,8 +20,8 @@ export class LoginService {
         this.baseURL = 'https://www.smashradio1fm.com/php/'; // Remote
         // this.biotaURL = 'https://www.smashradio1fm.com/biota'; // Remote
         this.CloverAuth = 'https://api.clover.com:443/auth/authorize';
-        this.emailValidate = 'http://localhost/~ntlygens/php/validateEmail.php'; // Local
-        this.newUser = 'http://localhost/~ntlygens/php/addUser.php'; // Local
+        // this.emailValidate = 'http://localhost/~ntlygens/php/validateEmail.php'; // Local
+        // this.newUser = 'http://localhost/~ntlygens/php/addUser.php'; // Local
     }
 
     createJSONPostHeader(headers: HttpHeaders) {
