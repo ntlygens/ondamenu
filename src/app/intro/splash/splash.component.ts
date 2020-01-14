@@ -60,7 +60,7 @@ export class SplashComponent implements OnInit {
             }
 
             console.log('accessed from posSys dashboard');
-            this.router.navigate(['/signin'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
+            this.router.navigate(['./signin'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
         }
     }
 
