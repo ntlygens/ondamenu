@@ -5,6 +5,8 @@ import { ListComponent } from './core-func/comps/list.component';
 import { MenuComponent } from './menu/menu.component';
 import { FoodPaymentComponent } from './core-func/comps/food-payment.component';
 import { GuiService } from './core-func/srvcs/gui.service';
+import {TermsComponent} from './legal/terms.component';
+import {PolicyComponent} from './legal/policy.component';
 
 const MAINROUTES: AmmRouteInterface[] = [
     {
@@ -51,6 +53,24 @@ const MAINROUTES: AmmRouteInterface[] = [
             state: 'MerchantMode',
             animation: 'isLeft',
             mobile: GuiService.prototype.isMobileDevice()
+        },
+        outlets: [ 'mainAppRO' ]
+    },
+    {
+        path: 'eula',
+        component: TermsComponent,
+        data: {
+            state: 'EULA',
+            animation: 'isLeft'
+        },
+        outlets: [ 'mainAppRO' ]
+    },
+    {
+        path: 'privacy',
+        component: PolicyComponent,
+        data: {
+            state: 'Privacy',
+            animation: 'isLeft'
         },
         outlets: [ 'mainAppRO' ]
     },

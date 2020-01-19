@@ -4,7 +4,9 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AmmRoutingModule } from './amm-routing.module';
 
 import { CoreFuncModule } from './core-func/core-func.module';
@@ -25,6 +27,8 @@ import { CartItemComponent } from './core-func/comps/cart-item.component';
 import { CartService } from './core-func/srvcs/cart.service';
 import { PlateItemComponent } from './core-func/comps/plate-item.component';
 import { FoodPaymentComponent } from './core-func/comps/food-payment.component';
+import { TermsComponent } from './legal/terms.component';
+import { PolicyComponent } from './legal/policy.component';
 
 @NgModule({
     declarations: [
@@ -37,6 +41,8 @@ import { FoodPaymentComponent } from './core-func/comps/food-payment.component';
         CartItemComponent,
         PlateItemComponent,
         FoodPaymentComponent,
+        TermsComponent,
+        PolicyComponent,
     ],
     imports: [
         CommonModule,
@@ -44,6 +50,13 @@ import { FoodPaymentComponent } from './core-func/comps/food-payment.component';
         BrowserAnimationsModule,
         RouterModule,
         HttpClientModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
         FormsModule,
         ReactiveFormsModule,
         AmmRoutingModule,
@@ -68,3 +81,7 @@ import { FoodPaymentComponent } from './core-func/comps/food-payment.component';
     bootstrap: [AmmComponent]
 })
 export class AmmModule { }
+
+export function HttpLoaderFactory(http: HttpClient) {
+    return new TranslateHttpLoader(http);
+}

@@ -1,10 +1,11 @@
 import { Component, AfterViewInit, OnDestroy, OnInit, HostListener, ViewChildren, ViewContainerRef, ViewChild, ElementRef, NgZone} from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { RouterOutlet } from '@angular/router';
 import { slider } from './core-func/animations/animations.component';
 import { GuiService } from './core-func/srvcs/gui.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/overlay';
+import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/overlay';
 
 @Component({
     selector: 'amm-root',
@@ -29,8 +30,10 @@ export class AmmComponent implements AfterViewInit, OnInit, OnDestroy {
     constructor(
         private zone: NgZone,
         private gs: GuiService,
-        public scroll: ScrollDispatcher
+        public scroll: ScrollDispatcher,
+        private translate: TranslateService
     ) {
+        translate.setDefaultLang('en');
         // this.scrolllist.scrollable.elementScrolled();
         /// MOBILE SCREEN SIZE QUERY ///
         const mql: MediaQueryList = window.matchMedia('(max-width: 765px)');
