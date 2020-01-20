@@ -8,115 +8,125 @@ import {
     regExps, bizNmScrubr,
     errorMessages, bizNameErrMsgs
 } from '../../core-func/errors/custom-validation.component';
+import {GuiService} from '../../core-func/srvcs/gui.service';
 
 @Component({
     selector: 'amm-sign-up',
     template: `
-          <div id="ntroCntnr" class="inputBackground">
-              <form [formGroup]='submitForm' id='signUpForm' novalidate>
-                  <h3>Sign Up</h3>
-                  <mat-horizontal-stepper id='stepper' formArrayName='formArray' linear #stepper>
-                      <mat-step formGroupName='0' [stepControl]='formArray?.get([0])'>
-                          <ng-template matStepLabel>Enter <em *ngIf='isMerchant'>Business</em> Name</ng-template>
-                          <mat-form-field *ngIf='isMerchant || isClient'>
-                              <input matInput placeholder='Biz Name' type='text' formControlName='name' name='name' [errorStateMatcher]='confirmValidBusinessName' />
-                              <mat-error>
-                                  {{bizerrors[bizNameErrInst]}}
-                              </mat-error>
-                          </mat-form-field>
+              <div id="ntroCntnr" class="">
+                  <form [formGroup]='submitForm' id='signUpForm' novalidate>
+                      <h3>Sign Up</h3>
+                      <mat-horizontal-stepper id='stepper' formArrayName='formArray' linear #stepper>
+                          <mat-step formGroupName='0' [stepControl]='formArray?.get([0])'>
+                              <ng-template matStepLabel>Enter <em *ngIf='isMerchant'>Business</em> Name</ng-template>
+                              <mat-form-field *ngIf='isMerchant || isClient'>
+                                  <input matInput placeholder='Biz Name' type='text' formControlName='name' name='name' [errorStateMatcher]='confirmValidBusinessName' />
+                                  <mat-error>
+                                      {{bizerrors[bizNameErrInst]}}
+                                  </mat-error>
+                              </mat-form-field>
 
-                          <ng-template matStepLabel>Enter your email</ng-template>
-                          <mat-form-field>
-                              <input matInput (blur)='this.validateEmail()' placeholder='email' type='email' formControlName='email' name='email' [errorStateMatcher]='confirmValidEmailMatcher'  />
-                              <mat-error>
-                                  {{errors[emailErrInst]}}
-                              </mat-error>
-                          </mat-form-field>
+                              <ng-template matStepLabel>Enter your email</ng-template>
+                              <mat-form-field>
+                                  <input matInput (blur)='this.validateEmail()' placeholder='email' type='email' formControlName='email' name='email' [errorStateMatcher]='confirmValidEmailMatcher'  />
+                                  <mat-error>
+                                      {{errors[emailErrInst]}}
+                                  </mat-error>
+                              </mat-form-field>
 
-                          <ng-template matStepLabel>Enter your password</ng-template>
-                          <mat-form-field>
-                              <input matInput placeholder='password' type='password' formControlName='password' name='password'  />
-                              <mat-error>
-                                  {{errors[passErrInst]}}
-                              </mat-error>
-                          </mat-form-field>
-                          <div>
-                              <button mat-button matStepperNext>Next</button>
-                          </div>
-                      </mat-step>
+                              <ng-template matStepLabel>Enter your password</ng-template>
+                              <mat-form-field>
+                                  <input matInput placeholder='password' type='password' formControlName='password' name='password'  />
+                                  <mat-error>
+                                      {{errors[passErrInst]}}
+                                  </mat-error>
+                              </mat-form-field>
+                              <div>
+                                  <button mat-button matStepperNext>Next</button>
+                              </div>
+                          </mat-step>
 
-                      <mat-step *ngIf='isMerchant || isClient' formGroupName='1' [stepControl]='formArray?.get([1])'>
-                          <ng-template matStepLabel>Select what applies</ng-template>
-                          <mat-form-field>
-                              <input matInput placeholder='Merchant ID' type='text' formControlName='merchantid' name='merchantid' [errorStateMatcher]='confirmValidBusinessName' />
-                              <mat-error>
-                                  {{bizerrors[merchantIdErrInst]}}
-                              </mat-error>
-                          </mat-form-field>
-                          <mat-form-field>
-                              <mat-select placeholder="Role" formControlName="role">
-                                  <mat-option *ngFor='let role of roles; let idx=index' [value]='role'>{{role}}</mat-option>
-                              </mat-select>
-                          </mat-form-field>
-                          <mat-form-field>
-                              <mat-select placeholder="Product" formControlName="product" multiple>
-                                  <mat-option *ngFor='let product of products; let idx=index' [value]='product'>{{product}}</mat-option>
-                              </mat-select>
-                          </mat-form-field>
+                          <mat-step *ngIf='isMerchant || isClient' formGroupName='1' [stepControl]='formArray?.get([1])'>
+                              <ng-template matStepLabel>Select what applies</ng-template>
+                              <mat-form-field>
+                                  <input matInput placeholder='Merchant ID' type='text' formControlName='merchantid' name='merchantid' [errorStateMatcher]='confirmValidBusinessName' />
+                                  <mat-error>
+                                      {{bizerrors[merchantIdErrInst]}}
+                                  </mat-error>
+                              </mat-form-field>
+                              <mat-form-field>
+                                  <mat-select placeholder="Role" formControlName="role">
+                                      <mat-option *ngFor='let role of roles; let idx=index' [value]='role'>{{role}}</mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                              <mat-form-field>
+                                  <mat-select placeholder="Product" formControlName="product" multiple>
+                                      <mat-option *ngFor='let product of products; let idx=index' [value]='product'>{{product}}</mat-option>
+                                  </mat-select>
+                              </mat-form-field>
 
-                          <div>
-                              <button mat-button matStepperPrevious>Previous</button>
-                              <button mat-button matStepperNext>Next</button>
-                          </div>
-                      </mat-step>
+                              <div>
+                                  <button mat-button matStepperPrevious>Previous</button>
+                                  <button mat-button matStepperNext>Next</button>
+                              </div>
+                          </mat-step>
 
-                      <mat-step>
-                          This is the end
-                          <div>
-                              <button mat-button matStepperPrevious>Previous</button>
-                          </div>
-                      </mat-step>
+                          <mat-step>
+                              This is the end
+                              <div>
+                                  <button mat-button matStepperPrevious>Previous</button>
+                              </div>
+                          </mat-step>
 
-                  </mat-horizontal-stepper>
-                  <button (click)='this.addUser()' [disabled]='this.submitForm.invalid' color='warn' mat-raised-button type='button'>Sign Up</button>
-                  <div id='loginOptns'>
-                      <a  href='#' (click)='$event.preventDefault(); this.gotoSignIn()' routerLinkActive='true' id='signin' name='signup'>Sign In</a>
-                      <a  href='#' (click)='$event.preventDefault(); this.gotoReset()' routerLinkActive='true' id='reset' name='reset'>Reset</a>
-                  </div>
-                </form>
-          </div>
-      `,
+                      </mat-horizontal-stepper>
+                      <button (click)='this.addUser()' [disabled]='this.submitForm.invalid' color='warn' mat-raised-button type='button'>Sign Up</button>
+                      <div id='loginOptns'>
+                          <a  href='#' (click)='$event.preventDefault(); this.gotoSignIn()' routerLinkActive='true' id='signin' name='signup'>Sign In</a>
+                          <a  href='#' (click)='$event.preventDefault(); this.gotoReset()' routerLinkActive='true' id='reset' name='reset'>Reset</a>
+                      </div>
+                    </form>
+              </div>
+          `,
     styles: [`
 
-            .splashImg {
-              width: 100%;
-              height: auto;
-            }
+                .splashImg {
+                  width: 100%;
+                  height: auto;
+                }
 
-            h3 {
-                text-transform: uppercase;
-            }
+                h3 {
+                    text-transform: uppercase;
+                }
 
-            #signUpForm {
-              z-index: 3;
-              position: fixed;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-              clear: both;
-              width: 75%;
-            }
+                #signUpForm {
+                    z-index: 3;
+                    position: fixed;
+                    top: 55%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    clear: both;
+                    width: 100%;
+                    text-align: center;
+                    padding: 0 5%;
+                }
 
-            #stepper {
-              height: 400px;
-              margin: auto;
-              width: inherit;
-            }
+                #stepper {
+                  height: 400px;
+                  margin: auto;
+                  width: inherit;
+                }
+                .mat-stepper-horizontal, .mat-stepper-vertical {
+                    background-color: #fffffff5;
+                }
+                .mat-form-field--no-underline .mat-input-underline {
+                  background-color: transparent;
+                }
+                .mat-form-field {
+                    width: 100%;
+                    padding: 0 5%;
+                }
 
-            .mat-form-field--no-underline .mat-input-underline {
-              background-color: transparent;
-            }
-          `],
+              `],
     providers: [
         LoginService
     ]
@@ -171,6 +181,7 @@ export class SignUpComponent {
     constructor(
         private fb: FormBuilder,
         private als: LoginService,
+        private gs: GuiService,
         private router: Router,
         private route: ActivatedRoute
     ) {
@@ -179,6 +190,7 @@ export class SignUpComponent {
         this.emailErrInst = 'email';
         this.passErrInst = 'password';
         this.fileErrInst = 'file';
+        this.gs.setStartPg(false);
 
         const urlSnap = this.route.snapshot.pathFromRoot.map(o => o.url[0]).join('/');
         this.merchantParam = this.route.snapshot.queryParams.merchant_id;
@@ -189,7 +201,7 @@ export class SignUpComponent {
         console.log('mrchntID = ', this.merchantParam);
 
         switch ( urlSnapClType ) {
-            case 'a':
+            case '/':
                 this.clientType = 'm';
                 this.isMerchant = true;
                 this.createMerchantForm();

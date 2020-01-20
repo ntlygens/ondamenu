@@ -83,5 +83,6 @@ import { PolicyComponent } from './legal/policy.component';
 export class AmmModule { }
 
 export function HttpLoaderFactory(http: HttpClient) {
-    return new TranslateHttpLoader(http);
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+

@@ -7,7 +7,6 @@ import { Component, OnInit } from '@angular/core';
           <br><br><br>
           <h5 translate>EULA.TITLE</h5>
           <h6 translate>EULA.SUB_TITLE</h6>
-
           <p>
           This is an agreement (“Agreement”) between (OnDaMenu) subsidiary of Adqwest Multimedia (“we”, “us”, “Adqwest Multimedia”) and you, an end user (“you”, “user” or “subscriber”) of OnDaMenu service and software  (the “Service”) as described herein. By establishing, activating, using, or paying for the Service, you acknowledge that you have read and understood these terms, you agree to the terms and conditions in this Agreement, and you represent that you are of legal age to enter this Agreement and become bound by its terms, and to the prices, charges, and conditions provided to you in association with your enrollment. This Agreement governs the Service and any website, application or software used in conjunction with the Service.
           Service Description And Terms Of Service
