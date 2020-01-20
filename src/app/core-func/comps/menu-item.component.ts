@@ -222,7 +222,7 @@ export class MenuItemComponent implements OnInit, AfterViewInit {
     }
 
     addItem(msg: boolean): void {
-        console.log('thist ' + msg);
+        // console.log('thist ' + msg);
         this.itemCounter = true;
     }
 
@@ -230,7 +230,7 @@ export class MenuItemComponent implements OnInit, AfterViewInit {
         // this.itemCounter = !this.itemCounter;
         // console.log('eeee: ', e.target.id);
         this.itemCounter = !this.itemCounter;
-        console.log('itemcounter: = ', this.itemCounter);
+        // console.log('itemcounter: = ', this.itemCounter);
 
     }
 
@@ -240,7 +240,7 @@ export class MenuItemComponent implements OnInit, AfterViewInit {
 
     send4Removal(e): any {
         this.emitRemoveClick2.emit(event);
-        console.log('passed on, ', e);
+        // console.log('passed on, ', e);
     }
 
 }

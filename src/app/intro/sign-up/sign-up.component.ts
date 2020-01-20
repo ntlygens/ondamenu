@@ -197,27 +197,27 @@ export class SignUpComponent {
         this.mrchCodeParam = this.route.snapshot.queryParams.code;
         this.employeeParam = this.route.snapshot.queryParams.employee_id;
         const urlSnapClType = urlSnap[1];
-        console.log('urlSnapClType = ', urlSnap[1]);
-        console.log('mrchntID = ', this.merchantParam);
+        // console.log('urlSnapClType = ', urlSnap[1]);
+        // console.log('mrchntID = ', this.merchantParam);
 
         switch ( urlSnapClType ) {
             case '/':
                 this.clientType = 'm';
                 this.isMerchant = true;
                 this.createMerchantForm();
-                console.log( 'merchant in auth: ', urlSnapClType );
+                // console.log( 'merchant in auth: ', urlSnapClType );
                 break;
             case 'c':
                 this.clientType = urlSnapClType;
                 this.isClient = true;
                 this.createClientForm();
-                console.log( 'client: ', urlSnapClType );
+                // console.log( 'client: ', urlSnapClType );
                 break;
             case 'u':
                 this.clientType = urlSnapClType;
                 this.isUser = true;
                 this.createUserForm();
-                console.log( 'user: ', urlSnapClType );
+                // console.log( 'user: ', urlSnapClType );
                 break;
 
         }
@@ -230,7 +230,7 @@ export class SignUpComponent {
         // (adtnlOptns as FormArray).push(this.fb.group({
         //   role: [''],
         // }));
-        console.log('its dirty');
+        // console.log('its dirty');
     }
 
     createMerchantForm() {
@@ -282,7 +282,7 @@ export class SignUpComponent {
     }
 
     isBizNameValid() {
-        console.log( 'is activated');
+        // console.log( 'is activated');
     }
 
     validateEmail() {
@@ -305,7 +305,7 @@ export class SignUpComponent {
                         // this.submitForm.get('userLoginData.email').setErrors({'emailErr': true});
                         break;
                 }
-                console.log('eMailSign-Up-res: ' + validRes);
+                // console.log('eMailSign-Up-res: ' + validRes);
             }
         );
     }
@@ -319,7 +319,7 @@ export class SignUpComponent {
         if (this.submitForm.dirty && this.submitForm.valid) {
 
             if (this.isMerchant || this.isClient)   {
-                console.log('addUser MerchantID: ', this.merchantParam);
+                // console.log('addUser MerchantID: ', this.merchantParam);
 
                 const merchantid = this.formArray.get([1, 'merchantid']).value;
                 const role = this.formArray.get([1, 'role']).value;
@@ -351,12 +351,12 @@ export class SignUpComponent {
                             case res !== 1:
                                 this.passErrInst = 'addMrchntError';
                                 // this.formArray.get([0, 'password']).value.setErrors({ 'addUsrError: ': true});
-                                console.log('something went wrong adding merchant');
+                                // console.log('something went wrong adding merchant');
                                 break;
                             // user added //
                             case res === 1:
                                 this.router.navigate([''], { relativeTo: this.route });
-                                console.log('Valid Merchant Pass');
+                                // console.log('Valid Merchant Pass');
                                 break;
                         }
                     }
@@ -365,7 +365,7 @@ export class SignUpComponent {
 
                 this.als.addNewUser( `${username}`, `${useremail}`, `${userpass}`, `${this.clientType}` ).subscribe( res => {
                     // const usrValidRes = res;
-                    console.log('res: ' + res);
+                    // console.log('res: ' + res);
                     switch ( true ) {
                         // user not addded //
                         case res !== 1:
@@ -376,7 +376,7 @@ export class SignUpComponent {
                         // user added //
                         case res === 1:
                             this.router.navigate( [ '' ], { relativeTo: this.route } );
-                            console.log( 'Valid User Pass' );
+                            // console.log( 'Valid User Pass' );
                             break;
                     }
                 } );

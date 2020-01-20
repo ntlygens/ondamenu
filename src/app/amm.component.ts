@@ -38,7 +38,7 @@ export class AmmComponent implements AfterViewInit, OnInit, OnDestroy {
         /// MOBILE SCREEN SIZE QUERY ///
         const mql: MediaQueryList = window.matchMedia('(max-width: 765px)');
         this.isMobile = AmmComponent.getScreenSize(mql);
-        console.log('isMobile: ', this.isMobile);
+        // console.log('isMobile: ', this.isMobile);
         this.gs.setMediaDevice(this.isMobile);
         /// MOBILE SCREEN SIZE END ///
 
@@ -81,7 +81,7 @@ export class AmmComponent implements AfterViewInit, OnInit, OnDestroy {
         this.gs.isStartPg$.pipe(takeUntil(this.destroy$)).subscribe(
             (res) => {
                 this.isStartPg = res;
-                console.log('issplash res: ', this.isStartPg);
+                // console.log('issplash res: ', this.isStartPg);
             }
         );
 
@@ -100,7 +100,7 @@ export class AmmComponent implements AfterViewInit, OnInit, OnDestroy {
     }
 
     setInst(e) {
-        console.log('emitted: ', e);
+        // console.log('emitted: ', e);
     }
 
 }

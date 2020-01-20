@@ -102,7 +102,7 @@ export class SignInComponent implements OnInit {
 
         }
 
-        console.log( 'm: ', this.merchantID, 'c: ', this.clientType );
+        // console.log( 'm: ', this.merchantID, 'c: ', this.clientType );
 
     }
 
@@ -116,7 +116,7 @@ export class SignInComponent implements OnInit {
     }
 
     validateEmail() {
-        console.log('mid: ', this.merchantID);
+        // console.log('mid: ', this.merchantID);
         const user = this.submitForm.get('userLoginData.email').value;
         this.als.isEmailValid(`${user}`, `${this.clientType}`, `${this.merchantID}`).subscribe(
             res => {
@@ -127,7 +127,7 @@ export class SignInComponent implements OnInit {
                     case validRes !== 1:
                         this.emailErrInst = 'wrgemail';
                         this.submitForm.get('userLoginData.email').setErrors({emailErr: true});
-                        console.log(`${this.clientType}` + '-Email not in db- ' + validRes);
+                        // console.log(`${this.clientType}` + '-Email not in db- ' + validRes);
                         break;
                     case validRes === 1:
                         this.submitForm.get('userLoginData.password').enable();
@@ -135,7 +135,7 @@ export class SignInComponent implements OnInit {
                         // console.log('valid user');
                         break;
                 }
-                console.log('eMailSign-In-res: ' + validRes);
+                // console.log('eMailSign-In-res: ' + validRes);
             }
         );
     }
@@ -153,29 +153,29 @@ export class SignInComponent implements OnInit {
                         case usrValidRes !== 1:
                             this.passErrInst = 'wrgpwd';
                             this.submitForm.get('userLoginData.password').setErrors({wrongPwd: true});
-                            console.log('incorrect pass');
+                            // console.log('incorrect pass');
                             break;
                         case usrValidRes === 1:
                             if ( this.clientType === 'm' ) {
-                                console.log('being accesed by merchant');
+                                // console.log('being accesed by merchant');
                                 this.als.isProfileComplete(merchant).subscribe(
                                     resp => {
                                         // console.log('resp: ', resp);
                                         const isProfileCompleted = resp.profile_complete;
                                         this.ss.setProfileStatus(isProfileCompleted);
-                                        console.log('profileCompleted: ', isProfileCompleted);
+                                        // console.log('profileCompleted: ', isProfileCompleted);
                                         if ( isProfileCompleted !== '0' ) {
                                             // IF PROFILE COMPLETE //
                                             this.router.navigate( [ '/m' ], { relativeTo: this.route, queryParams: { mID: merchant } } );
-                                            console.log('profile completed!');
+                                            // console.log('profile completed!');
                                         } else {
                                             // IF PROFILE NOT COMPLETE //
                                             this.router.navigate(['/m/profile'], {relativeTo: this.route, queryParams: {mID: merchant} });
-                                            console.log('profile NOT completed!');
+                                            // console.log('profile NOT completed!');
                                         }
                                     },
                                     (err) => {
-                                        console.log('there was an error getting profile status: ', err);
+                                        // console.log('there was an error getting profile status: ', err);
                                     },
                                     () => {
                                         // this.router.navigate(['/m'], {relativeTo: this.route, queryParams: {'mID': merchant} });

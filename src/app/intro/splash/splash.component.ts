@@ -55,11 +55,11 @@ export class SplashComponent implements OnInit {
             const dcode = searchParams.get('code');
 
             if ( dcode === (null || '')) {
-                console.log('code has no data');
+                // console.log('code has no data');
                 this.startMrchntXp();
             }
 
-            console.log('accessed from posSys dashboard');
+            // console.log('accessed from posSys dashboard');
             this.router.navigate(['./signin'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
         }
     }
@@ -70,7 +70,7 @@ export class SplashComponent implements OnInit {
     }
 
     startMrchntXp() {
-        console.log('accessed from web');
+        // console.log('accessed from web');
         this.gs.setStartPg(false);
         window.open(`${this.mURL}`, '_self');
     }

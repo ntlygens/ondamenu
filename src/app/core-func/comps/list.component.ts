@@ -76,10 +76,10 @@ export class ListComponent implements OnInit {
         this.ls.getAllMerchants().then(
             (res: MerchantInfoData[]) => {
                 this.merchants = res;
-                console.log('load eg: ', JSON.stringify(this.merchants[0]));
+                // console.log('load eg: ', JSON.stringify(this.merchants[0]));
             },
             (err) => {
-                console.log('userMrchntList_Error: ', err);
+                // console.log('userMrchntList_Error: ', err);
             }
         );
     }
@@ -98,7 +98,7 @@ export class ListComponent implements OnInit {
         });
 
         this.router.navigate( [ '/c/'], {queryParams: {clid: merchant.client_id}} );
-        console.log('cID: ', merchant.client_id, ' cName: ', merchant.username);
+        // console.log('cID: ', merchant.client_id, ' cName: ', merchant.username);
     }
 
 }

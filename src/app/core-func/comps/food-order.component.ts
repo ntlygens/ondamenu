@@ -111,7 +111,7 @@ export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public static emitRemove_click(e): any {
-        console.log('worksss -- ', e.target.title);
+        // console.log('worksss -- ', e.target.title);
     }
 
     /*public static removeFromCart(e): any {
@@ -145,7 +145,7 @@ export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     removeFromCart(e): any {
         this.rmvBtnEmitter.emit(event);
         // console.log('e = ', e.target.title);
-        console.log('e = eeee ');
+        // console.log('e = eeee ');
     }
 
     toggleIncrBtn(e): any {
@@ -181,7 +181,7 @@ export class FoodOrderComponent implements OnInit, AfterViewInit, OnDestroy {
         const clID = navBtn.getAttribute('data-client-id');
         // this.menuCatName = document.querySelector('#DINNER');
 
-        console.log('(', this.prodid, ')/', this.prodname, ' added from ', catNm, ' => ', this.itemCount, 'x for ', (this.prodprice * this.itemCount), '\n');
+        // console.log('(', this.prodid, ')/', this.prodname, ' added from ', catNm, ' => ', this.itemCount, 'x for ', (this.prodprice * this.itemCount), '\n');
 
         if (!catNm) {
             this.menuCat = '';

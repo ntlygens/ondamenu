@@ -96,7 +96,7 @@ export class CategoryListComponent implements OnInit, AfterViewInit {
                     ///// ## /// console.log('test_prod: ', this.dMenuItems[0]['prod_name']);
                 },
                 (err) => {
-                    console.log('getCatProds_Error: ' + err);
+                    // console.log('getCatProds_Error: ' + err);
                 }
             );
 

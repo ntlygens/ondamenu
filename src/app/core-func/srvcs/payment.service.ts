@@ -39,12 +39,12 @@ export class PaymentService {
 
         let Params = new HttpParams();
 
-        console.log('args recieved length: ', args.length, '; test arg: ', args[0]);
+        // console.log'args recieved length: ', args.length, '; test arg: ', args[0]);
         for (let i = 0; i < splitArgs.length; ++i) {
             if ( i < 8 ) {
                 Params = Params.append(`${[postVars[i]]}`, `${splitArgs[ i ]}`);
             } else {
-                console.log('send4Payment_postVars_Error: amt args revieved does not same as function;');
+                // console.log'send4Payment_postVars_Error: amt args revieved does not same as function;');
                 // Params = Params.append( `${splitArgs[ i ]}`, '1' );
             }
         }

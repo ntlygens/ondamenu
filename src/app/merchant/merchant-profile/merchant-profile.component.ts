@@ -106,10 +106,10 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
     ) {
         this.merchantID = this.route.snapshot.queryParams.mID;
         this.prflErrInst = 'profileError';
-        console.log('id:= ', this.merchantID);
+        // console.log('id:= ', this.merchantID);
         this.gs.isMobileDevice().subscribe(
             (res) => {
-                console.log('this is mobile mSplashComp: ', res);
+                // console.log('this is mobile mSplashComp: ', res);
                 /*switch ( res ) {
                     case true:
                         this.isMobileDash = true;
@@ -126,7 +126,7 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
                 }*/
             },
             (err) => {
-                console.log('isMobileDevice_Error: ' + err);
+                // console.log('isMobileDevice_Error: ' + err);
             }
         );
         this.createProfileForm();
@@ -210,7 +210,7 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
 
         markAllAsDirty(this.profileSubmitForm);
         // const formData = this.profileFormArray.get([2, 'uploadedfile']).value;
-        console.log('this right here');
+        // console.log('this right here');
 
         if ( this.profileSubmitForm.dirty ) {
             this.ms.sendMerchantProfileData(
@@ -230,16 +230,16 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
                 // formData
             ).subscribe(
                 (res) => {
-                    console.log( 'res from setData: ', res);
+                    // console.log( 'res from setData: ', res);
 
                 },
                 (err) => {
-                    console.log('SendMerchantProfile_Error: ', err);
+                    // console.log('SendMerchantProfile_Error: ', err);
                 },
                 () => {
                     // this.router.navigate(['../../', 'merchandise' ], {relativeTo: this.route, queryParamsHandling: 'preserve' });
                     this.router.navigate(['/m'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
-                    console.log('it completed');
+                    // console.log('it completed');
                 });
         }
         // this.router.navigate(['../../', 'b', 'merchandise' ], {relativeTo: this.route, queryParamsHandling: 'preserve' });
@@ -257,7 +257,7 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
 
     toggle() {
         this.isOpen = !this.isOpen;
-        console.log('toggled');
+        // console.log('toggled');
     }
 
     /*onFileChange(event, field) {
@@ -299,10 +299,10 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
         this.ms.getMerchantDetails(`${this.merchantID}`).then(
             (mNfo: MerchantInfoData[]) => {
                 this.merchantDetails = mNfo;
-                console.log('md1: ', this.merchantDetails);
+                // console.log('md1: ', this.merchantDetails);
             },
             (err) => {
-                console.log('getMerchantDetail_Error: ' + err);
+                // console.log('getMerchantDetail_Error: ' + err);
             }
         );
     }

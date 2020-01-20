@@ -56,7 +56,7 @@ export class NydohComponent implements OnInit {
 
             },
             (err) => {
-                console.log('getMerchantDOHData_Error: ', err);
+                // console.log('getMerchantDOHData_Error: ', err);
             }
         );
     }

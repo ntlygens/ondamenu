@@ -108,7 +108,7 @@ export class MerchantSplashComponent implements OnInit, AfterContentInit {
     ) {
         this.gs.isMobileDevice().subscribe(
             (res) => {
-                console.log('this is mobile mSplashComp: ', res);
+                // console.log('this is mobile mSplashComp: ', res);
                 switch ( res ) {
                     case true:
                         this.isMobileDash = true;
@@ -125,7 +125,7 @@ export class MerchantSplashComponent implements OnInit, AfterContentInit {
                 }
             },
             (err) => {
-                console.log('isMobileDevice_Error: ' + err);
+                // console.log('isMobileDevice_Error: ' + err);
             }
         );
     }
@@ -164,8 +164,7 @@ export class MerchantSplashComponent implements OnInit, AfterContentInit {
             const allData: MerchantInterfaceTile[] = data.filter( cData => cData.cols !== 0);
 
             // this.createDCards(allData);
-            console.log ('data-text: ', allData[0].text
-            );
+            // console.log ('data-text: ', allData[0].text);
 
             this.tiles = allData;
         });
@@ -229,7 +228,7 @@ export class MerchantSplashComponent implements OnInit, AfterContentInit {
     }
 
     getState(outlet): string {
-        console.log('aboutChildSte: ', outlet.activatedRouteData.state);
+        // console.log('aboutChildSte: ', outlet.activatedRouteData.state);
         return outlet.activatedRouteData.state;
     }
 

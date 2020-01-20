@@ -157,7 +157,7 @@ export class FoodPaymentComponent implements OnInit, AfterViewInit, OnDestroy {
                         }*/
                     },
                     (err) => {
-                        console.log('sendPayment_Error: ' + err);
+                        // console.log('sendPayment_Error: ' + err);
                     }
                 );
 
@@ -170,12 +170,12 @@ export class FoodPaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     cartIDSend(msg: string) {
-        console.log('oIDRecvd-' + msg);
+        // console.log('oIDRecvd-' + msg);
         this.orderId = msg;
     }
 
     cartAmtSend(msg: number) {
-        console.log('amtRecvd-', msg);
+        // console.log('amtRecvd-', msg);
         this.orderAmount = msg;
     }
 
@@ -213,12 +213,12 @@ export class FoodPaymentComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
         this.cs.orderID$.pipe(takeUntil(this.destroy$)).subscribe( (res) => {
-            console.log('oid: = ', res);
+            // console.log('oid: = ', res);
             this.orderId = res;
         });
 
         this.cs.orderAmt$.pipe(takeUntil(this.destroy$)).subscribe( (res) => {
-            console.log('oamt: = ', res);
+            // console.log('oamt: = ', res);
             this.orderAmount = res;
         });
     }

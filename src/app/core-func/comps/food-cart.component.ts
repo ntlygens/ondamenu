@@ -109,7 +109,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
             /// cartItem.setAttribute('aria-label', 'checked');
             // const allItems: any = cartItem.closest('.shoppingCart').querySelectorAll('[aria-label="checked"]');
             cartItems.forEach( (x, i) => {
-               console.log('xx:', i, ', ', x.getAttribute('data-price'));
+               // console.log('xx:', i, ', ', x.getAttribute('data-price'));
                prices.push(Number(x.getAttribute('data-price')));
             });
             if ( prices.length === 0 ) {
@@ -361,7 +361,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         if ( searchParams.has( 'clid')) {
             this.mID = searchParams.get('clid');
         }
-        console.log('mID: ', this.mID);
+        // console.log('mID: ', this.mID);
 
         this.cs.getOrderId(`${this.mID}`).subscribe( res => {
                 // let resBody = JSON.parse(res['_body']);
@@ -371,16 +371,16 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 // console.log('ngOrderID: ' + this.userOrderID);
             },
             err => {
-                console.log('getOrderID_Error: ' + err);
+                // console.log('getOrderID_Error: ' + err);
             },
             () => {
-                console.log('success getting orderID - ' + this.userOrderID);
+                // console.log('success getting orderID - ' + this.userOrderID);
 
 
                 // const dOrderAmt = this.elem.querySelector('#orderAmt');
                 this.cs.setOrderId(this.userOrderID);
                 this.cs.setOrderAmt(this.amtOrderTotal);
-                console.log('id: ', this.userOrderID, ' total: ', this.amtOrderTotal);
+                // console.log('id: ', this.userOrderID, ' total: ', this.amtOrderTotal);
                 /// ** this.cOrderID.emit(this.userOrderID);
                 /// ** this.cOrderAmt.emit(this.cartTotal);
                 // console.log('log ID: '+this.userOrderID);
@@ -408,13 +408,13 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                         // console.log('res length: = ', Object.keys(res).length);
                         /// === /// console.log('obj key name - ', numItemsInOrder[0]);
                         if ( numItemsInOrder[0] !== 'message' || numItemsInOrder[0] === '0' ) {
-                            console.log('Worked: ', numItemsInOrder.length, ' items added to order; \n');
+                            // console.log('Worked: ', numItemsInOrder.length, ' items added to order; \n');
                         } else {
-                            console.log('Something went wrong. No Items added to order');
+                            // console.log('Something went wrong. No Items added to order');
                         }
                     },
                     err => {
-                        console.log('addItems2Order_Error: ' + err);
+                        // console.log('addItems2Order_Error: ' + err);
                     },
                     () => {
                         this.clearCart();

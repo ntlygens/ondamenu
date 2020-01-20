@@ -46,7 +46,7 @@ export class MerchantComponent implements AfterViewInit, OnDestroy, OnInit {
         this.elem = this.elemRef.nativeElement;
         const mql: MediaQueryList = window.matchMedia('(max-width: 765px)');
         this.isMobileDash = MerchantComponent.getScreenSize(mql);
-        console.log('isMobileDash: ', this.isMobileDash);
+        // console.log('isMobileDash: ', this.isMobileDash);
         this.gs.setMediaDevice(this.isMobileDash);
         this.gs.setStartPg(false);
         /*this.gs.isMobileDevice().then(
