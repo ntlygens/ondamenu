@@ -82,8 +82,8 @@ export interface MerchantInfoData {
     client_id: string;
     username: string;
     email: string;
-    goods: number;
-    produce: number;
+    pkgd_food: number;
+    prepd_food: number;
     fish: number;
     meat: number;
     halal: number;

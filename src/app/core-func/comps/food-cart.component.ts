@@ -460,9 +460,9 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         };
         const dialogRef = this.dialog.open(UserLoginModalComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog referenced by: ', result.email, '\n' );
-            console.log('Who confirmed: ', result.upw, ' as their email. \n');
-            console.log('And uses: ', result.confirm_upw, ' as their passcode \n');
+            // console.log('The dialog referenced by: ', result.email, '\n' );
+            // console.log('Who confirmed: ', result.upw, ' as their email. \n');
+            // console.log('And uses: ', result.confirm_upw, ' as their passcode \n');
             // this.sendOrder();
             this.router.navigate(['p'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
 
@@ -483,8 +483,8 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         // const platesNCart = this.amtPlatesNCart;
         // const nonDItemsNCart = this.amtItemsNot4Plate;
 
-        console.log('Amt# non-Dinner items in cart = ', this.amtItemsNot4Plate, ';\n');
-        console.log('Amt# Dinner plates in cart = ', this.amtPlatesNCart, ';\n');
+        // console.log('Amt# non-Dinner items in cart = ', this.amtItemsNot4Plate, ';\n');
+        // console.log('Amt# Dinner plates in cart = ', this.amtPlatesNCart, ';\n');
 
 
         // switch (true) {
@@ -504,7 +504,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         // }
 
 
-        console.log('Cart cleared');
+        // console.log('Cart cleared');
         // this.viewCart();
     }
 
@@ -514,7 +514,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         // const num = 0;
         this.foodPlates = this.elem.querySelectorAll('amm-plate-item[data-name^="food-plate_"]');
         if (this.foodPlates.length > 0) {
-            console.log('amt Plates: ' + this.foodPlates.length);
+            // console.log('amt Plates: ' + this.foodPlates.length);
             return this.foodPlates.length;
         } else {
             return 0;
@@ -525,7 +525,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     changePlateSize(size) {
         const amtPlates: number = this.checkForExistingPlates();
         const plateNum: number = (amtPlates + 1);
-        console.log('amt-crnt-plates = ', amtPlates, ' next-plate-num = ', plateNum);
+        // console.log('amt-crnt-plates = ', amtPlates, ' next-plate-num = ', plateNum);
 
         this.dinnerItemsNotInPlate = this.elem.querySelectorAll('[title="DINNER"]:not([data-name])');
         // this.dinnerItemsNotInPlate = this.elem.querySelectorAll('[title*="DINNER"]');
@@ -534,7 +534,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
             case 'none':
                 this.isPlateVisible = false;
                 this.getOrderTotal();
-                console.log('item added ' + size);
+                // console.log('item added ' + size);
                 break;
             case 'sm':
                 this.createPlate({plateSize: 'small', plateNum, platePrice: 800});
@@ -544,12 +544,12 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
             case 'md':
                 this.crntFoodPlate = this.elem.querySelector(`amm-plate-item[data-name^="food-plate_${this.plateAmt}"]`);
                 // this.crntFoodPlate = this.elem.getElementsByTagName('amm-plate-item')[amtPlates];
-                console.log('plateAmt: = ', this.plateAmt);
+                // console.log('plateAmt: = ', this.plateAmt);
                 this.crntFoodPlate.querySelector('#platePrice').innerHTML = '10.00';
                 this.crntFoodPlate.querySelector('#platePrice').className = 'price';
                 this.crntFoodPlate.querySelector('#plateSize').innerHTML = 'medium';
                 this.orderTotal -= 7;
-                console.log('mdNIP: ', this.notNPlate);
+                // console.log('mdNIP: ', this.notNPlate);
                 this.dinnerItemsNotInPlate.forEach((x) => {
                     this.crntFoodPlate.appendChild(x);
                     // console.log('plates: '+this.foodPlates.childList);
@@ -573,7 +573,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 this.crntFoodPlate.querySelector('#platePrice').className = 'price';
                 this.crntFoodPlate.querySelector('#plateSize').innerHTML = 'large';
                 this.orderTotal -= 10;
-                console.log('mdNIP: ', this.notNPlate);
+                // console.log('mdNIP: ', this.notNPlate);
                 this.dinnerItemsNotInPlate.forEach((x) => {
                     this.crntFoodPlate.appendChild(x);
                     // console.log('plates: '+this.foodPlates.childList);
@@ -611,7 +611,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     createPlate(data): void {
-        console.log('this is plate number ' + data.plateNum);
+        // console.log('this is plate number ' + data.plateNum);
         // == option one == //
         /*const fragment = document.createDocumentFragment();
         const myPlate = document.createElement('div');
@@ -697,17 +697,17 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 this.crntFoodPlate = foodPlates[i];
             }
         }*/
-        console.log('pltNum: ', data.plateNum);
+        // console.log('pltNum: ', data.plateNum);
 
         // this.crntFoodPlate = this.elem.querySelector('amm-plate-item[data-name^="food-plate_' + (data.plateNum - 1) + '"]');
         this.crntFoodPlate = this.elem.getElementsByTagName('amm-plate-item')[data.plateNum - 1];
         // this.dinnerItemsNotInPlate = this.elem.getElementsByTagName('amm-cart-item');
 
-        console.log('fp: ', this.crntFoodPlate );
-        console.log('not 1st plated ' + this.notNPlate);
+        // console.log('fp: ', this.crntFoodPlate );
+        // console.log('not 1st plated ' + this.notNPlate);
 
         for (const plate of this.dinnerItemsNotInPlate) {
-            console.log('j: ', plate.getAttribute('aria-label'));
+            // console.log('j: ', plate.getAttribute('aria-label'));
             FoodCartComponent.insertAfter(this.crntFoodPlate.firstChild, plate);
         }
 
@@ -739,7 +739,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         const item = e.target;
         const itemTitle = e.target.title;
         const itemParent = e.target.parentElement;
-        console.log('removing item.... ', itemTitle );  // , ' with classList: ', e.target.classList);
+        // console.log('removing item.... ', itemTitle );  // , ' with classList: ', e.target.classList);
         // e.target.removeEventListener();
         if (this.deleteBtnListener) { this.deleteBtnListener(); }
         // this.removeListener(e.target);
@@ -796,7 +796,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
             this.orderTotal -= Number(item.previousElementSibling.textContent * 100);
             // console.log('Ototal: ', this.orderTotal);
         }
-        console.log('amt to minus: ', item2Sub, ' from ', this.orderTotal, ' total');
+        // console.log('amt to minus: ', item2Sub, ' from ', this.orderTotal, ' total');
 
     }
 
@@ -874,7 +874,7 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                     this.removeItem(event);
                 });
             }
-            console.log('prod: ', prod);
+            // console.log('prod: ', prod);
         }
 
         if (this.notForPlate > 0) {
@@ -984,20 +984,20 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 break;
         }
 
-        console.log(
+        /*console.log(
             ' dinner items ', this.forPlate, ' \n',
             ' dinner items NIP ', this.notNPlate, ' \n',
             ' other items ', this.notForPlate, ' \n',
             ' total itams in cart ', this.inCart, ' \n',
             ' plates in cart ', this.plateAmt, ' \n',
             ' orderTotal ', this.amtOrderTotal, ' \n',
-        );
+        );*/
 
     }
 
     ngAfterViewInit(): void {
         const preTotal: number = this.elem.getElementsByClassName('cartSumTotal')[0].innerHTML;
-        console.log('sumTotal: ', preTotal);
+        // console.log('sumTotal: ', preTotal);
 
     }
 

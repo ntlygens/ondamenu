@@ -160,17 +160,17 @@ export class SignUpComponent {
     employeeParam: string;
 
     roles = [
-        'producer',
-        'retailer',
-        'merchant'
+        'Farm/Producer',
+        'Supplier/Retailer',
+        'Rest\'rant/Merchant'
     ];
     products = [
-        'goods',
-        'produce',
-        'fish',
-        'meat',
-        'halal',
-        'kosher'
+        'packaged items',
+        'prepared food',
+        'prepared fish',
+        'prepared meat',
+        'prepared halal',
+        'prepared kosher'
     ];
 
     get formArray(): AbstractControl | null {

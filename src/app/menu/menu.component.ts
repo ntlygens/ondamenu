@@ -72,7 +72,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {
 
         this.ss.menuBnrData$.pipe(takeUntil(this.destroy$)).subscribe( (res: MerchantInfoData) => {
-            console.log('data_Eg: = ', res.username);
+            // console.log('data_Eg: = ', res.username);
             this.bnrData = res;
             this.dUITgle = 'normal';
             this.getCats(res.client_id);
@@ -94,10 +94,11 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.ms.getSubCats(dCLID, dCID).then(
                             (res: SubCategoryData[]) => {
                                 // const catname = dNM;
-                                this.allSubCats.push({[dNM]: res});
+                                if (res) { this.allSubCats.push({[dNM]: res}); }
+
                             },
                             (err) => {
-                                console.log('getSubCat_Error: ', err);
+                                // console.log('getSubCat_Error: ', err);
                             }
                         );
                         this.navCats.push(x);
@@ -107,7 +108,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             },
             (err) => {
-                console.log('getAllCategories_Error: ', err);
+                // console.log('getAllCategories_Error: ', err);
             }
         );
         // console.log('cat array amt: ', this.navCats.length, ' first cat array name ', this.navCats[0]);
@@ -141,14 +142,14 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     menuClick(currentIndex: number, action: string, e) {
         const target = e.target.closest('.clientMenu');
         const navbtn = e.target.parentNode.id;
-        console.log('menuIndex: ', currentIndex);
+        // console.log('menuIndex: ', currentIndex);
         // if (this.menuOpen !== true) {
         //     // target.classList.toggle('menuOpen');
         //     this.menuOpen = true;
         // }
 
         if ( action === this.TOUCH_ACTION.TOUCH) {
-            console.log('actnTrgt: ', action);
+            // console.log('actnTrgt: ', action);
             this.fullMenuBtn.isActive = currentIndex === null;
             // TODO: ADD MENU ID TO BUTTON AND CALL INSTEAD OF NAME # USE MENUID //
             this.dCats.forEach((x: CategoryData, i) => {
@@ -158,21 +159,22 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
                 if ( crntCat && i < 4) {
                     // if ( (i === currentIndex) && i < 4) {
                     const subCatObj = this.allSubCats[i];
-
-                    this.subNavCats.length = 0;
-                    Object.keys(subCatObj).forEach( (key) => {
+                    if ( subCatObj ) {
+                        this.subNavCats.length = 0;
+                        Object.keys(subCatObj).forEach((key) => {
                             // console.log('pi ' + JSON.stringify(subCatObj[key]));
-                        switch (key) {
-                            case x.cval:
-                                subCatObj[key].forEach( (y, j) => {
-                                    this.subNavCats.push(y);
-                                });
-                                break;
-                            default:
-                                console.log('nothing');
-                        }
+                            switch (key) {
+                                case x.cval:
+                                    subCatObj[key].forEach((y, j) => {
+                                        this.subNavCats.push(y);
+                                    });
+                                    break;
+                                default:
+                                    // console.log('nothing');
+                            }
 
-                    });
+                        });
+                    }
 
                 }
 
@@ -183,7 +185,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
     subMenuClick(currentIndex: number, action: string, e ) {
         if (action === this.TOUCH_ACTION.TOUCH) {
-            console.log('tap index: ' + currentIndex + ', action: ' + action + ','  +  ' from target: ' + e.target.textContent);
+            // console.log('tap index: ' + currentIndex + ', action: ' + action + ','  +  ' from target: ' + e.target.textContent);
 
             this.dCats.forEach((x, i) => {
                 x.visible = ( x.name === e.target.textContent );
@@ -209,7 +211,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     minimizeUI(e) {
-        console.log('this footer btn open - ', e );
+        // console.log('this footer btn open - ', e );
         this.dUITgle = 'minimized';
         // const cntnr = this.elem.querySelector('#mainClientCntnr');
         // const img = this.elem.querySelector('.imgStngs');

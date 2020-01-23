@@ -49,6 +49,7 @@ export class MerchantComponent implements AfterViewInit, OnDestroy, OnInit {
         // console.log('isMobileDash: ', this.isMobileDash);
         this.gs.setMediaDevice(this.isMobileDash);
         this.gs.setStartPg(false);
+        this.gs.setVisibility(false);
         /*this.gs.isMobileDevice().then(
             (res) => {
                 this.isMobileDash = res;

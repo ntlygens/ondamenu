@@ -7,13 +7,17 @@ import { Observable, BehaviorSubject, Subject } from 'rxjs';
 export class GuiService {
     readonly isStartPg$: any;
     readonly isMobile$: any;
+    readonly isVisible$: any;
 
     private setStartPg$: Subject<boolean> = new BehaviorSubject<boolean>(true);
     private setMediaSize$: Subject<boolean> = new BehaviorSubject<boolean>(false);
+    private setVisibility$: Subject<boolean> = new BehaviorSubject<boolean>(true);
+
 
     constructor() {
         this.isStartPg$ = this.setStartPg$.asObservable();
         this.isMobile$ = this.setMediaSize$.asObservable();
+        this.isVisible$ = this.setVisibility$.asObservable();
     }
 
     // *** set data fns *** //
@@ -23,6 +27,10 @@ export class GuiService {
 
     setMediaDevice(d) {
         this.setMediaSize$.next(d);
+    }
+
+    setVisibility(d) {
+        this.setVisibility$.next(d);
     }
 
 
