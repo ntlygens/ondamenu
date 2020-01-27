@@ -15,6 +15,11 @@ export class MerchantService {
         headers.append('Content-Type', 'application/json');
     }
 
+    private static createFilePostHeader(headers: HttpHeaders) {
+        headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+    }
+
     constructor(
         private http: HttpClient
     ) {
@@ -47,6 +52,28 @@ export class MerchantService {
         const mItems = await this.http.get(`${this.$rURL}`, {params: mdHttpParams}).toPromise();
         if (!mItems) { return; }
         return mItems;
+    }
+
+    sendProdImgs(data) {
+            // console.log('items: ' + JSON.stringify(items));
+            // this.dURL = this.API_PAY_url + this.API_orders + '/' + orderid + this.API_bulk_lineItems + '?' + this.API_tempAccess + this.authService.oauthToken;
+            /*let body = {
+              'items': items,
+              'orderid': orderid
+
+            };*/
+
+            let nuParamSendProdImgs = new HttpParams();
+            // .set('items', items);
+            // .set('orderid', orderid);
+            nuParamSendProdImgs = data;
+
+            const headers = new HttpHeaders();
+            MerchantService.createFilePostHeader(headers);
+
+            // console.log('bdy \n' + JSON.stringify(items));
+            // console.log('foodOrder2Send: ', nuParamsAddItems2Order );
+            return this.http.post(`${this.$rURL}`, data, { headers });
     }
 
 
