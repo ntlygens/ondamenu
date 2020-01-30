@@ -111,31 +111,32 @@ export class MerchantMerchandiseComponent implements OnInit {
     }
 
     changeImage(e) {
-        const dialogConfig = new MatDialogConfig();
+        // const dialogConfig = new MatDialogConfig();
         // const dialogRef = this.dialog.open(ModalComponent, dialogConfig);
+        const pid = e.target.name;
+        // console.log('pid: ', pid);
         const dialogRef = this.dialog.open(ModalComponent, {
             width: '600px',
             autoFocus: true,
-            data: { comp: this.componentData }
+            data: { pid }
         });
 
     }
 
     ngOnInit() {
-        this.componentData = {
+        /*this.componentData = {
             firstname: 'Something',
             lastname: 'Important',
             gender: 'M',
             address : {
                 city: 'somewhere'
             }
-        };
-
+        };*/
     }
 
     amtElemSelected(): number {
         this.amtRows2Edit = this.selection.selected.length;
-        console.log('rows: ', this.amtRows2Edit);
+        // console.log('rows: ', this.amtRows2Edit);
         return this.amtRows2Edit;
     }
 

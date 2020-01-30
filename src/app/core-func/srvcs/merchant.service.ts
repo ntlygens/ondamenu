@@ -55,25 +55,18 @@ export class MerchantService {
     }
 
     sendProdImgs(data) {
-            // console.log('items: ' + JSON.stringify(items));
-            // this.dURL = this.API_PAY_url + this.API_orders + '/' + orderid + this.API_bulk_lineItems + '?' + this.API_tempAccess + this.authService.oauthToken;
-            /*let body = {
-              'items': items,
-              'orderid': orderid
+        // console.log('fd-data: ', data);
+        // let nuParamSendProdImgs = new HttpParams();
+        // .set('items', items);
+        // .set('orderid', orderid);
+        // nuParamSendProdImgs = data;
 
-            };*/
+        const headers = new HttpHeaders();
+        MerchantService.createFilePostHeader(headers);
 
-            let nuParamSendProdImgs = new HttpParams();
-            // .set('items', items);
-            // .set('orderid', orderid);
-            nuParamSendProdImgs = data;
-
-            const headers = new HttpHeaders();
-            MerchantService.createFilePostHeader(headers);
-
-            // console.log('bdy \n' + JSON.stringify(items));
-            // console.log('foodOrder2Send: ', nuParamsAddItems2Order );
-            return this.http.post(`${this.$rURL}`, data, { headers });
+        // console.log('bdy \n' + JSON.stringify(items));
+        // console.log('foodOrder2Send: ', nuParamsAddItems2Order );
+        return this.http.post(`${this.$rURL}`, data, { headers });
     }
 
 

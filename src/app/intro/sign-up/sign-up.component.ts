@@ -56,12 +56,12 @@ import {GuiService} from '../../core-func/srvcs/gui.service';
                               </mat-form-field>
                               <mat-form-field>
                                   <mat-select placeholder="Role" formControlName="role">
-                                      <mat-option *ngFor='let role of roles; let idx=index' [value]='role'>{{role}}</mat-option>
+                                      <mat-option *ngFor='let role of roles; let idx=index' [value]='role.val'>{{role.name}}</mat-option>
                                   </mat-select>
                               </mat-form-field>
                               <mat-form-field>
                                   <mat-select placeholder="Product" formControlName="product" multiple>
-                                      <mat-option *ngFor='let product of products; let idx=index' [value]='product'>{{product}}</mat-option>
+                                      <mat-option *ngFor='let product of products; let idx=index' [value]='product.val'>{{product.name}}</mat-option>
                                   </mat-select>
                               </mat-form-field>
 
@@ -160,17 +160,17 @@ export class SignUpComponent {
     employeeParam: string;
 
     roles = [
-        'Farm/Producer',
-        'Supplier/Retailer',
-        'Rest\'rant/Merchant'
+        {name: 'Farm/Producer', val: 'producer'},
+        {name: 'Supplier/Retailer', val: 'retailer'},
+        {name: 'Rest\'rant/Merchant', val: 'merchant'}
     ];
     products = [
-        'packaged items',
-        'prepared food',
-        'prepared fish',
-        'prepared meat',
-        'prepared halal',
-        'prepared kosher'
+        {name: 'packaged items', val: 'pkgd_food'},
+        {name: 'prepared food', val: 'prepd_food'},
+        {name: 'prepared fish', val: 'fish'},
+        {name: 'prepared meat', val: 'meat'},
+        {name: 'prepared halal', val: 'halal'},
+        {name: 'prepared kosher', val: 'kosher'}
     ];
 
     get formArray(): AbstractControl | null {

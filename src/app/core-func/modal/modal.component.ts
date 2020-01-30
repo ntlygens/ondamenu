@@ -44,6 +44,7 @@ import {MerchantService} from '../srvcs/merchant.service';
 export class ModalComponent implements OnInit {
     mImgForm: FormGroup;
     desc: string;
+    prodID: string;
     images = [];
     mID: any;
     selectedFile: File = null;
@@ -57,7 +58,7 @@ export class ModalComponent implements OnInit {
         private dialogRef: MatDialogRef<ModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
     ) {
-        this.desc = data.firstname;
+        this.prodID = data.pid;
         this.mID = this.route.snapshot.queryParams.mID;
 
     }
@@ -68,7 +69,8 @@ export class ModalComponent implements OnInit {
             fileSource: ['', [Validators.required]]
 
         });
-        console.log('MID: ', this.mID);
+        // console.log('MID: ', this.mID);
+        // console.log(' PID: ', this.prodID);
         /*this.submitForm = this.fb.group({
             merchantLoginData: this.fb.group({
                 firstname: ['', [Validators.required]],
@@ -97,6 +99,8 @@ export class ModalComponent implements OnInit {
     submit() {
         const fd = new FormData();
         fd.append('image', this.selectedFile, this.selectedFile.name);
+        fd.append('mID', this.mID);
+        fd.append('pID', this.prodID);
 
         this.ms.sendProdImgs(fd).subscribe(
             (res) => {
