@@ -23,11 +23,25 @@ import {MerchantService} from '../srvcs/merchant.service';
                     <input matInput placeholder='address' type='text' name='address' [(ngModel)]="data.address.city" />
                 </mat-form-field>-->
             </div>
-            <img *ngIf='url'  [src]="url" /> <br/>
+            <figure>
+                <img *ngIf='url' [src]="url" alt="selected image"/>
+                <figcaption *ngIf='imgErr'>
+                    <p *ngIf="sizeErr">
+                        Your selected file size is <em style="color: red">{{fileCrntSize}}px</em>. <br>
+                        Max file size is {{fileMaxSize}}px. <br>
+                        Please select another file.
+                    </p>
+                    <p *ngIf="typeErr">
+                        Your selected a <em style="color: red">non-image</em> file. <br>
+                        Only ".jpg", ".jpeg", ".png" files accepted <br>
+                        Please select another file.
+                    </p>
+                </figcaption>
+            </figure>
             <!--<button (click)='isUserValid()' [disabled]='this.submitForm.invalid' color='warn' mat-raised-button type='button'>Sign In</button>-->
             <div id='loginOptns' class="d-flex" style="justify-content: space-evenly">
                 <button class="btn btn-dark" type="button" (click)="fileInput.click()">Choose File</button>
-                <button class="btn btn-primary" type="submit">Submit</button>
+                <button *ngIf="fileSlctd" [disabled]="imgErr" class="btn btn-primary" type="submit">Submit</button>
                 <!--<a href='#' (click)='$event.preventDefault(); gotoReset()' routerLinkActive='true' id='reset' name='reset'>Reset</a>-->
             </div>
         </form>
@@ -49,7 +63,15 @@ export class ModalComponent implements OnInit {
     mID: any;
     selectedFile: File = null;
     url: any;
+    imgErr = false;
+    sizeErr = false;
+    typeErr = false;
+    fileSlctd = false;
+    fileCrntSize: any;
+    fileTrimSize: string;
+    fileMaxSize = 250;
     imagePath: any;
+    exts = ['jpg', 'jpeg', 'png'];
 
     constructor(
         private fb: FormBuilder,
@@ -83,16 +105,51 @@ export class ModalComponent implements OnInit {
 
     onFileSelected(event) {
         // console.log('event: ', event);
+        this.imgErr = false;
         if (event.target.files && event.target.files[0]) {
             // const filesAmount = event.target.files.length;
             this.selectedFile = event.target.files[0];
-            // for (let i = 0; i < filesAmount; i++) {
+            const fileName = this.selectedFile.name;
+            const fileExt = fileName.split('.');
+            // console.log('ext: ', fileExt[1]);
+            this.fileCrntSize = this.selectedFile.size;
+            this.fileTrimSize = String(this.fileCrntSize).substr(0, 3);
+
             const reader = new FileReader();
             reader.onload = (ev: any) => {
                 // console.log('result: ', ev.target.result);
                 this.url = reader.result;
             };
-            reader.readAsDataURL(this.selectedFile);
+
+            if (this.selectedFile) {
+                console.log('exttts ', fileExt[1]);
+                if ( this.exts.indexOf(fileExt[1]) === -1) {
+                    console.log('not correct ext');
+                    this.imgErr = true;
+                    this.typeErr = true;
+                    this.sizeErr = false;
+                    this.fileSlctd = false;
+
+                } else if ( Number(this.fileTrimSize) > this.fileMaxSize ) {
+                    console.log('size: ', this.fileTrimSize);
+                    reader.readAsDataURL(this.selectedFile);
+                    this.imgErr = true;
+                    this.sizeErr = true;
+                    this.typeErr = false;
+                    this.fileSlctd = false;
+
+                } else {
+                    reader.readAsDataURL(this.selectedFile);
+                    this.fileSlctd = true;
+                    this.imgErr = false;
+                    this.typeErr = false;
+                    this.sizeErr = false;
+                    console.log('file good');
+                }
+
+            }
+            // for (let i = 0; i < filesAmount; i++) {
+
         }
     }
 
