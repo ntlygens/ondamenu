@@ -99,26 +99,53 @@ export class ModalComponent implements OnInit {
     submit() {
         const fd = new FormData();
         fd.append('image', this.selectedFile, this.selectedFile.name);
-        fd.append('mID', this.mID);
+        fd.append('clID', this.mID);
         fd.append('pID', this.prodID);
+        fd.append('rPlc', '0');
 
-        this.ms.sendProdImgs(fd).subscribe(
-            (res) => {
-                console.log( 'it was: ', res);
+        const dRes1 = 'image already exists';
+        const dRes2 = 'image uploaded';
+
+        this.ms.sendProdImgs(fd).then(
+            (res: any) => {
+                // console.log( 'init res: ', res);
+                switch (res) {
+                    case undefined:
+                        alert('Image Set');
+                        this.dialogRef.close();
+                        break;
+                    case 0:
+                        if ( window.confirm('Replace current image?')) {
+                            const fd1 = new FormData();
+                            fd1.append('image', this.selectedFile, this.selectedFile.name);
+                            fd1.append('clID', this.mID);
+                            fd1.append('pID', this.prodID);
+                            fd1.append('rPlc', '1');
+                            this.ms.sendProdImgs(fd1).then(
+                                (resp: any) => {
+                                   //  console.log('replaced ', resp);
+                                    alert('Image replaced');
+                                    this.dialogRef.close();
+                                },
+                                (err) => {
+                                    console.log('there was an error replacing image.');
+                                }
+                            );
+
+                        } else {
+                            alert('Image Not Changed');
+                            this.dialogRef.close();
+                        }
+                        break;
+                }
+
+
             },
             (err) => {
                 console.log('submitMerchantImgs_Error: ', err);
-            },
-            () => {
-                alert('upload complete');
-                this.dialogRef.close();
             }
         );
-        /*this.http.post('http://localhost:8001/upload.php', this.myForm.value)
-            .subscribe(res => {
-                console.log(res);
-                alert('Uploaded Successfully.');
-            })*/
+
     }
 
 }

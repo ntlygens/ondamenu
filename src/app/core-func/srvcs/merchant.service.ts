@@ -54,7 +54,7 @@ export class MerchantService {
         return mItems;
     }
 
-    sendProdImgs(data) {
+    async sendProdImgs(data) {
         // console.log('fd-data: ', data);
         // let nuParamSendProdImgs = new HttpParams();
         // .set('items', items);
@@ -66,7 +66,9 @@ export class MerchantService {
 
         // console.log('bdy \n' + JSON.stringify(items));
         // console.log('foodOrder2Send: ', nuParamsAddItems2Order );
-        return this.http.post(`${this.$rURL}`, data, { headers });
+        const mImage = await this.http.post(`${this.$rURL}`, data, { headers }).toPromise();
+        if ( mImage ) { return; }
+        return mImage;
     }
 
 
