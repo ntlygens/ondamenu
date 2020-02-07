@@ -27,13 +27,13 @@ import {MerchantService} from '../srvcs/merchant.service';
                 <img *ngIf='url' [src]="url" alt="selected image"/>
                 <figcaption *ngIf='imgErr'>
                     <p *ngIf="sizeErr">
-                        Your selected file size is <em style="color: red">{{fileCrntSize}}px</em>. <br>
-                        Max file size is {{fileMaxSize}}px. <br>
+                        Selected file size is too big.<br>
+                        Max file size is {{fileMaxSize / 1000}}kb. <br>
                         Please select another file.
                     </p>
                     <p *ngIf="typeErr">
-                        Your selected a <em style="color: red">non-image</em> file. <br>
-                        Only ".jpg", ".jpeg", ".png" files accepted <br>
+                        You've selected a <em style="color: red">non-image</em> file. <br>
+                        Only ".jpg", ".jpeg", ".png" files accepted<br>
                         Please select another file.
                     </p>
                 </figcaption>
@@ -67,9 +67,9 @@ export class ModalComponent implements OnInit {
     sizeErr = false;
     typeErr = false;
     fileSlctd = false;
-    fileCrntSize: any;
-    fileTrimSize: string;
-    fileMaxSize = 250;
+    fileCrntSize: number;
+    fileTrimSize: any;
+    fileMaxSize = 150000;
     imagePath: any;
     exts = ['jpg', 'jpeg', 'png'];
 
@@ -109,11 +109,18 @@ export class ModalComponent implements OnInit {
         if (event.target.files && event.target.files[0]) {
             // const filesAmount = event.target.files.length;
             this.selectedFile = event.target.files[0];
-            const fileName = this.selectedFile.name;
-            const fileExt = fileName.split('.');
-            // console.log('ext: ', fileExt[1]);
             this.fileCrntSize = this.selectedFile.size;
-            this.fileTrimSize = String(this.fileCrntSize).substr(0, 3);
+            // this.fileTrimSize = String(this.fileCrntSize).substr(0, 3);
+            this.fileTrimSize = Math.floor(this.fileCrntSize / 1000);
+
+
+            const fileName = this.selectedFile.name;
+            const fullFileType = this.selectedFile.type;
+            const splitType = fullFileType.split('/');
+            const fileType = splitType[0];
+            const fileTypeExt = splitType[1];
+
+            console.log('type: ', fileType);
 
             const reader = new FileReader();
             reader.onload = (ev: any) => {
@@ -122,15 +129,15 @@ export class ModalComponent implements OnInit {
             };
 
             if (this.selectedFile) {
-                console.log('exttts ', fileExt[1]);
-                if ( this.exts.indexOf(fileExt[1]) === -1) {
+                console.log('exttts ', fileTypeExt);
+                if ( (fileType !== 'image') && (this.exts.indexOf(fileTypeExt) === -1) ) {
                     console.log('not correct ext');
                     this.imgErr = true;
                     this.typeErr = true;
                     this.sizeErr = false;
                     this.fileSlctd = false;
 
-                } else if ( Number(this.fileTrimSize) > this.fileMaxSize ) {
+                } else if (this.fileCrntSize > this.fileMaxSize ) {
                     console.log('size: ', this.fileTrimSize);
                     reader.readAsDataURL(this.selectedFile);
                     this.imgErr = true;
@@ -163,11 +170,15 @@ export class ModalComponent implements OnInit {
         const dRes1 = 'image already exists';
         const dRes2 = 'image uploaded';
 
-        this.ms.sendProdImgs(fd).then(
-            (res: any) => {
-                // console.log( 'init res: ', res);
+        this.ms.sendProdImgs(fd).subscribe(
+            (res) => {
+                console.log( 'init res: ', res);
                 switch (res) {
-                    case undefined:
+                    case 3:
+                        alert('There is a problem with your file.\n Please try another.');
+                        // this.dialogRef.close();
+                        break;
+                    case 2:
                         alert('Image Set');
                         this.dialogRef.close();
                         break;
@@ -178,7 +189,7 @@ export class ModalComponent implements OnInit {
                             fd1.append('clID', this.mID);
                             fd1.append('pID', this.prodID);
                             fd1.append('rPlc', '1');
-                            this.ms.sendProdImgs(fd1).then(
+                            this.ms.sendProdImgs(fd1).subscribe(
                                 (resp: any) => {
                                    //  console.log('replaced ', resp);
                                     alert('Image replaced');
