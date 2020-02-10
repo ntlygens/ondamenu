@@ -29,7 +29,7 @@ export class SplashComponent implements OnInit {
     // redirect1 = 'https://smashradio1fm.com/biota/signin';
     redirect2 = 'http://localhost:4200/signin';
     redirect3 = 'http://192.168.1.151:4200/signin';
-    redirect4 = 'https://smashradio1fm.com/ondamenu/signin';
+    redirect4 = 'http://ondamenu.com/signin';
 
 
 

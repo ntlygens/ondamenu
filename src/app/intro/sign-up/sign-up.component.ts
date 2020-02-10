@@ -355,7 +355,7 @@ export class SignUpComponent {
                                 break;
                             // user added //
                             case res === 1:
-                                this.router.navigate([''], { relativeTo: this.route });
+                                this.router.navigate(['./signin'], { relativeTo: this.route });
                                 // console.log('Valid Merchant Pass');
                                 break;
                         }
@@ -375,7 +375,7 @@ export class SignUpComponent {
                             break;
                         // user added //
                         case res === 1:
-                            this.router.navigate( [ '' ], { relativeTo: this.route } );
+                            this.router.navigate( [ './signin' ], { relativeTo: this.route } );
                             // console.log( 'Valid User Pass' );
                             break;
                     }
