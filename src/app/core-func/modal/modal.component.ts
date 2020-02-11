@@ -191,7 +191,7 @@ export class ModalComponent implements OnInit {
                             fd1.append('rPlc', '1');
                             this.ms.sendProdImgs(fd1).subscribe(
                                 (resp: any) => {
-                                   //  console.log('replaced ', resp);
+                                    // console.log('replaced ', resp);
                                     alert('Image replaced');
                                     this.dialogRef.close();
                                 },
@@ -205,6 +205,7 @@ export class ModalComponent implements OnInit {
                             this.dialogRef.close();
                         }
                         break;
+
                 }
 
 
