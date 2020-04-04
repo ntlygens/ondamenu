@@ -335,6 +335,189 @@ $blankIntroBkgd-LG: url("./assets/backgrounds/mobile/bckgrnd-1-noBckgrnd@2x.png"
     }*/
 }
 
+@media only screen and (min-width: 768px) {
+    .introBackground {
+        background: transparent $blankIntroBkgd center center no-repeat;
+        -webkit-background-size: contain;
+        background-size: contain;
+        #CTA_div { top: 65%; }
+    }
+
+    #ntroCntnr {
+        min-height: 1024px;
+    }
+
+    .uiBackground {
+        background: #1b579f $baseUIBkgd center center no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    .headerbar { width: 280px }
+    #navbar {
+        /*width: 100% !important;
+        padding-top: 1rem;*/
+    }
+    #sideNav .btn-sm, #navbar .btn-sm {
+        line-height: 1.725;
+    }
+    #navbar .btn-sm {
+        font-size: 60% !important;
+        padding: 0.4rem;
+        min-width: 70px;
+    }
+    #touchNav .btn-sm {
+        margin-left: 3px;
+    }
+
+    /* // advert placeholder // */
+    .placeholder {
+        width: 100%;
+        height: 150px;
+        margin-top: 18%;
+        background: transparent;
+        /*background: #7ED321;*/
+        position: relative;
+        z-index: 90;
+    }
+    /* // ------------------ // */
+
+    /*.btn-group > .btn:not(:last-child):not(#orderAmt){
+      font-size: 60% !important;
+    }*/
+    .bannerCntnr {
+        height: 250px !important;
+        top: -1px !important;
+    }
+    .menuOpen {
+        margin-top: 30%;
+    }
+    /*h4 {
+      font-size: 100% !important;
+    }*/
+    .icon-column {
+        left: -38%;
+
+    }
+
+    /*.imgStngs {
+        width: 363px;
+    }*/
+
+
+    /* // list-item-comp queries // */
+    /* // ---------------------- // */
+    .iteminfo {
+        /*width: 363px;*/
+    }
+    .statuses {
+        padding-top: 7%;
+    }
+    .dohSrvcs {
+        position: absolute;
+        text-align: center;
+        margin-top: 10px;
+        left: 52%;
+        z-index: 2;
+    }
+    .shoppingCart {
+        top: 960px;
+    }
+    /* // ---------------------- // */
+
+
+}
+
+@media only screen and (min-width: 961px) {
+    .introBackground {
+        background: transparent $blankIntroBkgd-LG center center no-repeat;
+        -webkit-background-size: contain;
+        background-size: contain;
+        #CTA_div { top: 65%; }
+    }
+
+    #ntroCntnr {
+        min-height: 768px;
+    }
+
+    .uiBackground {
+        background: #1b579f $baseUIBkgd center center no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    .headerbar { width: 280px }
+    #navbar {
+        /*width: 100% !important;
+        padding-top: 1rem;*/
+    }
+    #sideNav .btn-sm, #navbar .btn-sm {
+        line-height: 1.725;
+    }
+    #navbar .btn-sm {
+        font-size: 60% !important;
+        padding: 0.4rem;
+        min-width: 70px;
+    }
+    #touchNav .btn-sm {
+        margin-left: 3px;
+    }
+
+    /* // advert placeholder // */
+    .placeholder {
+        width: 100%;
+        height: 150px;
+        margin-top: 18%;
+        background: transparent;
+        /*background: #7ED321;*/
+        position: relative;
+        z-index: 90;
+    }
+    /* // ------------------ // */
+
+    /*.btn-group > .btn:not(:last-child):not(#orderAmt){
+      font-size: 60% !important;
+    }*/
+    .bannerCntnr {
+        height: 250px !important;
+        top: -1px !important;
+    }
+    .menuOpen {
+        margin-top: 30%;
+    }
+    /*h4 {
+      font-size: 100% !important;
+    }*/
+    .icon-column {
+        left: -38%;
+
+    }
+
+    /*.imgStngs {
+        width: 363px;
+    }*/
+
+
+    /* // list-item-comp queries // */
+    /* // ---------------------- // */
+    .iteminfo {
+        /*width: 363px;*/
+    }
+    .statuses {
+        padding-top: 7%;
+    }
+    .dohSrvcs {
+        position: absolute;
+        text-align: center;
+        margin-top: 10px;
+        left: 52%;
+        z-index: 2;
+    }
+    .shoppingCart {
+        top: 960px;
+    }
+    /* // ---------------------- // */
+
+
+}
 
 :root, html, body, * {
     font-family: 'Exo 2', sans-serif, Roboto, "Helvetica Neue";

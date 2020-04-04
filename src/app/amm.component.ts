@@ -9,8 +9,22 @@ import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/overlay';
 
 @Component({
     selector: 'amm-root',
-    templateUrl: './amm.component.html',
-    styleUrls: ['./amm.component.scss'],
+    template: `
+        <div #mainAppDiv id="mainAppDiv">
+            <div id="navigationBar" class="d-flex justify-content-between">
+                <amm-header-bar></amm-header-bar>
+                <amm-header-logo [ngClass]="isStartPg ? 'off' : ''"></amm-header-logo>
+            </div>
+            <amm-footer-bar [ngStyle]="visibility$ ? {'display': 'flex'} : {'display': 'none'}" [isStartPg$]="isStartPg" #footer></amm-footer-bar>
+            <div id="ntroCntnr" [@routeAnimations]="prepareRoute(mainAppRO)">
+                <router-outlet #mainAppRO="outlet" id="mainAppRO"></router-outlet>
+            </div>
+        </div>
+
+    `,
+    styles: [`
+
+    `],
     animations: [ slider ]
 })
 export class AmmComponent implements AfterViewInit, OnInit, OnDestroy {

@@ -7,7 +7,8 @@ import {
     HostListener,
     OnDestroy,
     OnInit,
-    ViewChild
+    ViewChild,
+    Input
 } from '@angular/core';
 import {MatBottomSheet, MatBottomSheetConfig} from '@angular/material';
 import {ComponentPortal, Portal} from '@angular/cdk/portal';
@@ -40,6 +41,7 @@ import {Subject} from 'rxjs';
                 [amtPlatesNCart]="shoppingCart.getAmtPlates()"
                 [amtOrderTotal]="shoppingCart.getOrderTotal()"
                 (pushEvent)="toggleCart();"
+                [ngStyle]="isStartPg$ ? {'display':'none'} : {'display':'block'}"
             ></amm-food-cart>
             <amm-food-cart-ui #cartUI [dinnerSelection]="shoppingCart.getDinnerItems()" [cartSelection]="shoppingCart.getAllCartItems()" [dinnerNotSelected]=""></amm-food-cart-ui>
         </div>
@@ -93,6 +95,7 @@ import {Subject} from 'rxjs';
 })
 export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('shoppingCart', {static: false}) shoppingCart;
+    @Input() isStartPg$: boolean;
     private destroy$ = new Subject<any>();
     amt4Plate: number; amtNot4Plate: number; amtNCart: number; amtNotNPlate: number;
     ftrState = 'hide';
@@ -100,6 +103,7 @@ export class FooterBarComponent implements OnInit, AfterViewInit, OnDestroy {
     prflState = 'close';
     srchState = 'close';
     portal: Portal<any>;
+
     cartSelectedPortal: Portal<any>;
     profileSelectedPortal: Portal<any>;
     profileComponentPortal: ComponentPortal<ProfileComponent>;

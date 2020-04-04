@@ -4,7 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
   selector: 'amm-advert',
   template: `
     <div class="placeholder">
-      {{crntPg}}
+      {{crntPg}} --- {{name}}
     </div>
   `,
   styles: []

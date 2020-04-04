@@ -49,9 +49,21 @@ import { lift } from '../animations/animations.component';
                 margin-top: 10px;
                 right: 7%;
             }*/
+            :host {
+                display: block;
+                width: 100%;
+                height: 200px;
+                margin-bottom: 9px;
+            }
         }
 
         @media screen and (min-width: 376px) and (max-width: 765px) {
+            :host {
+                display: block;
+                width: 100%;
+                height: 200px;
+                margin-bottom: 9px;
+            }
             /*.iteminfo {
                 !*width: 400px;*!
             }
@@ -81,15 +93,17 @@ import { lift } from '../animations/animations.component';
 
         }
 
+        @media screen and (min-width: 768px) {
+            :host {
+                display: block;
+                width: 60%;
+                height: 210px;
+                /* margin-bottom: 9px;*/
+            }
+        }
+
         /* HOST CSS STYLES */
         /* =============== */
-
-        :host {
-            display: block;
-            width: 100%;
-            height: 200px;
-            margin-bottom: 9px;
-        }
 
         :host .gradient {
             background-image: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0.85));

@@ -43,6 +43,12 @@ import { GuiService } from '../srvcs/gui.service';
             max-width: 420px;
         }
 
+        @media screen and (min-width: 768px) {
+            .mat-list .mat-list-item {
+                margin: 1% auto;
+            }
+        }
+
         .last {
             margin-bottom: 35%;
         }
@@ -51,6 +57,7 @@ import { GuiService } from '../srvcs/gui.service';
             min-height: 60px;
             height: auto;
         }
+
     `]
 })
 export class ListComponent implements OnInit {
