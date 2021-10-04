@@ -11,6 +11,7 @@ import { AmmRoutingModule } from './amm-routing.module';
 
 import { CoreFuncModule } from './core-func/core-func.module';
 import { NgMatModule } from './ng-mat/ng-mat.module';
+import { ErrorsModule } from './core-func/errors/errors.module';
 // import { ScrollingModule } from '@angular/cdk/scrolling';
 import { PortalModule } from '@angular/cdk/portal';
 
@@ -63,6 +64,7 @@ import { PolicyComponent } from './legal/policy.component';
         CoreFuncModule,
         NgMatModule,
         // ScrollingModule,
+        ErrorsModule,
         PortalModule,
         IntroModule,
         MerchantModule

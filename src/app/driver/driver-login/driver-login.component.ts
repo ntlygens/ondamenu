@@ -11,8 +11,8 @@ import {
 
 @Component({
     selector: 'amm-driver-login',
-    templateUrl: './driver-login.component.html',
-    styleUrls: ['./driver-login.component.scss'],
+    template: '<body> <div> we are here. this is the driver </div> </body>' ,
+    styles: [`.bg-body { align-content: center }`],
     providers: [LoginService]
 })
 export class DriverLoginComponent implements OnInit {

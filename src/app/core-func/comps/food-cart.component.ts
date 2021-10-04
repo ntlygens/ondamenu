@@ -14,8 +14,9 @@ import {
     ViewContainerRef,
     // ApplicationRef, Injector, EmbeddedViewRef, ChangeDetectorRef
 } from '@angular/core';
-import {MatDialog, MatDialogConfig} from '@angular/material';
-import {CartService} from '../srvcs/cart.service';
+import { MatDialog } from '@angular/material/dialog'
+import { MatDialogConfig } from '@angular/material/dialog';
+import { CartService } from '../srvcs/cart.service';
 // import { PlateItemData } from '../../amm.enum';
 import {PlateItemComponent} from './plate-item.component';
 
@@ -407,7 +408,8 @@ export class FoodCartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                         const numItemsInOrder = Object.keys(res);
                         // console.log('res length: = ', Object.keys(res).length);
                         /// === /// console.log('obj key name - ', numItemsInOrder[0]);
-                        if ( numItemsInOrder[0] !== 'message' || numItemsInOrder[0] === '0' ) {
+                        // @ts-ignore
+                        if ( (numItemsInOrder[0] !== 'message') || (numItemsInOrder[0] === '0') ) {
                             // console.log('Worked: ', numItemsInOrder.length, ' items added to order; \n');
                         } else {
                             // console.log('Something went wrong. No Items added to order');

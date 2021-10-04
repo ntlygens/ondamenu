@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef  } from '@angular/material/dialog';
 import { regExps } from '../../errors/custom-validation.component';
 import { MerchantLoginForm } from '../../../amm.enum';
 

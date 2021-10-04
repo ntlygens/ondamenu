@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { UserLoginForm } from '../../../amm.enum';
 import { CustomValidators, ConfirmValidEmailMatcher, ConfirmValidModalEmailMatcher, ConfirmValidParentMatcher, ConfirmValidModalParentMatcher, regExps, errorMessages } from '../../errors/custom-validation.component';
 
@@ -91,7 +92,7 @@ import { CustomValidators, ConfirmValidEmailMatcher, ConfirmValidModalEmailMatch
           height: 120px;
           text-align: center;
           vertical-align: middle;
-          background: url('assets/backgrounds/mobile/bckgrnd-1-noBckgrnd.png') 50% 40% no-repeat;
+          background: url('../../../../assets/backgrounds/mobile/bckgrnd-1-noBckgrnd.png') 50% 40% no-repeat;
           background-size: cover;
           margin: auto;
       }

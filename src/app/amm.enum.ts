@@ -63,7 +63,7 @@ export enum LocSrvcRstrctns {
 export interface AmmRouteInterface {
   title?: string;
   redirectTo?: string;
-  loadChildren?: string;
+  loadChildren?: any;
   pathMatch?: string;
   path: string;
   component?: any;

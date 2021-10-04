@@ -40,7 +40,7 @@
     <div id="menuBox" class="d-flex flex-column">
         <amm-category-list
             #menuRef id="menuRef"
-            [style.touch-action]="TOUCH_ACTION.TOUCH"
+            [style.touch-action]="TOUCH_ACTION.TOUCH_DOWN"
             *ngFor="let dCat of dCats; let idx = index"
             [ngClass]="dCat['visible'] ? (mobileOn ? 'visible' : 'visible d-flex') : 'hidden'"
             [menuNav]="dCat['cval']" [isMobile]='mobileOn'

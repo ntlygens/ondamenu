@@ -21,7 +21,60 @@ import {lift} from '../core-func/animations/animations.component';
 
 @Component({
     selector: 'amm-menu',
-    templateUrl: './menu.component.html',
+    template:
+        `<amm-list-item
+            #banner
+            id="miBnr"
+            class="cImgStng"
+            [itemID]="bnrData.client_id"
+            [itemImage]="bnrData.logo"
+            [itemPhone]="bnrData.phone"
+            [itemGrade]="bnrData.grade"
+            [itemSlogan]="bnrData.slogan"
+            [itemDelivery]="bnrData.delivery"
+            [itemTitle]="bnrData.username"
+            [itemFoodType]="bnrData.food"
+            [itemSrvcType]="bnrData.concept"
+            [itemUIToggle]="dUITgle"
+        ></amm-list-item>
+        <div id="mainClientCntnr" class="navigation" [@mnmzeCntnrAnimations]="dUITgle">
+            <div id="clientMenu" class='clientMenu pt-sm-1'>
+                <div id="navbar" class="d-flex justify-content-center">
+                    <amm-category-btn
+                        #fullMenuBtn
+                        id="fullMenuBtn"
+                        class="menuBtn"
+                        [mobileOn]="mobileOn"
+                        [isActive]="true"
+                        menuNav="ALL"
+                        (tap)="menuClick(null, $event.type, $event)"
+                    ></amm-category-btn>
+                    <amm-category-btn
+                        id='touchNav'
+                        #touchnav class='menuBtn'
+                        *ngFor="let category of navCats; let idx=index"
+                        [mobileOn]="mobileOn"
+                        [isActive]="category['visible']"
+                        [menuNav]="category['cval']"
+                        (click)="menuClick(idx, $event.type, $event)"
+                    ></amm-category-btn>
+                </div>
+            </div>
+            <div id="menuBox" class="d-flex flex-column">
+                <amm-category-list
+                    #menuRef id="menuRef"
+                    [style.touch-action]="TOUCH_ACTION.TOUCH_DOWN"
+                    *ngFor="let dCat of dCats; let idx = index"
+                    [ngClass]="dCat['visible'] ? (mobileOn ? 'visible' : 'visible d-flex') : 'hidden'"
+                    [menuNav]="dCat['cval']" [isMobile]='mobileOn'
+                    [menuID]="dCat['cid']"
+                    [clientID]="dCat['client_id']"
+                    [isIncremental]="(dCat['cid'] !== ( 'MJ7M88JTG3QF8' )) && (dCat['cid'] !== ( '215B0KSFN91GM' ))"
+                    (mnmzeListItem)="minimizeUI($event)"
+                ></amm-category-list>
+            </div>
+        </div>
+        `,
     styleUrls: ['./menu.component.scss'],
     providers: [ MenuService ],
     animations: [ lift ]
@@ -58,7 +111,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<any>();
 
     SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight'};
-    TOUCH_ACTION = { TOUCH: 'tap', DOUBLETAP: 'double-tap' };
+    TOUCH_ACTION = { TOUCH_DOWN: 'tap', TOUCH_DOUBLE_TAP: 'double-tap' }
 
     constructor(
         @Inject(DOCUMENT) document,
@@ -142,14 +195,14 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     menuClick(currentIndex: number, action: string, e) {
         const target = e.target.closest('.clientMenu');
         const navbtn = e.target.parentNode.id;
-        // console.log('menuIndex: ', currentIndex);
+        console.log('menuIndex: ', currentIndex, action, this.TOUCH_ACTION.TOUCH_DOWN   );
         // if (this.menuOpen !== true) {
         //     // target.classList.toggle('menuOpen');
         //     this.menuOpen = true;
         // }
 
-        if ( action === this.TOUCH_ACTION.TOUCH) {
-            // console.log('actnTrgt: ', action);
+        if ( this.TOUCH_ACTION.TOUCH_DOWN ) {
+            console.log('actnTrgt: ', action);
             this.fullMenuBtn.isActive = currentIndex === null;
             // TODO: ADD MENU ID TO BUTTON AND CALL INSTEAD OF NAME # USE MENUID //
             this.dCats.forEach((x: CategoryData, i) => {
@@ -184,7 +237,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     subMenuClick(currentIndex: number, action: string, e ) {
-        if (action === this.TOUCH_ACTION.TOUCH) {
+        if (action === this.TOUCH_ACTION.TOUCH_DOWN) {
             // console.log('tap index: ' + currentIndex + ', action: ' + action + ','  +  ' from target: ' + e.target.textContent);
 
             this.dCats.forEach((x, i) => {

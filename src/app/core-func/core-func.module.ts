@@ -19,6 +19,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import { FoodCartUiComponent } from './comps/food-cart-ui.component';
 // import { PlateItemComponent } from './comps/plate-item.component';
 // import { CartItemComponent } from './comps/cart-item.component';
+import { DriverLoginComponent } from '../driver/driver-login/driver-login.component';
 import { UserLoginModalComponent } from './modal/user-login-modal/user-login-modal.component';
 import { MerchantLoginModalComponent } from './modal/merchant-login-modal/merchant-login-modal.component';
 import { ModalComponent } from './modal/modal.component';
@@ -44,6 +45,7 @@ import { ModalComponent } from './modal/modal.component';
         FoodCartUiComponent,
         // PlateItemComponent,
         // CartItemComponent,
+        DriverLoginComponent,
         UserLoginModalComponent,
         MerchantLoginModalComponent,
         ModalComponent,

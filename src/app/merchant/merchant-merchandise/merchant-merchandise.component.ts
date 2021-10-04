@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-    MatPaginator,
-    MatSort,
-    MatTableDataSource,
-    MatDialog,
-    MatDialogConfig,
-} from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialogConfig } from '@angular/material/dialog/dialog-config';
 
 // import { merge, Observable, of as observableOf } from 'rxjs';
 // import { catchError, startWith, map, switchMap } from 'rxjs/operators';

@@ -11,7 +11,9 @@ import {PolicyComponent} from './legal/policy.component';
 const MAINROUTES: AmmRouteInterface[] = [
     {
         path: '',
-        loadChildren: './intro/intro.module#IntroModule',
+        loadChildren: () => import('./intro/intro.module').then(
+            module => module.IntroModule
+        ),
         data: {
             state: 'appIntro',
             animation: 'isLeft'
@@ -48,7 +50,9 @@ const MAINROUTES: AmmRouteInterface[] = [
     },
     {
         path: 'm',
-        loadChildren: './merchant/merchant.module#MerchantModule',
+        loadChildren: () => import('./merchant/merchant.module').then(
+            module => module.MerchantModule
+        ),
         data: {
             state: 'MerchantMode',
             animation: 'isLeft',

@@ -10,7 +10,7 @@ import { MerchantShoppingComponent } from './merchant-shopping/merchant-shopping
 import { MerchantMerchandiseComponent } from './merchant-merchandise/merchant-merchandise.component';
 import { MerchantSplashComponent } from './merchant-splash.component';
 
-import { EditorComponent } from '../core-func/editor/editor.component';
+// import { EditorComponent } from '../core-func/editor/editor.component';
 import { EditSelBtnComponent } from '../core-func/editor/edit-sel-btn/edit-sel-btn.component';
 
 @NgModule({
@@ -20,7 +20,7 @@ import { EditSelBtnComponent } from '../core-func/editor/edit-sel-btn/edit-sel-b
         MerchantShoppingComponent,
         MerchantMerchandiseComponent,
         MerchantSplashComponent,
-        EditorComponent,
+        // EditorComponent,
         EditSelBtnComponent
     ],
     imports: [

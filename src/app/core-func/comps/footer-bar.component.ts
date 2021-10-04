@@ -10,7 +10,8 @@ import {
     ViewChild,
     Input
 } from '@angular/core';
-import {MatBottomSheet, MatBottomSheetConfig} from '@angular/material';
+import {MatBottomSheet} from '@angular/material/bottom-sheet';
+import {MatBottomSheetConfig} from '@angular/material/bottom-sheet';
 import {ComponentPortal, Portal} from '@angular/cdk/portal';
 import {ProfileComponent} from './profile.component';
 import {FoodCartComponent} from './food-cart.component';

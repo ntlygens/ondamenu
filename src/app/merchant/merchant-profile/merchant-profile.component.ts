@@ -6,7 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
 
 import { errorMessages, bizNmScrubr, regExps } from '../../core-func/errors/custom-validation.component';
-import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatBottomSheetConfig } from '@angular/material/bottom-sheet';
 import { MerchantService } from '../../core-func/srvcs/merchant.service';
 import {LocSrvcCuisine, LocSrvcDining, LocSrvcModel, LocSrvcRstrctns, LocSrvcType, MerchantInfoData} from '../../amm.enum';
 import { Subject } from 'rxjs';
