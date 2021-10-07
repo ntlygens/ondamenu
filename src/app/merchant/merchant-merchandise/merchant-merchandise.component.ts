@@ -50,7 +50,7 @@ export class MerchantMerchandiseComponent implements OnInit {
 
     ) {
         this.merchantID = this.route.snapshot.queryParams.mID;
-        console.log('merchaandise id:= ', this.merchantID);
+        console.log('merchandise id:= ', this.merchantID);
         // this.ads.getMerchantCategories(this.merchantID)
         // working model //
         /*this.ads.getMerchantItemsW_Cats(this.merchantID, this.sort.active, this.sort.direction, this.paginator.pageIndex)*/
