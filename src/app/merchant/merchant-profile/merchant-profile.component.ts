@@ -231,16 +231,23 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
                 // formData
             ).subscribe(
                 (res) => {
-                    console.log( 'res from setData: ', res);
-
+                    // console.log( 'res from setData: ', res);
+                    console.log('res ', res);
+                    // JSON.parse(res);
+                    /*if ( res !== ('' || null) ) {
+                        console.log(' its not empty');
+                        this.router.navigate(['/m'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
+                    } else {
+                        console.log('it didnt go through');
+                    }*/
                 },
                 (err) => {
                     console.log('SendMerchantProfile_Error: ', err);
                 },
                 () => {
-                    // this.router.navigate(['../../', 'merchandise' ], {relativeTo: this.route, queryParamsHandling: 'preserve' });
-                    this.router.navigate(['/m'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
                     console.log('it completed');
+                    this.router.navigate(['/m'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
+                    // console.log('it completed');
                 });
         }
         // this.router.navigate(['../../', 'b', 'merchandise' ], {relativeTo: this.route, queryParamsHandling: 'preserve' });

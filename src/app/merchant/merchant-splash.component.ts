@@ -11,7 +11,7 @@ import { MerchantService } from '../core-func/srvcs/merchant.service';
     selector: 'amm-merchant-splash',
     template: `
         <div id='ntroCntnr'>
-            <mat-grid-list [cols]='isMobileDash ? "2" : "6" ' [rowHeight]='isMobileDash ? "100" : "200px" ' [gutterSize]='isMobileDash ? "10px" : "20px" '>
+            <mat-grid-list [cols]='isMobileDash ? 2 : 6 ' [rowHeight]='isMobileDash ? "100" : "200px" ' [gutterSize]='isMobileDash ? "10px" : "20px" '>
                 <mat-grid-tile
                     *ngFor="let tile of tiles"
                     [colspan]="tile.cols"
@@ -103,7 +103,8 @@ export class MerchantSplashComponent implements OnInit, AfterContentInit {
         private gs: GuiService,
         private ms: MerchantService,
         // private las: LocalAuthService,
-        // private dts: AppDataService,    // dts: dashboardtileservice
+        // private dts: AppDataService,
+        // dts: dashboardtileservice,
         // private als: AppLoginService
     ) {
         this.gs.isMobileDevice().subscribe(

@@ -92,6 +92,7 @@ export class MerchantService {
     /* // ----- Put Calls ----- // */
     sendMerchantProfileData(...args): Observable<any> {
         const splitArgs = (args.toString()).split(',');
+        const argsLength = splitArgs.length;
         const postVars = [
             'mID',
             'username',
@@ -109,15 +110,15 @@ export class MerchantService {
         ];
 
         let Params = new HttpParams();
-
-        for (let i = 0; i < splitArgs.length; ++i) {
-            if ( i < 7 ) {
+        for (let i = 0; i < argsLength; ++i) {
+            if ( i < (argsLength - 1) ) {
                 Params = Params.append(`${[postVars[i]]}`, `${splitArgs[i]}`);
             } else {
-                Params = Params.append( `${splitArgs[ i ]}`, '1' );
+                Params = Params.append( `${[postVars[i]]}`, '1' );
             }
         }
 
+        // console.log('Params: ' + Params);
         const headers = new HttpHeaders();
         MerchantService.createJSONPostHeader(headers);
 

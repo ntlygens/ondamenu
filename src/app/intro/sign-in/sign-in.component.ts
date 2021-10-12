@@ -175,9 +175,10 @@ export class SignInComponent implements OnInit {
                                         }
                                     },
                                     (err) => {
-                                        // console.log('there was an error getting profile status: ', err);
+                                        console.log('isUserValid_Error: ', err);
                                     },
                                     () => {
+                                        console.log('isUserValid Complete');
                                         // this.router.navigate(['/m'], {relativeTo: this.route, queryParams: {'mID': merchant} });
                                         // this.als.getProfileStatus().subscribe ( (resp) => { console.log('statusLog: ',  resp['prflStat']); } );
                                     });

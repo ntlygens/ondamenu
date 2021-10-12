@@ -22,9 +22,7 @@ import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/overlay';
         </div>
 
     `,
-    styles: [`
-
-    `],
+    styles: [``],
     animations: [ slider ]
 })
 export class AmmComponent implements AfterViewInit, OnInit, OnDestroy {
@@ -32,7 +30,7 @@ export class AmmComponent implements AfterViewInit, OnInit, OnDestroy {
     @ViewChild('footer', {static: true}) footer;
 
     private destroy$ = new Subject<any>();
-    isStartPg: boolean;
+    public isStartPg: boolean;
     isMobile: boolean;
     state = 'show';
     visibility$: boolean;
@@ -57,7 +55,7 @@ export class AmmComponent implements AfterViewInit, OnInit, OnDestroy {
         console.log('isMobile: ', this.isMobile);
         this.gs.setMediaDevice(this.isMobile);
         this.gs.isVisible$.pipe(takeUntil(this.destroy$)).subscribe( (res) => {
-            // console.log('oamt: = ', res);
+            console.log('oamt: = ', res);
             this.visibility$ = res;
         });
         /// MOBILE SCREEN SIZE END ///
