@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "serve": "ng serve -c development",
-    "local": "ng local --host=192.168.4.32",
-    "start": "ng build -c production",
+    "local": "ng local -c development --host=192.168.4.32",
+    "start": "ng serve -c production",
     "build": "ng build -c production",
     "test": "ng test",
     "lint": "ng lint",

@@ -9,9 +9,9 @@ import { errorMessages, bizNmScrubr, regExps } from '../../core-func/errors/cust
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatBottomSheetConfig } from '@angular/material/bottom-sheet';
 import { MerchantService } from '../../core-func/srvcs/merchant.service';
-import {LocSrvcCuisine, LocSrvcDining, LocSrvcModel, LocSrvcRstrctns, LocSrvcType, MerchantInfoData} from '../../amm.enum';
+import { LocSrvcCuisine, LocSrvcDining, LocSrvcModel, LocSrvcRstrctns, LocSrvcType, MerchantInfoData } from '../../amm.enum';
 import { Subject } from 'rxjs';
-import {GuiService} from '../../core-func/srvcs/gui.service';
+import { GuiService } from '../../core-func/srvcs/gui.service';
 
 
 export function uploadProgress<T>( cb: ( progress: number ) => void ) {
@@ -300,10 +300,6 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-
-    }
-
-    ngAfterViewInit(): void {
         this.ms.getMerchantDetails(`${this.merchantID}`).then(
             (mNfo: MerchantInfoData[]) => {
                 this.merchantDetails = mNfo;
@@ -314,6 +310,8 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
             }
         );
     }
+
+    ngAfterViewInit(): void {}
 }
 
 export function markAllAsDirty( form: FormGroup ) {

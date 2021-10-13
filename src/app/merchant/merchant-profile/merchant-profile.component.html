@@ -61,28 +61,28 @@
 
                 <ng-template>Cuisine</ng-template>
                 <mat-form-field>
-                    <mat-select formControlName='food' placeholder='Food' multiple>
+                    <mat-select formControlName='food' [placeholder]=mDetail.food multiple>
                         <mat-option *ngFor='let cuisine of cuisines; let idx=index' [value]='cuisine'>{{cuisine}}</mat-option>
                     </mat-select>
                 </mat-form-field>
 
                 <ng-template>Restaurant</ng-template>
                 <mat-form-field>
-                    <mat-select formControlName='concept' placeholder='Concept' multiple>
+                    <mat-select formControlName='concept' [placeholder]=mDetail.concept multiple>
                         <mat-option *ngFor='let concept of dining; let idx=index' [value]='concept'>{{concept}}</mat-option>
                     </mat-select>
                 </mat-form-field>
 
                 <ng-template>Service</ng-template>
                 <mat-form-field>
-                    <mat-select formControlName='model' placeholder="Model" multiple>
+                    <mat-select formControlName='model' [placeholder]=mDetail.model multiple>
                         <mat-option *ngFor='let model of models; let idx=index' [value]='model'>{{model}}</mat-option>
                     </mat-select>
                 </mat-form-field>
 
                 <ng-template>Restrictions</ng-template>
                 <mat-form-field>
-                    <mat-select formControlName='restrictions' placeholder="Restrictions" multiple>
+                    <mat-select formControlName='restrictions' [placeholder]=mDetail.restrictions multiple>
                         <mat-option *ngFor='let restriction of restrictions; let idx=index' [value]='restriction'>{{restriction}}</mat-option>
                     </mat-select>
                 </mat-form-field>
