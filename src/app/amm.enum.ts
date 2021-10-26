@@ -97,8 +97,9 @@ export interface MerchantInfoData {
     employee_id: string;
     slogan?: string;
     bio?: string;
-    bldg_num: string;
+    bldg_num: number;
     address: string;
+    address2: string;
     boro: string;
     state: string;
     zip: number;

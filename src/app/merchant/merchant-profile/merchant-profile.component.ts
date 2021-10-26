@@ -12,6 +12,8 @@ import { MerchantService } from '../../core-func/srvcs/merchant.service';
 import { LocSrvcCuisine, LocSrvcDining, LocSrvcModel, LocSrvcRstrctns, LocSrvcType, MerchantInfoData } from '../../amm.enum';
 import { Subject } from 'rxjs';
 import { GuiService } from '../../core-func/srvcs/gui.service';
+import {MatNavList} from '@angular/material/list';
+import {passBoolean} from 'protractor/built/util';
 
 
 export function uploadProgress<T>( cb: ( progress: number ) => void ) {
@@ -48,6 +50,7 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
     errors = errorMessages;
     prflErrInst: string;
     fileSelected: boolean;
+    checkboxValue: boolean;
     progress = 0;
 
     /*sendFile = new FormGroup({
@@ -135,24 +138,46 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
         // this.fileUpload.
     }
 
+    booleanValue($val) {
+        if ( $val > 0 ) {
+            return 'Yes!';
+        } else {
+            return 'No!';
+        }
+    }
+
+    checkboxChecked(val: boolean) {
+        this.checkboxValue = val;
+    }
+
     createProfileForm() {
         // if (this.isMerchant) {
         this.profileSubmitForm = this.fb.group( {
             profileFormArray: this.fb.array( [
                 this.fb.group( {
-                    username: [ '', [ Validators.required ] ],
+                    username: [ '', Validators.required ],
                     email: [ '', [ Validators.required, Validators.email ] ],
                     password: [ { value: '', disabled: true }, [ Validators.required, Validators.pattern( regExps.password ) ] ],
-                    slogan: ['', [Validators.required]],
+                    slogan: ['', Validators.required ],
                     bio: ['', Validators.required ],
-                    address: ['', Validators.required],
-                    phone: ['', Validators.required]
+                    phone: ['', Validators.required],
+                    delivery: ['', Validators.required],
+                    shipping: ['', Validators.required]
                 }),
                 this.fb.group( {
-                    food: [ '', [ Validators.required ] ],
-                    concept: [ '', [ Validators.required ] ],
-                    model: [ '', [ Validators.required ]],
-                    restrictions: ['', [Validators.required]],
+                    bldg_num: ['', Validators.required ],
+                    address: ['', Validators.required],
+                    address2: ['', Validators.required],
+                    boro: ['', Validators.required],
+                    state: ['', Validators.required],
+                    zip: ['', Validators.required],
+
+                }),
+                this.fb.group( {
+                    food: [ '', Validators.required ],
+                    concept: [ '', Validators.required ],
+                    model: [ '', Validators.required ],
+                    restrictions: ['', Validators.required],
                 })/*,
         this.fb.group( {
           uploadedfile: [ null, [Validators.required, requiredFileType('png')] ],
@@ -201,12 +226,21 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
         const pwd = this.profileFormArray.get([0, 'password']).value;
         const slogan = this.profileFormArray.get([0, 'slogan']).value;
         const bio = this.profileFormArray.get([0, 'bio']).value;
-        const address = this.profileFormArray.get([0, 'address']).value;
         const phone = this.profileFormArray.get([0, 'phone']).value;
-        const food = this.profileFormArray.get([1, 'food']).value;
-        const concept = this.profileFormArray.get([1, 'concept']).value;
-        const model = this.profileFormArray.get([1, 'model']).value;
-        const restrictions = this.profileFormArray.get([1, 'restrictions']).value;
+        const delivery = this.profileFormArray.get([0, 'delivery']).value;
+        const shipping = this.profileFormArray.get([0, 'shipping']).value;
+
+        const bldgNum = this.profileFormArray.get([1, 'bldg_num']).value;
+        const address = this.profileFormArray.get([1, 'address']).value;
+        const address2 = this.profileFormArray.get([1, 'address2']).value;
+        const boro = this.profileFormArray.get([1, 'boro']).value;
+        const state = this.profileFormArray.get([1, 'state']).value;
+        const zip = this.profileFormArray.get([1, 'zip']).value;
+
+        const food = this.profileFormArray.get([2, 'food']).value;
+        const concept = this.profileFormArray.get([2, 'concept']).value;
+        const model = this.profileFormArray.get([2, 'model']).value;
+        const restrictions = this.profileFormArray.get([2, 'restrictions']).value;
         const formData = '';
 
         markAllAsDirty(this.profileSubmitForm);
@@ -221,8 +255,15 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
                 `${pwd}`,
                 `${slogan}`,
                 `${bio}`,
-                `${address}`,
                 `${phone}`,
+                `${delivery}`,
+                `${shipping}`,
+                `${bldgNum}`,
+                `${address}`,
+                `${address2}`,
+                `${boro}`,
+                `${state}`,
+                `${zip}`,
                 `${food}`,
                 `${concept}`,
                 `${model}`,
