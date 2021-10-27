@@ -63,7 +63,7 @@
                 }
               ]
             },
-            "dev": {
+            "development": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -73,7 +73,7 @@
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": true,
-              "extractCss": true,
+              "extractCss": false,
               "namedChunks": true,
               "aot": true,
               "extractLicenses": true,
