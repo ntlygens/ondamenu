@@ -3,10 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "serve": "ng serve -c development",
-    "local": "ng local -c development --host=192.168.4.32",
-    "start": "ng serve -c production",
-    "build": "ng build -c production",
+    "serve": "ng serve",
+    "local": "ng local --host=192.168.1.171",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
