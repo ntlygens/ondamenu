@@ -1,0 +1,15 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-ondamenu-staging-172714-authRole",
+      "UnauthRoleArn": "arn:aws:iam::287552942353:role/amplify-ondamenu-staging-172714-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::287552942353:role/amplify-ondamenu-staging-172714-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-ondamenu-staging-172714-deployment",
+      "UnauthRoleName": "amplify-ondamenu-staging-172714-unauthRole",
+      "StackName": "amplify-ondamenu-staging-172714",
+      "StackId": "arn:aws:cloudformation:us-east-1:287552942353:stack/amplify-ondamenu-staging-172714/20940850-374b-11ec-a33f-0abf0aacb37b",
+      "AmplifyAppId": "d14lxt26l4xqoe"
+    }
+  }
+}
