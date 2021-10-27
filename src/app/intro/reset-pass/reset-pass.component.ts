@@ -3,7 +3,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { FormBuilder, Form, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-reset-pass',
+  selector: 'amm-reset-pass',
   template: `
       <!--<div #resetPG><ng-content select='reset_ui'></ng-content></div>-->
       <!--<div *ngIf='resetPG.children.length === 0'>-->

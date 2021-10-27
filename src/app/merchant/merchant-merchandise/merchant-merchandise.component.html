@@ -1,0 +1,112 @@
+<div class="example-loading-shade"
+     *ngIf="isLoadingResults || isRateLimitReached">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+        GitHub's API rate limit has been reached. It will be reset in one minute.
+    </div>
+</div>
+
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target['value'])" placeholder="Filter">
+</mat-form-field>
+
+<div class="datatable mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+        <!--<table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDisableClear matSortDirection="asc">-->
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select" sticky>
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                              [checked]="selection.hasValue() && isAllSelected()"
+                              [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row; let idx=index;">
+                <mat-checkbox (click)="$event.stopPropagation()"
+                              (change)="$event ? (selection.toggle(row)) : null"
+                              [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+                <input name='productID' type='hidden' [value]='row.prod_id' />
+            </td>
+            <td mat-footer-cell *matFooterCellDef> CHECK </td>
+        </ng-container>
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="img">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> IMAGE </th>
+            <td mat-cell *matCellDef='let row'><img class='merchandiseImgs' [name]='row.prod_id' (click)='changeImage($event)' alt='prod image' [src]='row.src' /></td>
+            <td mat-footer-cell *matFooterCellDef> IMAGE </td>
+        </ng-container>
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> NAME </th>
+            <td mat-cell *matCellDef='let row'> {{row.prod_name}} </td>
+            <td mat-footer-cell *matFooterCellDef> Name </td>
+        </ng-container>
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> PRICE </th>
+            <td mat-cell *matCellDef='let row'> {{row.price}} </td>
+            <td mat-footer-cell *matFooterCellDef> PRICE </td>
+        </ng-container>
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="stockCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> #STOCK </th>
+            <td mat-cell *matCellDef='let row'> {{row.stockCount}} </td>
+            <td mat-footer-cell *matFooterCellDef> PRICE </td>
+        </ng-container>
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> CATEGORY </th>
+            <td mat-cell *matCellDef='let row'> {{row.cval}} </td>
+            <td mat-footer-cell *matFooterCellDef> CATEGORY </td>
+        </ng-container>
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="hidden">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> HIDDEN </th>
+            <td mat-cell *matCellDef='let row'> {{row.hidden}} </td>
+            <td mat-footer-cell *matFooterCellDef> HIDDEN </td>
+        </ng-container>
+
+        <!--<ng-container matColumnDef="col_header">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Testing </th>
+          <td mat-cell *matCellDef="let item"> {{item.name}} </td>
+        </ng-container>-->
+
+        <!-- Progress Column -->
+        <!--<ng-container matColumnDef="progress">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
+          <td mat-cell *matCellDef="let row"> {{row.progress}}% </td>
+        </ng-container>-->
+
+        <!-- Name Column -->
+        <!--<ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+        </ng-container>-->
+
+        <!-- Color Column -->
+        <!--<ng-container matColumnDef="color">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Color </th>
+          <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.color}} </td>
+        </ng-container>-->
+
+        <!--<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;">-->
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row);"></tr>
+        <!--<tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>-->
+
+    </table>
+    <div class='pageNeditBtns d-flex' >
+        <amm-edit-sel-btn [editmode]='editorModeBtn' [rows2Edit]="amtElemSelected()" (send2Editor)='editSelectedElemData()' (saveAndCloseEditor)='closeEditor()'></amm-edit-sel-btn>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" ></mat-paginator>
+    </div>
+
+</div>

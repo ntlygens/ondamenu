@@ -1,0 +1,53 @@
+<amm-list-item
+    #banner
+    id="miBnr"
+    class="cImgStng"
+    [itemID]="bnrData.client_id"
+    [itemImage]="bnrData.logo"
+    [itemPhone]="bnrData.phone"
+    [itemGrade]="bnrData.grade"
+    [itemSlogan]="bnrData.slogan"
+    [itemDelivery]="bnrData.delivery"
+    [itemTitle]="bnrData.username"
+    [itemFoodType]="bnrData.food"
+    [itemSrvcType]="bnrData.concept"
+    [itemUIToggle]="dUITgle"
+></amm-list-item>
+<div id="mainClientCntnr" class="navigation" [@mnmzeCntnrAnimations]="dUITgle">
+    <div id="clientMenu" class='clientMenu pt-sm-1'>
+        <div id="navbar" class="d-flex justify-content-center">
+            <amm-category-btn
+                #fullMenuBtn
+                id="fullMenuBtn"
+                class="menuBtn"
+                [mobileOn]="mobileOn"
+                [isActive]="true"
+                menuNav="ALL"
+                (tap)="menuClick(null, $event.type, $event)"
+            ></amm-category-btn>
+            <amm-category-btn
+                id='touchNav'
+                #touchnav class='menuBtn'
+                *ngFor="let category of navCats; let idx=index"
+                [mobileOn]="mobileOn"
+                [isActive]="category['visible']"
+                [menuNav]="category['cval']"
+                (tap)="menuClick(idx, $event.type, $event)"
+            ></amm-category-btn>
+        </div>
+
+    </div>
+    <div id="menuBox" class="d-flex flex-column">
+        <amm-category-list
+            #menuRef id="menuRef"
+            [style.touch-action]="TOUCH_ACTION.TOUCH_DOWN"
+            *ngFor="let dCat of dCats; let idx = index"
+            [ngClass]="dCat['visible'] ? (mobileOn ? 'visible' : 'visible d-flex') : 'hidden'"
+            [menuNav]="dCat['cval']" [isMobile]='mobileOn'
+            [menuID]="dCat['cid']"
+            [clientID]="dCat['client_id']"
+            [isIncremental]="(dCat['cid'] !== ( 'MJ7M88JTG3QF8' )) && (dCat['cid'] !== ( '215B0KSFN91GM' ))"
+            (mnmzeListItem)="minimizeUI($event)"
+        ></amm-category-list>
+    </div>
+</div>

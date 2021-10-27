@@ -1,0 +1,185 @@
+
+<mat-list *ngFor='let mDetail of merchantDetails'>
+    <form [formGroup]='profileSubmitForm' id='profileSubmitForm' novalidate>
+        <mat-accordion formArrayName='profileFormArray' class="example-headers-align">
+            <mat-expansion-panel formGroupName='0' [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Business Info
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Edit your information
+                        <mat-icon>account_circle</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <mat-form-field>
+                    <input matInput type='text' formControlName='username' name='username' [placeholder]="mDetail.username || 'Enter Username'">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type="email" formControlName='email' name='email' [placeholder]="mDetail.email || 'Enter Email'">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type="password" formControlName='password' name='password' placeholder="enter new password">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type='text' formControlName='slogan' name='slogan' [placeholder]='mDetail.slogan || "Slogan Here"'>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <textarea matInput type='text' formControlName='bio' name='bio' [placeholder]='mDetail.bio || "Enter Bio"'></textarea>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type='tel' formControlName='phone' name='phone' [placeholder]='mDetail.phone || "(555) 555-5555"'>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <label for="delivery">Delivery?</label>
+                    <input matInput
+                        #delivery id="delivery" type="checkbox"
+                        formControlName='delivery' name='delivery'
+                        [value]="mDetail.delivery.toString()"
+                        [checked]="checkboxValue"
+                        (change)="checkboxChecked(delivery.checked)">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <label for="delivery">Shipping?</label>
+                    <input matInput
+                        #shipping id="shipping" type="checkbox"
+                        formControlName='shipping' name='shipping'
+                        [value]="mDetail.shipping.toString()"
+                        [checked]="checkboxValue"
+                        (change)="checkboxChecked(shipping.checked)">
+                </mat-form-field>
+
+            </mat-expansion-panel>
+            <mat-expansion-panel formGroupName='1' [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Business Location
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Enter Registered Location
+                        <mat-icon>map</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <mat-form-field>
+                    <input matInput type='number' formControlName='bldg_num' name='bldg_num' [placeholder]='mDetail.bldg_num.toString() || "Building Number"'>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type='text' formControlName='address' name='address' [placeholder]='mDetail.address || "Street Name"'>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type='text' formControlName='address2' name='address2' [placeholder]='mDetail.address2 || "Suite/Floor/Apt"'>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type='text' formControlName='boro' name='boro' [placeholder]='mDetail.boro || "County"'>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type='text' formControlName='state' name='state' [placeholder]='mDetail.state || "State eg: GA/MI/NY"'>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type='number' formControlName='zip' name='zip' [placeholder]='mDetail.zip.toString() || "Zip Code"'>
+                </mat-form-field>
+
+                <mat-action-row>
+                    <button mat-button color="primary" (click)="nextStep()">Next</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+            <mat-expansion-panel formGroupName='2' [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Business Model
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Select what applies to your business
+                        <mat-icon>map</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <ng-template>Cuisine</ng-template>
+                <mat-form-field>
+                    <mat-select formControlName='food' [placeholder]="mDetail.food || 'Food'">
+                        <mat-option *ngFor='let cuisine of cuisines; let idx=index' [value]='cuisine'>{{cuisine}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <ng-template>Restaurant</ng-template>
+                <mat-form-field>
+                    <mat-select formControlName='concept' [placeholder]="mDetail.concept || 'Concept'">
+                        <mat-option *ngFor='let concept of dining; let idx=index' [value]='concept'>{{concept}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <ng-template>Service</ng-template>
+                <mat-form-field>
+                    <mat-select formControlName='model' [placeholder]="mDetail.model || 'Model'">
+                        <mat-option *ngFor='let model of models; let idx=index' [value]='model'>{{model}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <ng-template>Restrictions</ng-template>
+                <mat-form-field>
+                    <mat-select formControlName='restrictions' [placeholder]="mDetail.restrictions || 'Restriction'">
+                        <mat-option *ngFor='let restriction of restrictions; let idx=index' [value]='restriction'>{{restriction}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-action-row>
+                    <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                    <button mat-button color="primary" (click)="nextStep()">Next</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+            <mat-expansion-panel [expanded]=" step === 3" (opened)="setStep(3)" hideToggle>
+                <!--<mat-expansion-panel formGroupName='2' [expanded]="profileFormArray?.get([2])" (opened)="setStep(2)" hideToggle>-->
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Product Data
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Import product info from system
+                        <mat-icon>date_range</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <ng-template>Merchant Data File</ng-template>
+                <!--<mat-form-field>
+                  <app-file-upload matInput formControlName='uploadedfile' [progress]='progress'></app-file-upload>
+                  <mat-error>
+                    {{errors[prflErrInst]}}
+                  </mat-error>
+                  <div class="invalid-feedback" style="display: block">
+                    <ng-container *ngIf="hasError('uploadedfile', 'required')">This field is required</ng-container>
+                    <ng-container *ngIf="hasError('uploadedfile', 'requiredFileType')">Only PNG 🤡</ng-container>
+                  </div>
+                  <input type="file" formControlName='uploadedfile' name='uploadedfile' (onchange)="onFileChange($event, 'image')" placeholder="uploaded file" />
+                </mat-form-field>-->
+                <mat-form-field>
+                    <mat-chip-list name='data'>
+                        <mat-chip *ngIf='!fileSelected' name='import' (click)='openUploadFile()' [selected]='true'>Import Data</mat-chip>
+                        <mat-chip *ngIf='fileSelected'>Upload File</mat-chip>
+                    </mat-chip-list>
+                </mat-form-field>
+
+                <mat-action-row>
+                    <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                    <button mat-button color="primary" (click)="setMerchantDetails()" routerLinkActive='true'>End</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+
+        </mat-accordion>
+    </form>
+
+</mat-list>
+

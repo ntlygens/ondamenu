@@ -1,63 +1,64 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, Validator } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../../core-func/srvcs/login.service';
+import { StorageService } from '../../core-func/srvcs/storage.service';
 import {
     ConfirmValidEmailMatcher,
     regExps,
     errorMessages,
-} from '../../core-func/errors/custom-validation/custom-validation.component';
-
+} from '../../core-func/errors/custom-validation.component';
 
 @Component({
-    selector: 'app-sign-in',
+    selector: 'amm-sign-in',
     template: `
-            <!--<img class='splashImg fixedCenter' src='../../../assets/imgs/Login_Cntnr.svg' alt='background_image' />-->
-            <form [formGroup]='submitForm' [ngClass]='this.clientType === "m" ? "signInForm_border": ""' id='CTA_div' novalidate>
-                <article>Welcome to Biota <br> sign in</article>
-                <div formGroupName='userLoginData'>
-                    <mat-form-field>
-                        <input matInput (blur)='validateEmail()' placeholder='email' type='email' formControlName='email' name='email' [errorStateMatcher]='confirmValidEmailMatcher' />
-                        <mat-error>
-                            {{errors[emailErrInst]}}
-                        </mat-error>
-                    </mat-form-field>
+            <div id="ntroCntnr" class="inputBackground">
+                <form [formGroup]='submitForm' [ngClass]='this.clientType === "m" ? "": ""' id='CTA_div' novalidate>
+                    <h4> sign in</h4>
+                    <div formGroupName='userLoginData'>
+                        <mat-form-field>
+                            <input matInput (blur)='validateEmail()' placeholder='email' type='email' formControlName='email' name='email' [errorStateMatcher]='confirmValidEmailMatcher' />
+                            <mat-error>
+                                {{errors[emailErrInst]}}
+                            </mat-error>
+                        </mat-form-field>
 
-                    <mat-form-field>
-                        <input matInput placeholder='password' type='password' formControlName='password' name='password'  />
-                        <mat-error>
-                            {{errors[passErrInst]}}
-                        </mat-error>
-                    </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder='password' type='password' formControlName='password' name='password'  />
+                            <mat-error>
+                                {{errors[passErrInst]}}
+                            </mat-error>
+                        </mat-form-field>
 
-                </div>
-                <button (click)='validateUser()' [disabled]='this.submitForm.invalid' color='warn' mat-raised-button type='button'>Sign In</button>
-                <div id='loginOptns'>
-                    <a href='#' (click)='$event.preventDefault(); gotoSignUp()' routerLinkActive='true' id='signup' name='signup'>Sign Up</a>
-                    <a href='#' (click)='$event.preventDefault(); gotoReset()' routerLinkActive='true' id='reset' name='reset'>Reset</a>
-                </div>
-            </form>
-
-  `,
+                    </div>
+                    <button (click)='validateUser()' [disabled]='this.submitForm.invalid' color='warn' mat-raised-button type='button'>Sign In</button>
+                    <div id='loginOptns'>
+                        <a href='#' (click)='$event.preventDefault(); gotoSignUp()' routerLinkActive='true' id='signup' name='signup'>Sign Up</a>
+                        <a href='#' (click)='$event.preventDefault(); gotoReset()' routerLinkActive='true' id='reset' name='reset'>Reset</a>
+                    </div>
+                </form>
+            </div>
+      `,
     styles: [`
-      .splashImg {
-        width: 100%;
-        height: auto;
-      }
-    `],
+            .splashImg {
+                width: 100%;
+                height: auto;
+            }
+
+            h4 {
+                text-transform: uppercase;
+            }
+        `],
     providers: [
-      LoginService,
-      // LocalAuthService,
+        LoginService,
     ],
 })
 export class SignInComponent implements OnInit {
     confirmValidEmailMatcher = new ConfirmValidEmailMatcher();
     errors = errorMessages;
-    validator: Validator;
 
     emailErrInst: string;
     passErrInst: string;
-    emailPwdLock: boolean;
     submitForm: FormGroup;
     clientType: any;
     merchantID: any;
@@ -65,88 +66,43 @@ export class SignInComponent implements OnInit {
     clientID: any;
     code: any;
 
-    isProfileCompleted: boolean;
-    isTourComplete: boolean;
     constructor(
         private fb: FormBuilder,
         private als: LoginService,
-        // private las: LocalAuthService,
         private router: Router,
         private route: ActivatedRoute,
-        // private bottomSheetRef: MatBottomSheetRef<SignInComponent>,
+        private ss: StorageService,
     ) {
         this.emailErrInst = 'email';
         this.passErrInst = 'password';
         this.createForm();
 
-        // let urlSnap = this.route.snapshot.pathFromRoot.map(o => o.url[0]).join('/');
-        // let params = (new URL(document.location.href)).searchParams;
-        // console.log('params: ', params);
-        // console.log('url: ', urlSnap);
-        // let searchParams = new URLSearchParams(params);
-        // console.log('param count, ', $(searchParams).length);
-        /*if ( searchParams.has('mId')) {
-          this.merchantID = searchParams.get('auth');
-          this.clientType = 'm';
-          console.log( 'merchant' );
-        } else {
-          this.clientType = 'u';
-          console.log( 'user' );
-        }*/
-
-        /*if ( urlSnap.indexOf('auth') > 0 ) {
-
-        } else {
-          this.clientType = 'u';
-          console.log( 'user' );
-        }*/
     }
 
     ngOnInit() {
-      const params = (new URL(document.location.href)).searchParams;
-      // console.log('params: ', params);
-      // console.log('url: ', urlSnap);
-      const searchParams = new URLSearchParams(params);
-      // let urlSnap = this.route.snapshot.pathFromRoot.map(o => o.url[0]).join('/');
-      // console.log('urlsnap: ', urlSnap);
+        const params = (new URL(document.location.href)).searchParams;
+        const searchParams = new URLSearchParams(params);
 
-      /*this.las.get_url_path().subscribe( (data) => {
-        this.clientType = data.urlpath;
-        // console.log('path: ', murl);
-      });
-      this.las.get_mid_param().subscribe( (data) => {
-        this.merchantID = data.m_ID;
-        // console.log('path: ', murl);
-      });*/
+        switch ( true ) {
+            case searchParams.has('merchant_id'):
+                this.clientType = 'm';
+                this.merchantID = searchParams.get('merchant_id');
+                break;
+            case searchParams.has('employee_id'):
+                this.employeeID = searchParams.get('employee_id');
+                break;
+            case searchParams.has('client_id'):
+                this.clientID = searchParams.get('client_id');
+                break;
+            case searchParams.has('code'):
+                this.code = searchParams.get('code');
+                break;
+            default:
+                this.clientType = 'u';
 
-      /*if ( urlSnap.indexOf('auth') > 0 ) {
-        this.clientType = 'm';
-        console.log( 'merchant mmm' );
-      } else {
-        this.clientType = 'u';
-        console.log( 'client ccc' );
-      }*/
+        }
 
-      switch ( true ) {
-        case searchParams.has('merchant_id'):
-          this.clientType = 'm';
-          this.merchantID = searchParams.get('merchant_id');
-          break;
-        case searchParams.has('employee_id'):
-          this.employeeID = searchParams.get('employee_id');
-          break;
-        case searchParams.has('client_id'):
-          this.clientID = searchParams.get('client_id');
-          break;
-        case searchParams.has('code'):
-          this.code = searchParams.get('code');
-          break;
-        default:
-          this.clientType = 'u';
-
-      }
-
-      console.log( 'm: ', this.merchantID, 'c: ', this.clientType );
+        // console.log( 'm: ', this.merchantID, 'c: ', this.clientType );
 
     }
 
@@ -160,7 +116,7 @@ export class SignInComponent implements OnInit {
     }
 
     validateEmail() {
-        console.log('mid: ', this.merchantID);
+        // console.log('mid: ', this.merchantID);
         const user = this.submitForm.get('userLoginData.email').value;
         this.als.isEmailValid(`${user}`, `${this.clientType}`, `${this.merchantID}`).subscribe(
             res => {
@@ -179,7 +135,7 @@ export class SignInComponent implements OnInit {
                         // console.log('valid user');
                         break;
                 }
-                console.log('eMailSign-In-res: ' + validRes);
+                // console.log('eMailSign-In-res: ' + validRes);
             }
         );
     }
@@ -197,49 +153,35 @@ export class SignInComponent implements OnInit {
                         case usrValidRes !== 1:
                             this.passErrInst = 'wrgpwd';
                             this.submitForm.get('userLoginData.password').setErrors({wrongPwd: true});
-                            console.log('incorrect pass');
+                            // console.log('incorrect pass');
                             break;
                         case usrValidRes === 1:
                             if ( this.clientType === 'm' ) {
-                              console.log('being accesed by merchant');
-                                /*this.als.getToken(this.merchantID, this.employeeID, this.code).subscribe(
-                                  (Res) => {
-                                    // this.las.set_mid_param({m_ID: mID});
-                                    // this.router.navigate(['/auth'], {queryParams: { 'mId': mID}});
-
-                                    console.log('being accesed by merchant');
-                                    console.log('token returned: ', Res);
-                                  },
-                                  (err) => {
-                                    console.log( 'there was an error getting token: ', err);
-                                  },
-                                  () => {
-                                    console.log( 'complete' );
-                                    this.router.navigate(['/m'], {relativeTo: this.route, queryParams: {'mID': merchant} });
-                                  }
-                                );*/
-                              this.als.isProfileComplete(merchant).subscribe( resp => {
-                                  // console.log('resp: ', resp);
-                                  const isProfileCompleted = resp.profile_complete;
-                                  this.als.setProfileStatus({prflStat: isProfileCompleted});
-                                  console.log('profileCompleted: ', isProfileCompleted);
-                                  if ( isProfileCompleted !== '0' ) {
-                                    // IF PROFILE COMPLETE //
-                                    this.router.navigate( [ '/m' ], { relativeTo: this.route, queryParams: { mID: merchant } } );
-                                    console.log('profile completed!');
-                                  } else {
-                                    // IF PROFILE NOT COMPLETE //
-                                    this.router.navigate(['/m/profile'], {relativeTo: this.route, queryParams: {mID: merchant} });
-                                    console.log('profile NOT completed!');
-                                  }
-                                },
-                                (err) => {
-                                  console.log('there was an error getting profile status: ', err);
-                                },
-                                () => {
-                                  // this.router.navigate(['/m'], {relativeTo: this.route, queryParams: {'mID': merchant} });
-                                  // this.als.getProfileStatus().subscribe ( (resp) => { console.log('statusLog: ',  resp['prflStat']); } );
-                                });
+                                // console.log('being accesed by merchant');
+                                this.als.isProfileComplete(merchant).subscribe(
+                                    resp => {
+                                        // console.log('resp: ', resp);
+                                        const isProfileCompleted = resp.profile_complete;
+                                        this.ss.setProfileStatus(isProfileCompleted);
+                                        // console.log('profileCompleted: ', isProfileCompleted);
+                                        if ( isProfileCompleted !== '0' ) {
+                                            // IF PROFILE COMPLETE //
+                                            this.router.navigate( [ '/m' ], { relativeTo: this.route, queryParams: { mID: merchant } } );
+                                            // console.log('profile completed!');
+                                        } else {
+                                            // IF PROFILE NOT COMPLETE //
+                                            this.router.navigate(['/m/profile'], {relativeTo: this.route, queryParams: {mID: merchant} });
+                                            // console.log('profile NOT completed!');
+                                        }
+                                    },
+                                    (err) => {
+                                        console.log('isUserValid_Error: ', err);
+                                    },
+                                    () => {
+                                        console.log('isUserValid Complete');
+                                        // this.router.navigate(['/m'], {relativeTo: this.route, queryParams: {'mID': merchant} });
+                                        // this.als.getProfileStatus().subscribe ( (resp) => { console.log('statusLog: ',  resp['prflStat']); } );
+                                    });
                             } else {
                                 this.router.navigate(['/u'], {relativeTo: this.route});
                             }
