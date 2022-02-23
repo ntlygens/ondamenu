@@ -23,13 +23,13 @@ import { GuiService } from '../../core-func/srvcs/gui.service';
 })
 export class SplashComponent implements OnInit {
 
-    mURL: any;
-    mURL2: any;
+    lclURL: any;
+    rmtURL: any;
     elem: any;
     // redirect1 = 'https://smashradio1fm.com/biota/signin';
-    redirect2 = 'http://localhost:4200/signin';
+    lclReddir = 'http://localhost:4200/signin';
     redirect3 = 'http://192.168.1.151:4200/signin';
-    redirect4 = 'http://ondamenu.com/signin';
+    rmtReddir = 'http://ondamenu.com/signin';
 
 
 
@@ -40,10 +40,11 @@ export class SplashComponent implements OnInit {
         private elemRef: ElementRef
 
     ) {
-        this.mURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=' + this.redirect4; // Local Mobile/Phone Testing
-        // this.mURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=http://localhost:4200/signin'; // local Computer Testing
-        // this.mURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=https://smashradio1fm.com/biota/signin';
-        this.mURL2 = 'https://api.clover.com/auth/authorize?client_id=Y805R8C741M54';
+        this.rmtURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=' + this.rmtReddir; // Local Mobile/Phone Testing
+        this.lclURL = 'https://sandbox.dev.clover.com/oauth/authorize?client_id=0Y7P6V3S3EV6W&redirect_uri=' + this.lclReddir; // local Computer Testing
+        // this.lclURL = 'https://clover.com:443/oauth/authorize?client_id=Y805R8C741M54&redirect_uri=https://smashradio1fm.com/biota/signin';
+        // this.rmtURL = 'https://api.clover.com/auth/authorize?client_id=Y805R8C741M54';
+
         this.elem = this.elemRef.nativeElement;
 
     }
@@ -72,7 +73,7 @@ export class SplashComponent implements OnInit {
     startMrchntXp() {
         // console.log('accessed from web');
         this.gs.setStartPg(false);
-        window.open(`${this.mURL}`, '_self');
+        window.open(`${this.lclURL}`, '_self');
     }
 
 }

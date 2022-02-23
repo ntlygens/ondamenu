@@ -103,7 +103,7 @@ export class MerchantService {
             'phone',
             'delivery',
             'shipping',
-            'bldgNum',
+            'bldg_num',
             'address',
             'address2',
             'boro',

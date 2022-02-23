@@ -97,20 +97,20 @@ export interface MerchantInfoData {
     employee_id: string;
     slogan?: string;
     bio?: string;
-    bldg_num: number;
+    bldg_num: string;
     address: string;
     address2: string;
     boro: string;
     state: string;
-    zip: number;
+    zip: string;
     phone: string;
-    pos_sys: number;
+    pos_sys: string;
     food?: LocSrvcCuisine;
     concept?: LocSrvcDining;
     model?: LocSrvcModel;
     restrictions?: LocSrvcRstrctns;
-    delivery: boolean;
-    shipping: boolean;
+    delivery: string;
+    shipping: string;
     loc_status: LocSrvcStatus;
 
 }
