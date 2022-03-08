@@ -109,9 +109,9 @@ export interface MerchantInfoData {
     concept?: LocSrvcDining;
     model?: LocSrvcModel;
     restrictions?: LocSrvcRstrctns;
-    delivery: string;
+    delivery?: string;
     shipping: string;
-    loc_status: LocSrvcStatus;
+    loc_status?: LocSrvcStatus;
 
 }
 

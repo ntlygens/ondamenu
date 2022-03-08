@@ -8,7 +8,9 @@ import { GuiService } from '../srvcs/gui.service';
 @Component({
     selector: 'amm-list',
     template: `
+<!--
         <amm-advert [crntPg]="crntPage" ></amm-advert>
+-->
         <mat-list>
             <mat-list-item
                 *ngFor="let merchant of merchants;
@@ -39,6 +41,8 @@ import { GuiService } from '../srvcs/gui.service';
     `,
     styles: [`
         :host {
+            position: relative;
+            top: 90px;
             width: 100%;
             max-width: 420px;
         }

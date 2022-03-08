@@ -93,4 +93,15 @@ export class LoginService {
         return mrchntData;
 
     }
+
+    async getMerchantPromoCampaign() {
+        const userGetMerchantCampaign = new HttpParams()
+            .set('clientType', 'campaign')
+            .set('client', 'm_92005');
+
+        const mrchntData = await this.http.get(`${this.baseURL}`, {params: userGetMerchantCampaign}).toPromise();
+        if (!mrchntData) { return; }
+        return mrchntData;
+
+    }
 }

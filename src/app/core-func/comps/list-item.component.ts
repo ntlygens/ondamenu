@@ -270,7 +270,7 @@ export class ListItemComponent implements OnInit {
     @Input() itemFoodType = 'american';
     @Input() itemSrvcType = 'eatin';
     @Input() itemSrvcStat = 'closed';
-    @Input() itemDelivery = false;
+    @Input() itemDelivery = 'false';
     @Input() itemUIToggle = 'normal';
 
     constructor() { }

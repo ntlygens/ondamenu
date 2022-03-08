@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { AmmRouteInterface } from './amm.enum';
 import { ListComponent } from './core-func/comps/list.component';
 import { MenuComponent } from './menu/menu.component';
+import { PromoCampaignComponent } from './core-func/comps/promo-campaign.component';
 import { FoodPaymentComponent } from './core-func/comps/food-payment.component';
 import { GuiService } from './core-func/srvcs/gui.service';
 import {TermsComponent} from './legal/terms.component';
@@ -57,6 +58,15 @@ const MAINROUTES: AmmRouteInterface[] = [
             state: 'MerchantMode',
             animation: 'isLeft',
             mobile: GuiService.prototype.isMobileDevice()
+        },
+        outlets: [ 'mainAppRO' ]
+    },
+    {
+        path: 'campaign',
+        component: PromoCampaignComponent,
+        data: {
+            state: 'PromoMode',
+            animation: 'isRight'
         },
         outlets: [ 'mainAppRO' ]
     },

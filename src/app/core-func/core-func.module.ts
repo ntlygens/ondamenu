@@ -23,6 +23,7 @@ import { DriverLoginComponent } from '../driver/driver-login/driver-login.compon
 import { UserLoginModalComponent } from './modal/user-login-modal/user-login-modal.component';
 import { MerchantLoginModalComponent } from './modal/merchant-login-modal/merchant-login-modal.component';
 import { ModalComponent } from './modal/modal.component';
+import { PromoCampaignComponent } from './comps/promo-campaign.component';
 // import { EditorComponent } from './editor/editor.component';
 // import { EditSelBtnComponent } from './editor/edit-sel-btn/edit-sel-btn.component';
 
@@ -31,6 +32,7 @@ import { ModalComponent } from './modal/modal.component';
         NydohComponent,
         ListItemComponent,
         ListComponent,
+        PromoCampaignComponent,
         AdvertComponent,
         MenuComponent,
         CategoryBtnComponent,
