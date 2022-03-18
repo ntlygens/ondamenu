@@ -9,8 +9,8 @@ import { DohService } from '../../srvcs/doh.service';
           <div id="dohCntnr" class="flex-column">
               <h1>nydoh</h1>
               <div class="rounded rate">
-                  <!--<h2 *ngIf="mDohData">{{merchantCAMIS}}</h2>-->
-                  <h2>{{merchantGrade}}</h2>
+                  <h2 *ngIf="!mDohData.grade">"b"</h2>
+                  <h2>{{mDohData.grade}}</h2>
               </div>
           </div>
       `,
@@ -37,6 +37,8 @@ import { DohService } from '../../srvcs/doh.service';
 })
 export class NydohComponent implements OnInit {
     @Input() merchantGrade: string;
+    @Input() merchantID: string;
+
     mDohData: MerchantDOHRatingData;
 
     constructor(
@@ -46,17 +48,17 @@ export class NydohComponent implements OnInit {
 
     ngOnInit() {
         // console.log('camis number: ', this.merchantCAMIS);
-        // this.getMerchantDOHData();
+        this.getMerchantDOHData();
 
     }
     getMerchantDOHData() {
-        this.DohSvc.getMrchDOHData('41491419').then(
+        this.DohSvc.getMrchDOHData(`${this.merchantID}`).then(
             (res: MerchantDOHRatingData) => {
                 this.mDohData = res;
 
             },
             (err) => {
-                // console.log('getMerchantDOHData_Error: ', err);
+                console.log('getMerchantDOHData_Error: ', err);
             }
         );
     }

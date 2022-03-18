@@ -1,9 +1,9 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MerchantInfoData } from '../../amm.enum';
-import { LoginService } from '../srvcs/login.service';
-import { StorageService } from '../srvcs/storage.service';
-import { GuiService } from '../srvcs/gui.service';
+import { MerchantInfoData } from '../amm.enum';
+import { LoginService } from '../core-func/srvcs/login.service';
+import { StorageService } from '../core-func/srvcs/storage.service';
+import { GuiService } from '../core-func/srvcs/gui.service';
 
 @Component({
     selector: 'amm-promo-campaign',
@@ -30,7 +30,7 @@ import { GuiService } from '../srvcs/gui.service';
 
             </mat-list-item>
         </mat-list>
-        <amm-advert [crntPg]="crntPage" ></amm-advert>
+        <amm-advert [crntPg]="crntPage" [promoImage]="campaign.promo" (click)='getMerchantMenu(campaign)'></amm-advert>
     `,
     styles: [`
         :host {

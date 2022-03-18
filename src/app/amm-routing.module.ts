@@ -3,11 +3,11 @@ import { RouterModule } from '@angular/router';
 import { AmmRouteInterface } from './amm.enum';
 import { ListComponent } from './core-func/comps/list.component';
 import { MenuComponent } from './menu/menu.component';
-import { PromoCampaignComponent } from './core-func/comps/promo-campaign.component';
+import { PromoCampaignComponent } from './campaign/promo-campaign.component';
 import { FoodPaymentComponent } from './core-func/comps/food-payment.component';
 import { GuiService } from './core-func/srvcs/gui.service';
-import {TermsComponent} from './legal/terms.component';
-import {PolicyComponent} from './legal/policy.component';
+import { TermsComponent } from './legal/terms.component';
+import { PolicyComponent } from './legal/policy.component';
 
 const MAINROUTES: AmmRouteInterface[] = [
     {
@@ -63,10 +63,12 @@ const MAINROUTES: AmmRouteInterface[] = [
     },
     {
         path: 'campaign',
-        component: PromoCampaignComponent,
+        loadChildren: () => import('./campaign/campaign.module').then(
+            module => module.CampaignModule
+        ),
         data: {
-            state: 'PromoMode',
-            animation: 'isRight'
+            state: 'CampaignMode',
+            animation: 'isLeft'
         },
         outlets: [ 'mainAppRO' ]
     },

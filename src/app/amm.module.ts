@@ -17,6 +17,7 @@ import { PortalModule } from '@angular/cdk/portal';
 
 import { IntroModule } from './intro/intro.module';
 import { MerchantModule } from './merchant/merchant.module';
+import { CampaignModule } from './campaign/campaign.module';
 
 import { AmmComponent } from './amm.component';
 import { HeaderBarComponent } from './core-func/comps/header-bar.component';
@@ -67,7 +68,8 @@ import { PolicyComponent } from './legal/policy.component';
         ErrorsModule,
         PortalModule,
         IntroModule,
-        MerchantModule
+        MerchantModule,
+        CampaignModule
 
     ],
     providers: [

@@ -99,9 +99,9 @@ export class LoginService {
             .set('clientType', 'campaign')
             .set('client', 'm_92005');
 
-        const mrchntData = await this.http.get(`${this.baseURL}`, {params: userGetMerchantCampaign}).toPromise();
-        if (!mrchntData) { return; }
-        return mrchntData;
+        const mrchntPromoData = await this.http.get(`${this.baseURL}`, {params: userGetMerchantCampaign}).toPromise();
+        if (!mrchntPromoData) { return; }
+        return mrchntPromoData;
 
     }
 }

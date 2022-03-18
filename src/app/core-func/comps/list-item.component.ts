@@ -7,6 +7,7 @@ import { lift } from '../animations/animations.component';
         <div class="dohSrvcs" [@mnmzeDohAnimations]="itemUIToggle">
             <amm-nydoh
                 [merchantGrade]="itemGrade"
+                [merchantID]="itemID"
             ></amm-nydoh>
         </div>
         <div class='imgStngs' [@mnmzeImgAnimations]="itemUIToggle">
@@ -193,6 +194,8 @@ import { lift } from '../animations/animations.component';
             top: -68px;
             /* box-shadow: 0px -1px 4px 0px; */
             border-top: 2px solid #fff;
+            border-bottom-right-radius: 5px;
+            border-bottom-left-radius: 5px;
         }
 
         .imgStngs {
@@ -207,7 +210,7 @@ import { lift } from '../animations/animations.component';
         }
 
         .logo {
-            height: 100%;
+            height: auto;
             width: 100%;
         }
 

@@ -89,11 +89,11 @@ export interface MerchantInfoData {
     halal: number;
     kosher: number;
     temp: number;
-    grade: string;
+    grade?: string;
     logo: string;
     location: string;
-    promo: string;
-    banner: string;
+    promo?: string;
+    banner?: string;
     employee_id: string;
     slogan?: string;
     bio?: string;
