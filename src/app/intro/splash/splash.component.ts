@@ -73,7 +73,7 @@ export class SplashComponent implements OnInit {
     startMrchntXp() {
         // console.log('accessed from web');
         this.gs.setStartPg(false);
-        window.open(`${this.lclURL}`, '_self');
+        window.open(`${this.rmtURL}`, '_self');
     }
 
 }
