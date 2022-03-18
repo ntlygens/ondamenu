@@ -17,6 +17,17 @@ export const routes: Routes = [
         ]
     },
     {
+        path: '/:id',
+        component: CampaignComponent,
+        children: [
+            {
+                path: '',
+                component: PromoCampaignComponent,
+                outlet: 'campaignRO'
+            }
+        ]
+    },
+    {
         path: 'm',
         component: CampaignComponent,
         children: [

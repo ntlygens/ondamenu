@@ -94,10 +94,10 @@ export class LoginService {
 
     }
 
-    async getMerchantPromoCampaign() {
+    async getMerchantPromoCampaign(args) {
         const userGetMerchantCampaign = new HttpParams()
             .set('clientType', 'campaign')
-            .set('client', 'm_92005');
+            .set('client', `${args}`);
 
         const mrchntPromoData = await this.http.get(`${this.baseURL}`, {params: userGetMerchantCampaign}).toPromise();
         if (!mrchntPromoData) { return; }

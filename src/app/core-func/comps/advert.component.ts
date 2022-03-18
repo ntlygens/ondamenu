@@ -4,7 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
   selector: 'amm-advert',
   template: `
     <div class='imgStngs'>
-        <img *ngIf='!promoImage' class="rounded logo" src="../../../assets/core-assets/escovich.png" alt="promo image"/>
+        <img *ngIf='!promoImage' class="rounded logo" src="assets/core-assets/escovich.png" alt="promo image"/>
         <img class="rounded logo" src="{{promoImage}}" alt="promo image r"/>
     </div>
     <div class="placeholder">

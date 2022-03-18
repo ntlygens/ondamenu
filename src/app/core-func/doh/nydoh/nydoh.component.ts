@@ -8,9 +8,9 @@ import { DohService } from '../../srvcs/doh.service';
     template: `
           <div id="dohCntnr" class="flex-column">
               <h1>nydoh</h1>
-              <div class="rounded rate">
-                  <h2 *ngIf="!mDohData.grade">"b"</h2>
-                  <h2>{{mDohData.grade}}</h2>
+              <div class="rounded rate" id="{{merchantID}}">
+                  <h2 *ngIf="!merchantGrade">"b"</h2>
+                  <h2>{{merchantGrade}}</h2>
               </div>
           </div>
       `,
@@ -48,7 +48,7 @@ export class NydohComponent implements OnInit {
 
     ngOnInit() {
         // console.log('camis number: ', this.merchantCAMIS);
-        this.getMerchantDOHData();
+        // this.getMerchantDOHData();
 
     }
     getMerchantDOHData() {

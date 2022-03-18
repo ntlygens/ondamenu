@@ -63,6 +63,7 @@ import { GuiService } from '../core-func/srvcs/gui.service';
 export class PromoCampaignComponent implements OnInit {
     campaign: MerchantInfoData;
     crntPage = 'the promo page';
+    dCLID: any;
     constructor(
         private ls: LoginService,
         private ss: StorageService,
@@ -71,16 +72,18 @@ export class PromoCampaignComponent implements OnInit {
         private route: ActivatedRoute,
         private elemRef: ElementRef,
     ) {
-        this.elemRef.nativeElement.setAttribute('id',  'merchantCampaign');
+        this.elemRef.nativeElement.setAttribute('id',  'merchantCampaign_' + `${this.dCLID}`);
         this.gs.setStartPg(false);
+        console.log('elem: ', route.snapshot.queryParams.clid);
+        this.dCLID = this.route.snapshot.queryParams.clid;
     }
 
     ngOnInit() {
-        this.getPromoCampaign();
+        this.getPromoCampaign(`${this.dCLID}`);
     }
 
-    getPromoCampaign() {
-        this.ls.getMerchantPromoCampaign().then(
+    getPromoCampaign(arg) {
+        this.ls.getMerchantPromoCampaign(`${arg}`).then(
             (res: MerchantInfoData) => {
                 this.campaign = res;
                 // console.log('load eg: ', JSON.stringify(this.campaigns[0]));
