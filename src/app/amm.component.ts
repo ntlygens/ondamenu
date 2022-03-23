@@ -99,7 +99,7 @@ export class AmmComponent implements AfterViewInit, OnInit, OnDestroy {
         this.gs.isStartPg$.pipe(takeUntil(this.destroy$)).subscribe(
             (res) => {
                 this.isStartPg = res;
-                console.log('issplash res: ', this.isStartPg);
+                console.log('is splash pg: ', this.isStartPg);
             }
         );
 

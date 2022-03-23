@@ -74,7 +74,7 @@ export class PromoCampaignComponent implements OnInit {
     ) {
         this.elemRef.nativeElement.setAttribute('id',  'merchantCampaign_' + `${this.dCLID}`);
         this.gs.setStartPg(false);
-        console.log('elem: ', route.snapshot.queryParams.clid);
+        // console.log('elem: ', route.snapshot.queryParams.clid);
         this.dCLID = this.route.snapshot.queryParams.clid;
     }
 

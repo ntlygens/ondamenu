@@ -9,7 +9,7 @@ import { DohService } from '../../srvcs/doh.service';
           <div id="dohCntnr" class="flex-column">
               <h1>nydoh</h1>
               <div class="rounded rate" id="{{merchantID}}">
-                  <h2 *ngIf="!merchantGrade">"b"</h2>
+                  <h2 *ngIf="!merchantGrade">b</h2>
                   <h2>{{merchantGrade}}</h2>
               </div>
           </div>

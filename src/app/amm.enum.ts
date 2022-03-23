@@ -103,6 +103,8 @@ export interface MerchantInfoData {
     boro: string;
     state: string;
     zip: string;
+    latitude?: string;
+    longitude?: string;
     phone: string;
     pos_sys: string;
     food?: LocSrvcCuisine;
@@ -134,8 +136,8 @@ export interface MerchantDOHRatingData {
     grade_date: string;
     record_date: string;
     inspection_type: string;
-    latitude: number;
-    longitude: number;
+    latitude: string;
+    longitude: string;
     community_board: number;
     council_district: number;
     census_tract: number;
