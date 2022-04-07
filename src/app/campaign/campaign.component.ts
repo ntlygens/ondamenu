@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { GuiService } from '../core-func/srvcs/gui.service';
 
 @Component({
   selector: 'amm-campaign',
   template: `
-      <div id='' class=''>
+      <div id='ntroCntnr' class=''>
           <router-outlet name='campaignRO' id='campaignRO'></router-outlet>
       </div>
   `,
@@ -11,7 +12,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CampaignComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+      private gs: GuiService
+  ) {
+      this.gs.setVisibility(false);
+  }
 
   ngOnInit(): void {
   }

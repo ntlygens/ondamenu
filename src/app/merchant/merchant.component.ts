@@ -8,9 +8,6 @@ import {Subject} from 'rxjs';
 @Component({
     selector: 'amm-merchant',
     template: `
-        <p>
-          merchant works!
-        </p>
         <div id="ntroCntnr" [ngClass]="isMobileDash ? 'mobileDash' : 'desktopDash' ">
             <router-outlet #merchantRO='outlet' name="merchantRO"></router-outlet>
         </div>

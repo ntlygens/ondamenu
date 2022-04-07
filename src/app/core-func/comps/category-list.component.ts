@@ -28,6 +28,7 @@ import {CartService} from '../srvcs/cart.service';
                     [miIncr]="isIncremental"
                     [miType]=""
                     [isEven]="even"
+                    [isPromoCmpgn]="isPrCmpgn"
                     (emitRemoveClick2)='this.removeCounter($event)'
                 ></amm-menu-item>
             </cdk-virtual-scroll-viewport>
@@ -56,6 +57,7 @@ export class CategoryListComponent implements OnInit, AfterViewInit {
     @Input() clientID = '';
     @Input() menuOpen: boolean;
     @Input() isIncremental: boolean;
+    @Input() isPrCmpgn: boolean;
     @Output() emitRemoveClick3: EventEmitter<any> = new EventEmitter<any>();
     @Output() mnmzeListItem: EventEmitter<any> = new EventEmitter<any>();
 

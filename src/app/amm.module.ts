@@ -31,6 +31,7 @@ import { PlateItemComponent } from './core-func/comps/plate-item.component';
 import { FoodPaymentComponent } from './core-func/comps/food-payment.component';
 import { TermsComponent } from './legal/terms.component';
 import { PolicyComponent } from './legal/policy.component';
+import { PromoCampaignDirective } from './core-func/drctvs/promo-campaign.directive';
 
 @NgModule({
     declarations: [
@@ -45,6 +46,7 @@ import { PolicyComponent } from './legal/policy.component';
         FoodPaymentComponent,
         TermsComponent,
         PolicyComponent,
+        PromoCampaignDirective
     ],
     imports: [
         CommonModule,

@@ -14,10 +14,10 @@ import { Location, DOCUMENT } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MenuService } from '../core-func/srvcs/menu.service';
 import { StorageService } from '../core-func/srvcs/storage.service';
-import {CategoryData, MerchantInfoData, SubCategoryData} from '../amm.enum';
+import { CategoryData, MerchantInfoData, SubCategoryData} from '../amm.enum';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {lift} from '../core-func/animations/animations.component';
+import { lift } from '../core-func/animations/animations.component';
 
 @Component({
     selector: 'amm-menu',
@@ -69,6 +69,7 @@ import {lift} from '../core-func/animations/animations.component';
                     [menuNav]="dCat['cval']" [isMobile]='mobileOn'
                     [menuID]="dCat['cid']"
                     [clientID]="dCat['client_id']"
+                    [isPrCmpgn]="prCmpgn"
                     [isIncremental]="(dCat['cid'] !== ( 'MJ7M88JTG3QF8' )) && (dCat['cid'] !== ( '215B0KSFN91GM' ))"
                     (mnmzeListItem)="minimizeUI($event)"
                 ></amm-category-list>
@@ -93,6 +94,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     menuOpen: boolean;
     isAllBtnActive: boolean;
     active: boolean;
+    prCmpgn: boolean;
 
     dCats: any = [];
     allSubCats: any = [];
@@ -132,6 +134,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
         });
         // this.active = true;
+        this.prCmpgn = false;
 
     }
 
@@ -290,6 +293,14 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     // * ======== navigation hooks ========= * //
 
     ngOnInit() {
+        const params = (new URL(document.location.href)).searchParams;
+        const searchParams = new URLSearchParams(params);
+        if ( searchParams.has('clpc')) {
+            const promo = searchParams.get('clpc');
+            this.prCmpgn = true;
+            /// clpc: client promo campaign
+        }
+
         this.elem = this.elemRef.nativeElement;
         const listItmImg = this.elem.querySelector('.imgStngs');
         listItmImg.classList.add('fullImg');
@@ -297,6 +308,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         // TODO: setup matchmedia for mobile test //
         this.mobileOn = true;
         // this.elem.setAttribute('dFtr', 'footer.toggleCart()');
+
 
     }
 

@@ -4,11 +4,11 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
     selector: 'amm-menu-item',
     template: `
                     <div *ngIf="isEven" class="menuItem d-flex">
-                        <div class="miDesc">
+                        <div [ngClass]="isPromoCmpgn ? 'miDesc cmpgnDesc' : 'miDesc'">
                             <h6>{{miName}}</h6>
                             <p>{{miDesc}}</p>
                         </div>
-                        <div class="miPrice col-sm">
+                        <div *ngIf="!isPromoCmpgn" id="order" class="miPrice col-sm">
                             <div class="rounded">{{miPrice * count | cloverUserPrice}}</div>
                             <div class='cta_btns flex-column'>
                                 <div *ngIf='miIncr' [ngClass]='itemCounter ? "itemCounter" : "off"'>
@@ -24,12 +24,13 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                                 <amm-food-order [title]="miID" [isIncremental]='miIncr' [itemCount]='this.count' id="orderBtn" #orderBtn (toggleIncr)='toggleCounter()' (rmvBtn_emitter)='send4Removal($event)' [prodname]="miName" [prodid]="miID" [prodprice]="miPrice"></amm-food-order>
                             </div>
                         </div>
-                        <div class="miPic rounded" [ngStyle]="{'background-image': 'url(' + this.miPic + ')'}"></div>
+                        <div class="miPic rounded" [ngClass]="isPromoCmpgn ? 'descFix' : ''" [ngStyle]="{'background-image': 'url(' + this.miPic + ')'}"></div>
                     </div>
 
                     <div *ngIf="!isEven" class="menuItem d-flex">
-                        <div class="miPic rounded" [ngStyle]="{'background-image': 'url(' + this.miPic + ')'}"></div>
-                        <div class="miPrice col-sm">
+                        <div class="miPic rounded" [ngClass]="isPromoCmpgn ? 'descFix' : ''" [ngStyle]="{'background-image': 'url(' + this.miPic + ')'}"></div>
+                        <div *ngIf="!isPromoCmpgn" class="miPrice col-sm">
+                        <!-- div [attr.ammPromoCampaign]="isPromoCmpgn ? '' : null" class="miPrice col-sm" -->
                             <div class="rounded">{{miPrice * count | cloverUserPrice}}</div>
                             <div class='cta_btns flex-column'>
                                 <div *ngIf='miIncr' [ngClass]='itemCounter ? "itemCounter" : "off"'>
@@ -45,9 +46,11 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                                 <amm-food-order [title]="miID" [isIncremental]='miIncr' [itemCount]='this.count' id="orderBtn" #orderBtn (toggleIncr)='toggleCounter()' (rmvBtn_emitter)='send4Removal($event)' [prodname]="miName" [prodid]="miID" [prodprice]="miPrice"></amm-food-order>
                             </div>
                         </div>
-                        <div class="miDesc">
+                        <div [ngClass]="isPromoCmpgn ? 'miDesc cmpgnDesc' : 'miDesc'">
+                        <!-- div class="miDesc" -->
                             <h6>{{miName}}</h6>
                             <p>{{miDesc}}</p>
+
                         </div>
                     </div>
 
@@ -104,6 +107,10 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                         /*margin-top: 60px;*/
                     }
 
+                    .descFix {
+                        margin: 0 auto;
+                    }
+
                     .menuItem {
                        /*overflow-y: auto;*/
                         height: 90px;
@@ -116,6 +123,10 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ElementR
                         width: auto;
                         min-width: 160px;
                         max-width: 175px;
+                    }
+
+                    .cmpgnDesc {
+                        max-width: 200px !important;
                     }
                     .miDesc h6 {
                         font-size: 0.85rem;
@@ -191,6 +202,7 @@ export class MenuItemComponent implements OnInit, AfterViewInit {
     @Input() miType: any;
     @Input() miIncr: boolean;
     @Input() isEven: any;
+    @Input() isPromoCmpgn: boolean;
     @Output() emitRemoveClick2: EventEmitter<any> =  new EventEmitter<any>();
 
     bckgrnd: string;

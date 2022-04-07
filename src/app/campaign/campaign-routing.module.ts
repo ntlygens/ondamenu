@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CampaignComponent } from './campaign.component';
 import { PromoCampaignComponent } from './promo-campaign.component';
 import { MarketingCampaignComponent } from './marketing-campaign.component';
+import { MenuComponent } from '../menu/menu.component';
 
 export const routes: Routes = [
     {
@@ -17,12 +18,12 @@ export const routes: Routes = [
         ]
     },
     {
-        path: '/:id',
+        path: 'v',
         component: CampaignComponent,
         children: [
             {
                 path: '',
-                component: PromoCampaignComponent,
+                component: MenuComponent,
                 outlet: 'campaignRO'
             }
         ]

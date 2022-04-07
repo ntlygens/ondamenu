@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MerchantInfoData } from '../amm.enum';
 import { LoginService } from '../core-func/srvcs/login.service';
@@ -11,7 +11,7 @@ import { GuiService } from '../core-func/srvcs/gui.service';
         <mat-list>
             <mat-list-item>
                 <amm-list-item
-                    [itemGrade]='campaign.grade'
+                    [itemGrade]="campaign.grade"
                     [itemID]='campaign.client_id'
                     [itemImage]='campaign.logo'
                     [itemTitle]='campaign.username'
@@ -60,7 +60,7 @@ import { GuiService } from '../core-func/srvcs/gui.service';
 
     `]
 })
-export class PromoCampaignComponent implements OnInit {
+export class PromoCampaignComponent implements OnInit, AfterViewInit {
     campaign: MerchantInfoData;
     crntPage = 'the promo page';
     dCLID: any;
@@ -82,12 +82,16 @@ export class PromoCampaignComponent implements OnInit {
         this.getPromoCampaign(`${this.dCLID}`);
     }
 
+    ngAfterViewInit() {
+        // this.getPromoCampaign(`${this.dCLID}`);
+    }
+
     getPromoCampaign(arg) {
         this.ls.getMerchantPromoCampaign(`${arg}`).then(
             (res: MerchantInfoData) => {
                 this.campaign = res;
+                // this.getMerchantMenu(this.campaign);
                 // console.log('load eg: ', JSON.stringify(this.campaigns[0]));
-                // this.getMerchantMenu();
             },
             (err) => {
                 // console.log('userMrchntList_Error: ', err);
@@ -108,8 +112,10 @@ export class PromoCampaignComponent implements OnInit {
             delivery: campaign.delivery
         });
 
-        this.router.navigate( [ '/c/'], {queryParams: {clid: campaign.client_id}} );
-        // console.log('cID: ', campaign.client_id, ' cName: ', campaign.username);
+        this.router.navigate(['v'], {relativeTo: this.route, queryParams: {clpc: '001'}, queryParamsHandling: 'merge'});
+        // this.router.navigate( [ '../v/'], {queryParams: {clid: campaign.client_id}} );
+        // this.router.navigate( [ '/c/'], {queryParams: {clid: campaign.client_id}} );
+        // console.log('cID: ', campaign.client_id, ' grade: ', campaign.grade);
     }
 
 }

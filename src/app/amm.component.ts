@@ -105,7 +105,9 @@ export class AmmComponent implements AfterViewInit, OnInit, OnDestroy {
 
     }
 
-    ngAfterViewInit(): void {}
+    ngAfterViewInit(): void {
+        console.log('cmpgn: ');
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();
