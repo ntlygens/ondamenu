@@ -160,7 +160,6 @@
       }
     }
   },
-  "defaultProject": "ondamenu",
   "schematics": {
     "@schematics/angular:component": {
       "style": "scss"

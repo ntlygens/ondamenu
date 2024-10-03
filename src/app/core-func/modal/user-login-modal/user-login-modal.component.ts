@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UserLoginForm } from '../../../amm.enum';
@@ -99,10 +99,10 @@ import { CustomValidators, ConfirmValidEmailMatcher, ConfirmValidModalEmailMatch
   `]
 })
 export class UserLoginModalComponent implements OnInit {
-  userAuthForm: FormGroup;
-  submitLoginForm: FormGroup;
-  submitEmailGroup: FormGroup;
-  submitPassGroup: FormGroup;
+  userAuthForm: UntypedFormGroup;
+  submitLoginForm: UntypedFormGroup;
+  submitEmailGroup: UntypedFormGroup;
+  submitPassGroup: UntypedFormGroup;
 
   confirmValidEmailMatcher = new ConfirmValidEmailMatcher();
   confirmValidModalEmailMatcher = new ConfirmValidModalEmailMatcher();
@@ -115,7 +115,7 @@ export class UserLoginModalComponent implements OnInit {
   signUpForm: boolean;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private dialogRef: MatDialogRef<UserLoginModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserLoginForm
   ) {

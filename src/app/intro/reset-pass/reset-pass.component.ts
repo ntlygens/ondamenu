@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { FormBuilder, Form, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, Form, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'amm-reset-pass',
@@ -31,7 +31,7 @@ export class ResetPassComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
   ) {}
 
   ngOnInit() {

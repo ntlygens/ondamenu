@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { PaymentService } from '../srvcs/payment.service';
 import { CartService } from '../srvcs/cart.service';
 import { takeUntil } from 'rxjs/operators';
@@ -135,11 +135,11 @@ export class FoodPaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     orderAmount: number;
     orderId: string;
 
-    submitForm: FormGroup;
+    submitForm: UntypedFormGroup;
     private destroy$ = new Subject<any>();
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private elemRef: ElementRef,
         private ps: PaymentService,
         private cs: CartService,

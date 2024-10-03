@@ -73,10 +73,6 @@ import { ModalComponent } from './modal/modal.component';
         ReactiveFormsModule,
         ScrollingModule,
         NgMatModule
-    ],
-    entryComponents: [
-        ModalComponent,
-        UserLoginModalComponent,
     ]
 })
 export class CoreFuncModule { }

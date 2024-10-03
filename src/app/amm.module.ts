@@ -72,17 +72,9 @@ import { PromoCampaignDirective } from './core-func/drctvs/promo-campaign.direct
         IntroModule,
         MerchantModule,
         CampaignModule
-
     ],
     providers: [
         CartService
-    ],
-    entryComponents: [
-        ProfileComponent,
-        FoodCartComponent,
-        CartItemComponent,
-        PlateItemComponent,
-        FoodPaymentComponent,
     ],
     bootstrap: [AmmComponent]
 })

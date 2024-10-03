@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../../core-func/srvcs/login.service';
 import { StorageService } from '../../core-func/srvcs/storage.service';
 import {
@@ -21,7 +21,7 @@ export class DriverLoginComponent implements OnInit {
 
     emailErrInst: string;
     passErrInst: string;
-    submitForm: FormGroup;
+    submitForm: UntypedFormGroup;
     clientType: any;
     merchantID: any;
     employeeID: any;
@@ -29,7 +29,7 @@ export class DriverLoginComponent implements OnInit {
     code: any;
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private als: LoginService,
         private router: Router,
         private route: ActivatedRoute,

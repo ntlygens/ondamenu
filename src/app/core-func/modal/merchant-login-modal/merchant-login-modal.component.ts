@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef  } from '@angular/material/dialog';
 import { regExps } from '../../errors/custom-validation.component';
@@ -47,7 +47,7 @@ import { MerchantLoginForm } from '../../../amm.enum';
 export class MerchantLoginModalComponent implements OnInit {
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private dialogRef: MatDialogRef<MerchantLoginModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: MerchantLoginForm
   ) { }

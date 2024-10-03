@@ -1,6 +1,6 @@
 import {
-  FormGroup,
-  FormControl,
+  UntypedFormGroup,
+  UntypedFormControl,
   FormGroupDirective,
   NgForm,
   ValidatorFn,
@@ -14,7 +14,7 @@ export class CustomValidators {
     /**
      * Validates that child controls in the form group are equal
      */
-    static childrenEqual: ValidatorFn = ( formGroup: FormGroup ) => {
+    static childrenEqual: ValidatorFn = ( formGroup: UntypedFormGroup ) => {
         const [ firstControlName, ...otherControlNames ] = Object.keys( formGroup.controls || {} );
         const isValid = otherControlNames.every( controlName => formGroup.get( controlName ).value === formGroup.get( firstControlName ).value );
         return isValid ? null : { childrenNotEqual: true };
@@ -22,7 +22,7 @@ export class CustomValidators {
 }
 
 export class ConfirmValidBusinessName implements  ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     // return control.parent.invalid && control.touched;
     const isSubmitted = form && form.submitted;
     return (control && control.invalid && (control.dirty || control.touched || isSubmitted));
@@ -33,7 +33,7 @@ export class ConfirmValidBusinessName implements  ErrorStateMatcher {
  * Custom ErrorStateMatcher which returns true (error exists) when the parent form group is invalid and the control has been touched
  */
 export class ConfirmValidParentMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     return control.parent.invalid && control.touched;
   }
 }
@@ -42,7 +42,7 @@ export class ConfirmValidParentMatcher implements ErrorStateMatcher {
  * Custom ErrorStateMatcher which returns true (error exists) when the parent form group is invalid and the control has been touched
  */
 export class ConfirmValidModalParentMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: AbstractControlDirective | NgForm | null): boolean {
+  isErrorState(control: UntypedFormControl | null, form: AbstractControlDirective | NgForm | null): boolean {
     return control.parent.invalid && control.touched;
   }
 }
@@ -51,7 +51,7 @@ export class ConfirmValidModalParentMatcher implements ErrorStateMatcher {
  * Custom ErrorStateMatcher which returns true (error exists) when the parent form group is invalid and the control has been touched
  */
 export class ConfirmValidEmailMatcher implements ErrorStateMatcher {
-    isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
         const isSubmitted = form && form.submitted;
         return (control && control.invalid && (control.dirty || control.touched || isSubmitted));
     }
@@ -61,7 +61,7 @@ export class ConfirmValidEmailMatcher implements ErrorStateMatcher {
  * Custom ErrorStateMatcher which returns true (error exists) when the parent form group is invalid and the control has been touched
  */
 export class ConfirmValidModalEmailMatcher implements ErrorStateMatcher {
-    isErrorState(control: FormControl | null, form: AbstractControlDirective | NgForm | null): boolean {
+    isErrorState(control: UntypedFormControl | null, form: AbstractControlDirective | NgForm | null): boolean {
         const isSubmitted = form && form.touched;
         return (control && control.invalid && (control.dirty || control.touched || isSubmitted));
     }

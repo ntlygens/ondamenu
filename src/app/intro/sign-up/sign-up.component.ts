@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validator, Validators, FormArray, AbstractControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validator, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { LoginService } from '../../core-func/srvcs/login.service';
 import {
     ConfirmValidEmailMatcher,
@@ -148,7 +148,7 @@ export class SignUpComponent {
     passErrInst: string;
     fileErrInst: string;
 
-    submitForm: FormGroup;
+    submitForm: UntypedFormGroup;
     clientType: string;
     mProduct = [];
     isMerchant: boolean;
@@ -179,7 +179,7 @@ export class SignUpComponent {
 
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private als: LoginService,
         private gs: GuiService,
         private router: Router,

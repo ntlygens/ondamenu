@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
-import { FormBuilder, FormGroup, FormControl, AbstractControl, Validators, Validator, Form } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormControl, AbstractControl, Validators, Validator, Form } from '@angular/forms';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
@@ -64,7 +64,7 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
     // });
     success = false;
 
-    profileSubmitForm: FormGroup;
+    profileSubmitForm: UntypedFormGroup;
     merchantName: string;
     merchantID: string;
     merchantDetails: MerchantInfoData[];
@@ -102,7 +102,7 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
         // private ads: AppDataService,
         private ms: MerchantService,
         private gs: GuiService,
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private cd: ChangeDetectorRef,
         private http: HttpClient,
         private bottomSheet: MatBottomSheet,
@@ -355,7 +355,7 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {}
 }
 
-export function markAllAsDirty( form: FormGroup ) {
+export function markAllAsDirty( form: UntypedFormGroup ) {
     for ( const control of Object.keys(form.controls) ) {
         form.controls[control].markAsDirty();
     }

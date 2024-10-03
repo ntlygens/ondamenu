@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -57,7 +57,7 @@ import {MerchantService} from '../srvcs/merchant.service';
     `]
 })
 export class ModalComponent implements OnInit {
-    mImgForm: FormGroup;
+    mImgForm: UntypedFormGroup;
     desc: string;
     prodID: string;
     images = [];
@@ -75,7 +75,7 @@ export class ModalComponent implements OnInit {
     exts = ['jpg', 'jpeg', 'png'];
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private ms: MerchantService,
         private route: ActivatedRoute,
         private dialogRef: MatDialogRef<ModalComponent>,
