@@ -14,8 +14,8 @@ import {
     ViewContainerRef,
     // ApplicationRef, Injector, EmbeddedViewRef, ChangeDetectorRef
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog'
-import { MatDialogConfig } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog'
+import { MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { CartService } from '../srvcs/cart.service';
 // import { PlateItemData } from '../../amm.enum';
 import {PlateItemComponent} from './plate-item.component';

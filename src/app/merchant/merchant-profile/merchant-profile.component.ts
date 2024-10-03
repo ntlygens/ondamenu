@@ -12,7 +12,7 @@ import { MerchantService } from '../../core-func/srvcs/merchant.service';
 import { LocSrvcCuisine, LocSrvcDining, LocSrvcModel, LocSrvcRstrctns, LocSrvcType, MerchantInfoData } from '../../amm.enum';
 import { Subject } from 'rxjs';
 import { GuiService } from '../../core-func/srvcs/gui.service';
-import {MatNavList} from '@angular/material/list';
+import {MatLegacyNavList as MatNavList} from '@angular/material/legacy-list';
 import {passBoolean} from 'protractor/built/util';
 
 
