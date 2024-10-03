@@ -64,7 +64,7 @@ export interface AmmRouteInterface {
   title?: string;
   redirectTo?: string;
   loadChildren?: any;
-  pathMatch?: string;
+  pathMatch?: any;
   path: string;
   component?: any;
   data?: {

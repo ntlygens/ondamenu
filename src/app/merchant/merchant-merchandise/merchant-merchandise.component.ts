@@ -5,7 +5,7 @@ import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-pag
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
-import { MatDialogConfig } from '@angular/material/dialog/dialog-config';
+// import { MatDialogConfig } from '@angular/material/dialog/dialog-config';
 
 // import { merge, Observable, of as observableOf } from 'rxjs';
 // import { catchError, startWith, map, switchMap } from 'rxjs/operators';

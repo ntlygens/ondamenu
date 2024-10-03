@@ -95,7 +95,8 @@ const MAINROUTES: AmmRouteInterface[] = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(MAINROUTES, {enableTracing: false})],
-    exports: [RouterModule]
+    exports: [RouterModule],
+    imports: [RouterModule.forRoot(MAINROUTES,
+        {enableTracing: false})]
 })
 export class AmmRoutingModule { }
