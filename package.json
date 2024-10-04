@@ -25,7 +25,7 @@
     "bootstrap": "^5.3.3",
     "hammerjs": "^2.0.8",
     "jquery": "^3.7.1",
-    "node": "^19.8.1",
+    "node": "^20.18.0",
     "node-latest-version": "^1.0.16",
     "popper.js": "~2.0.0-next.4",
     "rxjs": "~6.6.7",
