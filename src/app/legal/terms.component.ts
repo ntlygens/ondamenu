@@ -62,7 +62,7 @@ import { Component, OnInit } from '@angular/core';
 
           The Service and any software used to provide the Service or provided to you in conjunction with providing the Service, and all Services, information, documents, and materials on OnDaMenu’s website are protected by copyright, trademark, or other intellectual property laws and international treaty provisions. All websites, corporate names, service marks, trademarks, trade names, logos, and domain names (collectively “Marks”) of OnDaMenu are and shall remain the exclusive property of OnDaMenu and nothing in this Agreement shall grant you the right or license to use such Marks.
           Copyright Agent: OnDaMenu Legal Department
-          Email: legal@4leaflabs.com
+          Email: legal&#64;4leaflabs.com
 
           Audit and Law Enforcement
 

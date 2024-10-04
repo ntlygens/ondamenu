@@ -97,21 +97,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ondamenu:build"
+            "buildTarget": "ondamenu:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ondamenu:build:production"
+              "buildTarget": "ondamenu:build:production"
             },
             "development": {
-              "browserTarget": "ondamenu:build:development"
+              "buildTarget": "ondamenu:build:development"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ondamenu:build"
+            "buildTarget": "ondamenu:build"
           }
         },
         "test": {
