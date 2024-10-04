@@ -4,8 +4,8 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+// import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+// import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AmmRoutingModule } from './amm-routing.module';
 
@@ -54,13 +54,13 @@ import { PromoCampaignDirective } from './core-func/drctvs/promo-campaign.direct
         BrowserAnimationsModule,
         RouterModule,
         HttpClientModule,
-        TranslateModule.forRoot({
+        /*TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
                 useFactory: HttpLoaderFactory,
                 deps: [HttpClient]
             }
-        }),
+        }),*/
         FormsModule,
         ReactiveFormsModule,
         AmmRoutingModule,
@@ -80,7 +80,7 @@ import { PromoCampaignDirective } from './core-func/drctvs/promo-campaign.direct
 })
 export class AmmModule { }
 
-export function HttpLoaderFactory(http: HttpClient) {
+/*export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
+}*/
 

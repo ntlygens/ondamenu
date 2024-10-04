@@ -164,10 +164,10 @@
                   <input type="file" formControlName='uploadedfile' name='uploadedfile' (onchange)="onFileChange($event, 'image')" placeholder="uploaded file" />
                 </mat-form-field>-->
                 <mat-form-field>
-                    <mat-chip-list name='data'>
-                        <mat-chip *ngIf='!fileSelected' name='import' (click)='openUploadFile()' [selected]='true'>Import Data</mat-chip>
+                    <mat-chip-set name='data'>
+                        <mat-chip *ngIf='!fileSelected' name='import' (click)='openUploadFile()' ><mat-chip-option [selected]='true'>Import Data </mat-chip-option></mat-chip>
                         <mat-chip *ngIf='fileSelected'>Upload File</mat-chip>
-                    </mat-chip-list>
+                    </mat-chip-set>
                 </mat-form-field>
 
                 <mat-action-row>
