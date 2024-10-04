@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 // import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AmmRoutingModule } from './amm-routing.module';
 
 import { CoreFuncModule } from './core-func/core-func.module';
@@ -33,8 +33,7 @@ import { TermsComponent } from './legal/terms.component';
 import { PolicyComponent } from './legal/policy.component';
 import { PromoCampaignDirective } from './core-func/drctvs/promo-campaign.directive';
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AmmComponent,
         HeaderBarComponent,
         HeaderLogoComponent,
@@ -48,12 +47,10 @@ import { PromoCampaignDirective } from './core-func/drctvs/promo-campaign.direct
         PolicyComponent,
         PromoCampaignDirective
     ],
-    imports: [
-        CommonModule,
+    bootstrap: [AmmComponent], imports: [CommonModule,
         BrowserModule,
         BrowserAnimationsModule,
         RouterModule,
-        HttpClientModule,
         /*TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -71,13 +68,10 @@ import { PromoCampaignDirective } from './core-func/drctvs/promo-campaign.direct
         PortalModule,
         IntroModule,
         MerchantModule,
-        CampaignModule
-    ],
-    providers: [
-        CartService
-    ],
-    bootstrap: [AmmComponent]
-})
+        CampaignModule], providers: [
+        CartService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AmmModule { }
 
 /*export function HttpLoaderFactory(http: HttpClient) {
