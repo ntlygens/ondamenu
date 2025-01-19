@@ -35,7 +35,7 @@ export class CartService {
     private setOrderID$: Subject<string> = new BehaviorSubject<string>(null);
     private setOrderAmt$: Subject<number> = new BehaviorSubject<number>(null);
 
-    private dQueryURL = 'https://smashradio1fm.com/php/';
+    private dQueryURL = 'https://ondamenu.com/php/';
 
     private static createJSONPostHeader(headers: HttpHeaders) {
         headers.append('Content-Type', 'application/json');

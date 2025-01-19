@@ -11,7 +11,7 @@ export class DohService {
     readonly dohRtngData$: any;
     setDohRtng = new BehaviorSubject<any>({dohRtg: true});
 
-    mSiteURL: 'https://smashradio1fm.com/php/';
+    mSiteURL: 'https://ondamenu.com/php/';
     mDOHUrlDBA: 'https://data.cityofnewyork.us/resource/43nn-pn8j.json?$where=dba like ';
     mDOHURL: 'https://data.cityofnewyork.us/resource/43nn-pn8j.json?';
     mDOHUrlZIP: '&zipcode=';

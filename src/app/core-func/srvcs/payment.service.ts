@@ -6,7 +6,7 @@ import {BehaviorSubject, Subject} from 'rxjs';
   providedIn: 'root'
 })
 export class PaymentService {
-    private keyURI = 'https://www.smashradio1fm.com/php/'; // SANDBOX LINK //
+    private keyURI = 'https://www.ondamenu.com/php/'; // SANDBOX LINK //
     // private keyEndpoint = 'http://apisandbox.dev.clover.com/v2/merchant/'; // SANDBOX LINK //
 
     private static createJSONPostHeader(headers: HttpHeaders) {

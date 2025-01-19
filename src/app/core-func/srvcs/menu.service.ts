@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 })
 
 export class MenuService {
-    private srvrURL = 'https://smashradio1fm.com/php/';
+    private srvrURL = 'https://ondamenu.com/php/';
     constructor(
         private http: HttpClient,
     ) {

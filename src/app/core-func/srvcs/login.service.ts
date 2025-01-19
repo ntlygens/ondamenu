@@ -17,8 +17,11 @@ export class LoginService {
         private http: HttpClient,
         private route: ActivatedRoute
     ) {
-        this.baseURL = 'https://www.smashradio1fm.com/php/'; // Remote
-        // this.biotaURL = 'https://www.smashradio1fm.com/biota'; // Remote
+        // this.baseURL = 'php/'; // Remote
+        // this.baseURL = 'http://localhost/~ntlygens/php'; // local
+        // this.baseURL = 'http://localhost/php'; // local
+        this.baseURL = 'https://www.ondamenu.com/php/'; // Remote
+        // this.biotaURL = 'https://www.ondamenu.com/biota'; // Remote
         this.CloverAuth = 'https://api.clover.com:443/auth/authorize';
         // this.emailValidate = 'http://localhost/~ntlygens/php/validateEmail.php'; // Local
         // this.newUser = 'http://localhost/~ntlygens/php/addUser.php'; // Local
@@ -38,8 +41,8 @@ export class LoginService {
     isUserValid(email: string, pwd: string, client: string, mID?: string): Observable<any> {
         const nuParamsIsUserValid = new HttpParams()
             .set('email', email)
-            .set('client', client)
             .set('pwd', pwd)
+            .set('client', client)
             .set('mID', mID);
 
         return this.http.get(`${this.baseURL}`, {params: nuParamsIsUserValid});

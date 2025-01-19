@@ -164,10 +164,10 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             },
             (err) => {
-                // console.log('getAllCategories_Error: ', err);
+                console.log('getAllCategories_Error: ', err);
             }
         );
-        // console.log('cat array amt: ', this.navCats.length, ' first cat array name ', this.navCats[0]);
+        console.log('cat array amt: ', this.navCats.length, ' first cat array name ', this.navCats[0]);
     }
 
     getCatProds(cID, mnuID): any {

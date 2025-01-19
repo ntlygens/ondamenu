@@ -8,7 +8,7 @@ import { Subject, BehaviorSubject, Observable } from 'rxjs';
 export class MerchantService {
     readonly mID$;
 
-    private $rURL = 'https://smashradio1fm.com/php/';
+    private $rURL = 'https://ondamenu.com/php/';
     private isMID$: Subject<any> = new BehaviorSubject<any>('mid');
 
     private static createJSONPostHeader(headers: HttpHeaders) {

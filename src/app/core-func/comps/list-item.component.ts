@@ -262,7 +262,7 @@ import { lift } from '../animations/animations.component';
 export class ListItemComponent implements OnInit {
     @Input() itemID = 'defaultID';
     @Input() itemGrade;
-    @Input() itemImage = 'ondamenu/assets/core-assets/placeholder1.jpg';
+    @Input() itemImage = 'assets/core-assets/placeholder1.jpg';
     @Input() itemTitle = 'Item Title';
     @Input() itemSlogan = 'Item Slogan';
     @Input() itemPhone = '000-000-0000';
