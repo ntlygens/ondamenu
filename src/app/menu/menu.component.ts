@@ -205,36 +205,36 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         // }
 
         if ( this.TOUCH_ACTION.TOUCH_DOWN ) {
-            console.log('actnTrgt: ', action);
             this.fullMenuBtn.isActive = currentIndex === null;
             // TODO: ADD MENU ID TO BUTTON AND CALL INSTEAD OF NAME # USE MENUID //
             this.dCats.forEach((x: CategoryData, i) => {
                 const crntCat = (i === currentIndex);
                 x.visible = crntCat;
 
-                if ( crntCat && i < 4) {
-                    // if ( (i === currentIndex) && i < 4) {
-                    const subCatObj = this.allSubCats[i];
-                    if ( subCatObj ) {
-                        this.subNavCats.length = 0;
-                        Object.keys(subCatObj).forEach((key) => {
-                            // console.log('pi ' + JSON.stringify(subCatObj[key]));
-                            switch (key) {
-                                case x.cval:
-                                    subCatObj[key].forEach((y, j) => {
-                                        this.subNavCats.push(y);
-                                    });
-                                    break;
-                                default:
-                                    // console.log('nothing');
-                            }
-
-                        });
-                    }
-
-                }
+                // if ( crntCat && i < 4) {
+                //     // if ( (i === currentIndex) && i < 4) {
+                //     const subCatObj = this.allSubCats[i];
+                //     if ( subCatObj ) {
+                //         this.subNavCats.length = 0;
+                //         Object.keys(subCatObj).forEach((key) => {
+                //             // console.log('pi ' + JSON.stringify(subCatObj[key]));
+                //             switch (key) {
+                //                 case x.cval:
+                //                     subCatObj[key].forEach((y, j) => {
+                //                         this.subNavCats.push(y);
+                //                     });
+                //                     break;
+                //                 default:
+                //                     // console.log('nothing');
+                //             }
+                //
+                //         });
+                //     }
+                //
+                // }
 
             });
+            console.log('actnTrgt: ', action);
 
         }
     }
