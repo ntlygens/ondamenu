@@ -9,45 +9,7 @@ import {MerchantService} from '../srvcs/merchant.service';
 
 @Component({
     selector: 'amm-modal',
-    template: `
-        <form id='MerchantModal' [formGroup]="mImgForm" (ngSubmit)="submit()" style="text-align: center" novalidate>
-            <div class='mImgFile hidden'>
-                <label for="file">File</label>
-                <input #fileInput id="file" type='file' class=''  formControlName="file" (change)="onFileSelected($event)" />
-                <!--<mat-form-field>
-                    <input matInput placeholder='lastname' type='text' name='lastname' [(ngModel)]="data.lastname" />
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput placeholder='gender' type='text' name='gender' [(ngModel)]="data.gender" />
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput placeholder='address' type='text' name='address' [(ngModel)]="data.address.city" />
-                </mat-form-field>-->
-            </div>
-            <figure>
-                <img *ngIf='url' [src]="url" alt="selected image"/>
-                <figcaption *ngIf='imgErr'>
-                    <p *ngIf="sizeErr">
-                        Selected file size is too big.<br>
-                        Max file size is {{fileMaxSize / 1000}}kb. <br>
-                        Please select another file.
-                    </p>
-                    <p *ngIf="typeErr">
-                        You've selected a <em style="color: red">non-image</em> file. <br>
-                        Only ".jpg", ".jpeg", ".png" files accepted<br>
-                        Please select another file.
-                    </p>
-                </figcaption>
-            </figure>
-            <!--<button (click)='isUserValid()' [disabled]='this.submitForm.invalid' color='warn' mat-raised-button type='button'>Sign In</button>-->
-            <div id='loginOptns' class="d-flex" style="justify-content: space-evenly">
-                <button class="btn btn-dark" type="button" (click)="fileInput.click()">Choose File</button>
-                <button *ngIf="fileSlctd" [disabled]="imgErr" class="btn btn-primary" type="submit">Submit</button>
-                <!--<a href='#' (click)='$event.preventDefault(); gotoReset()' routerLinkActive='true' id='reset' name='reset'>Reset</a>-->
-            </div>
-        </form>
-
-    `,
+    templateUrl: './modal.component.html',
     styles: [`
         img {
             width: 200px;

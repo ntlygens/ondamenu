@@ -53,7 +53,7 @@ export enum LocSrvcDining {
 
 export enum LocSrvcRstrctns {
     VEGAN = 'vegan',
-    VEGETARIAN = 'vegetarian',
+            VEGETARIAN = 'vegetarian',
     PESCATARIAN = 'pescatarian',
     ETHNIC = 'ethnic',
     AMERICAN = 'american',

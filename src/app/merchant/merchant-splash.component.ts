@@ -126,7 +126,7 @@ export class MerchantSplashComponent implements OnInit, AfterContentInit {
                 }
             },
             (err) => {
-                // console.log('isMobileDevice_Error: ' + err);
+                console.log('isMobileDevice_Error: ' + err);
             }
         );
     }
@@ -162,7 +162,8 @@ export class MerchantSplashComponent implements OnInit, AfterContentInit {
 
     loadMobileDashBoard() {
         this.ms.getMobileDashCardData().then( (data: Array<any>) => {
-            const allData: MerchantInterfaceTile[] = data.filter( cData => cData.cols !== 0);
+            let allData: MerchantInterfaceTile[];
+            allData = data.filter(cData => cData.cols !== 0);
 
             // this.createDCards(allData);
             // console.log ('data-text: ', allData[0].text);
@@ -203,10 +204,11 @@ export class MerchantSplashComponent implements OnInit, AfterContentInit {
 
     gotoLink(url): void {
         this.isClicked = !this.isClicked;
-        this.router.navigate([`${url}`], {
+        this.router.navigate([`/m/${url}`], {
+            relativeTo: this.route,
             queryParamsHandling: 'preserve',
-            relativeTo: this.route
         });
+        // console.log('url: ', ` ./m/${url}`);
     }
 
     getProfileStat(): any {

@@ -32,10 +32,9 @@
                 [mobileOn]="mobileOn"
                 [isActive]="category['visible']"
                 [menuNav]="category['cval']"
-                (tap)="menuClick(idx, $event.type, $event)"
+                (click)="menuClick(idx, $event.type, $event)"
             ></amm-category-btn>
         </div>
-
     </div>
     <div id="menuBox" class="d-flex flex-column">
         <amm-category-list
@@ -46,6 +45,7 @@
             [menuNav]="dCat['cval']" [isMobile]='mobileOn'
             [menuID]="dCat['cid']"
             [clientID]="dCat['client_id']"
+            [isPrCmpgn]="prCmpgn"
             [isIncremental]="(dCat['cid'] !== ( 'MJ7M88JTG3QF8' )) && (dCat['cid'] !== ( '215B0KSFN91GM' ))"
             (mnmzeListItem)="minimizeUI($event)"
         ></amm-category-list>

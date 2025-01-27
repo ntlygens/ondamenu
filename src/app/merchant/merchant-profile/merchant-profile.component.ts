@@ -108,11 +108,11 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
     ) {
         this.merchantID = this.route.snapshot.queryParams.mID;
         this.prflErrInst = 'profileError';
-        // console.log('id:= ', this.merchantID);
-        this.gs.isMobileDevice().subscribe(
+        console.log('id:= ', this.merchantID);
+        /*this.gs.isMobileDevice().subscribe(
             (res) => {
                 // console.log('this is mobile mSplashComp: ', res);
-                /*switch ( res ) {
+                /!*switch ( res ) {
                     case true:
                         this.isMobileDash = true;
                         this.loadMobileDashBoard();
@@ -125,12 +125,12 @@ export class MerchantProfileComponent implements OnInit, AfterViewInit {
                         this.loadDesktopDashBoard();
                         break;
 
-                }*/
+                }*!/
             },
             (err) => {
                 // console.log('isMobileDevice_Error: ' + err);
             }
-        );
+        );*/
         this.createProfileForm();
         this.fileSelected = false;
         // this.fileUpload.

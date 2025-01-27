@@ -139,7 +139,7 @@
                     <button mat-button color="primary" (click)="nextStep()">Next</button>
                 </mat-action-row>
             </mat-expansion-panel>
-            <mat-expansion-panel [expanded]=" step === 3" (opened)="setStep(3)" hideToggle>
+            <mat-expansion-panel formGroupName='3' [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
                 <!--<mat-expansion-panel formGroupName='2' [expanded]="profileFormArray?.get([2])" (opened)="setStep(2)" hideToggle>-->
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -175,7 +175,6 @@
                     <button mat-button color="primary" (click)="setMerchantDetails()" routerLinkActive='true'>End</button>
                 </mat-action-row>
             </mat-expansion-panel>
-
         </mat-accordion>
     </form>
 
