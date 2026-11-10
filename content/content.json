@@ -158,6 +158,13 @@
       "text": "See the city's published health inspection grade for New York City restaurants before you order."
     },
     {
+      "_id": "diners-delivery",
+      "page": "diners",
+      "icon": "delivery_dining",
+      "title": "Pickup or local delivery",
+      "text": "Collect your order yourself, or have it delivered when you are within one mile of the restaurant."
+    },
+    {
       "_id": "rest-menu",
       "page": "restaurants",
       "icon": "menu_book",
@@ -203,7 +210,7 @@
       "_id": "home-3",
       "page": "home",
       "title": "Pay online",
-      "text": "Check out in a few taps. The restaurant receives your order and starts on it."
+      "text": "Check out in a few taps, then pick up your order or have it delivered if you are within a mile."
     }
   ]
 }
