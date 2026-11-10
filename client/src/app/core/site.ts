@@ -20,6 +20,7 @@ export const AUDIENCE_LINKS: NavLink[] = [
 
 export const HOME_LINK: NavLink = { label: 'Home', route: '/', icon: 'home' };
 export const CONTACT_LINK: NavLink = { label: 'Contact', route: '/contact', icon: 'mail' };
+export const ACCOUNT_ROUTE = '/account';
 
 /** Header button. Points at the contact page until online ordering is live. */
 export const HEADER_CTA = { label: 'List Your Restaurant', route: '/contact' };

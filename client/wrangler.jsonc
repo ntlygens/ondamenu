@@ -19,8 +19,15 @@
       "database_id": "b5bbc4b6-ee0e-4e64-b729-d963621a7fa3",
       // Local dev (wrangler dev / npm run preview) reads the real Cloudflare database, read-only API.
       "remote": true
+    },
+    {
+      // Accounts, sessions and (later) orders. Production data: never used by preview or local runs.
+      "binding": "APP_DB",
+      "database_name": "ondamenu-app",
+      "database_id": "299b6546-e493-4aeb-841e-98a7872d86cf"
     }
   ],
+  // Production also needs a secret, set once with:  npx wrangler secret put AUTH_PEPPER
   "routes": [
     { "pattern": "ondamenu.com", "custom_domain": true },
     { "pattern": "www.ondamenu.com", "custom_domain": true }
@@ -35,8 +42,16 @@
       "routes": [],
       "workers_dev": true,
       "d1_databases": [
-        { "binding": "DB", "database_name": "ondamenu-content", "database_id": "b5bbc4b6-ee0e-4e64-b729-d963621a7fa3", "remote": true }
+        { "binding": "DB", "database_name": "ondamenu-content", "database_id": "b5bbc4b6-ee0e-4e64-b729-d963621a7fa3", "remote": true },
+        // Test accounts only. Local runs (npm run preview) use this database too.
+        { "binding": "APP_DB", "database_name": "ondamenu-app-staging", "database_id": "0b218765-1b47-49fa-9c6b-3612651f4384", "remote": true }
       ],
+      "vars": {
+        // Preview only: show sign-in codes on screen instead of sending them. Never set in production.
+        "DEV_SHOW_CODES": "1",
+        // Preview only, not a real secret: production uses the AUTH_PEPPER secret.
+        "AUTH_PEPPER": "preview-only-not-secret"
+      },
       "version_metadata": { "binding": "CF_VERSION_METADATA" }
     }
   }

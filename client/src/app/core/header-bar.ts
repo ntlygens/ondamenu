@@ -1,13 +1,16 @@
-import { Component, DestroyRef, HostListener, OnInit, inject, signal } from '@angular/core';
+import { Component, DestroyRef, HostListener, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { filter } from 'rxjs/operators';
-import { AUDIENCE_LINKS, CONTACT_LINK, HEADER_CTA, HOME_LINK } from './site';
+import { ACCOUNT_ROUTE, AUDIENCE_LINKS, CONTACT_LINK, HEADER_CTA, HOME_LINK } from './site';
+import { AuthService } from '../services/auth-service';
 import { HeroBanner } from './hero-banner';
 import { HERO_PAGES, HeroPage } from './hero-scenes';
+
+const NO_HERO_PATHS = [ACCOUNT_ROUTE];
 
 /** Sticky site header (desktop links, dropdown, mobile menu) plus the page's animated banner. */
 @Component({
@@ -41,6 +44,7 @@ import { HERO_PAGES, HeroPage } from './hero-scenes';
           </mat-menu>
 
           <a [routerLink]="contact.route" routerLinkActive="active">{{ contact.label }}</a>
+          <a [routerLink]="accountRoute" routerLinkActive="active">{{ accountLabel() }}</a>
         </nav>
 
         <a class="cta" [routerLink]="cta.route">{{ cta.label }}</a>
@@ -69,12 +73,17 @@ import { HERO_PAGES, HeroPage } from './hero-scenes';
           <a [routerLink]="contact.route" routerLinkActive="active" (click)="closeMenu()">
             <mat-icon>{{ contact.icon }}</mat-icon>{{ contact.label }}
           </a>
+          <a [routerLink]="accountRoute" routerLinkActive="active" (click)="closeMenu()">
+            <mat-icon>account_circle</mat-icon>{{ accountLabel() }}
+          </a>
           <a class="cta mobile-cta" [routerLink]="cta.route" (click)="closeMenu()">{{ cta.label }}</a>
         </nav>
       }
     </header>
 
-    <odm-hero-banner [page]="heroPage()" />
+    @if (showHero()) {
+      <odm-hero-banner [page]="heroPage()" />
+    }
   `,
   styles: [`
     /* contents: lets .site-nav stick relative to the whole page, not just this host */
@@ -207,6 +216,13 @@ export class HeaderBar implements OnInit {
   protected readonly contact = CONTACT_LINK;
   protected readonly audienceLinks = AUDIENCE_LINKS;
   protected readonly cta = HEADER_CTA;
+  protected readonly accountRoute = ACCOUNT_ROUTE;
+
+  private readonly auth = inject(AuthService);
+  /** "Sign in" until the browser has confirmed a session, then "Account". */
+  protected readonly accountLabel = computed(() => (this.auth.user() ? 'Account' : 'Sign in'));
+  /** Task pages (the account page) skip the banner. */
+  protected readonly showHero = signal(true);
 
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -219,6 +235,7 @@ export class HeaderBar implements OnInit {
         const path = this.router.url.split(/[?#]/)[0] || '/';
         this.audienceActive.set(AUDIENCE_LINKS.some((a) => path.startsWith(a.route)));
         this.heroPage.set(HERO_PAGES[path] ?? HERO_PAGES['/']);
+        this.showHero.set(!NO_HERO_PATHS.includes(path));
       });
   }
 

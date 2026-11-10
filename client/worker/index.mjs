@@ -3,12 +3,14 @@
  *
  *  - Static files (dist/client/browser) are served by Workers Static Assets before this code runs.
  *  - GET /api/<collection>[/<id>] returns page content from the D1 database (read-only).
+ *  - /api/auth/... handles sign-in by one-time code and sessions (worker/auth.mjs, app database).
  *  - Everything else is server-rendered by Angular (dist/client/server/server.mjs).
  *
  * During server rendering Angular fetches /api/... on this same site. A Worker can't make a
  * network request to itself, so those fetches are answered here, in-process, straight from D1.
  */
 import { renderPage } from '../dist/client/server/server.mjs';
+import { handleAuth } from './auth.mjs';
 
 /** Content collections the public site may read. */
 const COLLECTIONS = new Set(['pages', 'features', 'steps']);
@@ -20,6 +22,10 @@ async function handleApi(request, env) {
   const url = new URL(request.url);
   const parts = url.pathname.replace(/^\/api\/?/, '').split('/').filter(Boolean);
   if (!url.pathname.startsWith('/api/') && url.pathname !== '/api') return null;
+
+  // Sign-in and sessions (the only API paths that accept changes).
+  const auth = await handleAuth(request, env);
+  if (auth) return auth;
 
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     return new Response('Method not allowed', { status: 405, headers: { allow: 'GET, HEAD' } });
@@ -60,7 +66,7 @@ globalThis.fetch = async (input, init) => {
 };
 
 /** Paths the Angular app serves. Anything else redirects home without rendering (saves CPU on bot scans). */
-const PAGE_PATHS = new Set(['/', '/diners', '/restaurants', '/contact']);
+const PAGE_PATHS = new Set(['/', '/diners', '/restaurants', '/contact', '/account']);
 
 /** Rendered pages are cached at Cloudflare's edge for this long (seconds). Content edits show within this window.
  *  One hour keeps page builds rare on the Workers Free plan (10 ms CPU per request; a build takes ~300 ms). */

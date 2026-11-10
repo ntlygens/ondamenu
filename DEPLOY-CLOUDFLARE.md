@@ -39,6 +39,22 @@ Each command refuses to run from the wrong branch. Work on `staging`, preview it
 and deploy production from `main`. Both environments read the same content database.
 The preview address is kept out of search engines.
 
+## Accounts and sign-in (app stage 1)
+
+People sign in with a 6-digit code sent to their email address or mobile number; there are no passwords.
+Account data lives in its own databases, apart from page content:
+
+| Environment | Database | Sign-in codes |
+|---|---|---|
+| Preview (`staging`) and `npm run preview` | `ondamenu-app-staging` | Shown on screen; nothing is sent. Test accounts only |
+| Production (`main`) | `ondamenu-app` | Sent by email or text. Refused until a sender is connected in `client/worker/auth.mjs` |
+
+- `npm run preview` now runs the preview environment, so local testing never touches production accounts.
+- Before the first production deploy that should allow sign-in, set the secret once: `npx wrangler secret put AUTH_PEPPER`
+  (any long random text; never commit it). Without it, production answers "Accounts are not set up yet".
+- Table definitions: `client/d1/app-schema.sql` (`npm run db:app-schema` / `npm run db:app-schema:staging`; already applied).
+- To make a test account a restaurant or courier on preview, add a row to `user_roles` in `ondamenu-app-staging`.
+
 ## Moving ondamenu.com from GoDaddy (when the site is approved)
 
 1. At GoDaddy: turn off DNSSEC if it is on, then set the nameservers to

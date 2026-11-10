@@ -26,5 +26,11 @@ export const ROUTES: Routes = [
     data: { description: 'Get in touch with OnDaMenu about ordering or listing your restaurant.' },
     loadComponent: () => import('./pages/contact-page').then((m) => m.ContactPage),
   },
+  {
+    path: 'account',
+    title: 'Your Account',
+    data: { description: 'Sign in to OnDaMenu with a one-time code sent by email or text.' },
+    loadComponent: () => import('./pages/account-page').then((m) => m.AccountPage),
+  },
   { path: '**', redirectTo: '' },
 ];
