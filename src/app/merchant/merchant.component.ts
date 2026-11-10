@@ -1,14 +1,16 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterOutlet } from '@angular/router';
 import { GuiService } from '../core-func/srvcs/gui.service';
 import {take, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 
 @Component({
+    standalone: true,
+    imports: [RouterOutlet],
     selector: 'amm-merchant',
     template: `
-        <div id="ntroCntnr" [ngClass]="isMobileDash ? 'mobileDash' : 'desktopDash' ">
+        <div id="ntroCntnr" [class.mobileDash]="isMobileDash" [class.desktopDash]="!isMobileDash">
             <router-outlet #merchantRO='outlet' name="merchantRO"></router-outlet>
         </div>
       `,
@@ -63,7 +65,7 @@ export class MerchantComponent implements AfterViewInit, OnDestroy, OnInit {
     ngAfterViewInit() {}
 
     ngOnDestroy(): void {
-        this.destroy$.next();
+        this.destroy$.next(null);
         this.destroy$.complete();
     }
 

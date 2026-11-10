@@ -19,9 +19,10 @@ import { ResetPassComponent } from './reset-pass/reset-pass.component';
         FormsModule,
         ReactiveFormsModule,
         CoreFuncModule,
-        NgMatModule
+        NgMatModule,
+        IntroComponent
     ],
-    declarations: [IntroComponent, SplashComponent, SignInComponent, SignUpComponent, ResetPassComponent],
+    declarations: [],
     exports: [ IntroComponent ]
 })
 export class IntroModule { }

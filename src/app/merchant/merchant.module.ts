@@ -15,13 +15,7 @@ import { EditSelBtnComponent } from '../core-func/editor/edit-sel-btn/edit-sel-b
 
 @NgModule({
     declarations: [
-        MerchantComponent,
-        MerchantProfileComponent,
-        MerchantShoppingComponent,
-        MerchantMerchandiseComponent,
-        MerchantSplashComponent,
-        // EditorComponent,
-        EditSelBtnComponent
+        
     ],
     imports: [
         CommonModule,

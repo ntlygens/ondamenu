@@ -10,15 +10,16 @@ import { MarketingCampaignComponent } from './marketing-campaign.component';
 
 @NgModule({
     imports: [
+        CampaignComponent,
         CommonModule,
         CoreFuncModule,
         CampaignRoutingModule,
         NgMatModule
     ],
     declarations: [
-        PromoCampaignComponent,
-        CampaignComponent,
-        MarketingCampaignComponent
+        // PromoCampaignComponent,
+        // CampaignComponent,
+        // MarketingCampaignComponent
     ],
     exports: [ CampaignComponent ]
 })

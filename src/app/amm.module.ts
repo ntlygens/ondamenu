@@ -33,21 +33,22 @@ import { TermsComponent } from './legal/terms.component';
 import { PolicyComponent } from './legal/policy.component';
 import { PromoCampaignDirective } from './core-func/drctvs/promo-campaign.directive';
 
-@NgModule({ declarations: [
-        AmmComponent,
-        HeaderBarComponent,
-        HeaderLogoComponent,
-        FooterBarComponent,
-        ProfileComponent,
-        FoodCartComponent,
-        CartItemComponent,
-        PlateItemComponent,
-        FoodPaymentComponent,
-        TermsComponent,
-        PolicyComponent,
-        PromoCampaignDirective
+@NgModule({
+    declarations: [
+        // HeaderLogoComponent,
+        // FooterBarComponent,
+        // ProfileComponent,
+        // FoodCartComponent,
+        // CartItemComponent,
+        // PlateItemComponent,
+        // FoodPaymentComponent,
+        // TermsComponent,
+        // PolicyComponent,
+        // PromoCampaignDirective
     ],
-    bootstrap: [AmmComponent], imports: [CommonModule,
+    imports: [
+        HeaderBarComponent,
+        CommonModule,
         BrowserModule,
         BrowserAnimationsModule,
         RouterModule,
@@ -68,12 +69,14 @@ import { PromoCampaignDirective } from './core-func/drctvs/promo-campaign.direct
         PortalModule,
         IntroModule,
         MerchantModule,
-        CampaignModule], providers: [
+        CampaignModule
+    ],
+    providers: [
         CartService,
         provideHttpClient(withInterceptorsFromDi())
-    ] })
+    ]
+})
 export class AmmModule { }
-
 /*export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }*/
