@@ -162,7 +162,7 @@
       "page": "diners",
       "icon": "delivery_dining",
       "title": "Pickup or local delivery",
-      "text": "Collect your order yourself, or have it delivered when you are within one mile of the restaurant."
+      "text": "Collect your order yourself, or have an OnDaMenu courier bring it when you are within one mile of the restaurant. The flat delivery fee is shown before you pay."
     },
     {
       "_id": "rest-menu",
@@ -191,6 +191,13 @@
       "icon": "storefront",
       "title": "Your restaurant profile",
       "text": "Tell diners who you are and what you serve, so your restaurant stands out to people ordering nearby."
+    },
+    {
+      "_id": "rest-delivery",
+      "page": "restaurants",
+      "icon": "delivery_dining",
+      "title": "Delivery handled for you",
+      "text": "OnDaMenu couriers deliver within one mile of your restaurant. Diners pay a flat delivery fee, and you can choose to cover part or all of it."
     }
   ],
   "steps": [
