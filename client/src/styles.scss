@@ -1,0 +1,205 @@
+// Angular Material theme (Material 3). Brand colors are layered on top below.
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$blue-palette,
+      tertiary: mat.$orange-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+/* =====================================================================
+   OnDaMenu color palette
+   Trust (deep navy + brand blue) · Vibrance (Saffron) · Ease (few neutrals)
+   Blue, coral and amber come from the original OnDaMenu app.
+   Contrast-checked: every text pairing below meets WCAG AA (4.5:1+).
+   Use these variables instead of hard-coded colors.
+   ===================================================================== */
+:root {
+  /* Brand */
+  --site-midnight:     #0f1f3a;  /* dark surfaces: header, footer, dark cards */
+  --site-navy:         #1b3a66;  /* headings, primary text on light */
+  --site-blue:         #1b579f;  /* brand blue: links on light backgrounds (7.2:1) */
+  --site-accent:       #f6b02e;  /* Saffron: buttons, accents, icons, borders */
+  --site-accent-hover: #e39f1c;  /* hover state for saffron fills */
+  --site-accent-deep:  #8a5a00;  /* saffron text on light backgrounds (5.9:1) */
+  --site-accent-soft:  #ffe2a3;  /* saffron highlights on dark backgrounds */
+  --site-coral:        #ff8a7d;  /* secondary accent on dark */
+  --site-on-accent:    #0f1f3a;  /* text on Saffron (8.7:1); white fails at 1.9:1 */
+
+  /* Neutrals */
+  --site-text:         #46505f;  /* body text */
+  --site-muted:        #5f6b7a;  /* secondary text, captions */
+  --site-line:         #e3e8ee;  /* borders, dividers */
+  --site-cloud:        #f8f9fa;  /* light section backgrounds */
+  --site-tint:         #fff7e3;  /* saffron-tinted surfaces */
+  --site-white:        #ffffff;
+
+  /* Status */
+  --site-alert:        #d93a4a;  /* errors / alerts (text-safe) */
+  --site-warning:      #ff9a3c;  /* warning indicators */
+  --site-warning-text: #b45309;  /* warning text on light */
+
+  /* Material components follow the brand: Saffron with Midnight text */
+  --mat-sys-primary: var(--site-accent);
+  --mat-sys-on-primary: var(--site-on-accent);
+}
+
+html, body { height: 100%; }
+body {
+  color-scheme: light;
+  margin: 0;
+  background-color: var(--site-white);
+  color: var(--site-text);
+  font: var(--mat-sys-body-medium);
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* ---- "How it works" dropdown (Material menu renders in an overlay, so it's styled globally) ---- */
+.site-nav-menu.mat-mdc-menu-panel {
+  min-width: 300px;
+  border-radius: 12px;
+  padding: 6px 0;
+  .mat-mdc-menu-item { min-height: 60px; }
+  .mat-mdc-menu-item .mat-icon { color: var(--site-accent-deep); }
+  .menu-text { display: flex; flex-direction: column; line-height: 1.25; }
+  .menu-label { font-weight: 600; color: var(--site-navy); }
+  .menu-desc { font-size: 0.82rem; color: var(--site-muted); }
+  .menu-active { background: var(--site-tint); }
+}
+
+/* ------------------------------------------------------------------
+   Shared page sections. Every page is built from these, in this order:
+   intro, "why us" panels, feature cards / steps, photo banner, closing call-to-action.
+   ------------------------------------------------------------------ */
+.page { display: block; width: 100%; max-width: 1280px; margin: 2.5rem auto 0; }
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: var(--site-accent-deep);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.intro {
+  margin: 0 0 2.5rem;
+  text-align: left;
+  h2 { margin: 0 0 0.9rem; color: var(--site-navy); font-size: clamp(1.7rem, 2.6vw, 2.5rem); line-height: 1.2; max-width: 26ch; }
+  .lede { margin: 0; max-width: 72ch; font-size: 1.12rem; line-height: 1.75; }
+}
+.section-title { margin: 0 0 1.25rem; color: var(--site-navy); font-size: clamp(1.4rem, 2vw, 1.9rem); line-height: 1.25; text-align: left; }
+
+/* "Why us" panels: wide light + narrow dark */
+.whyUsData {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.25rem;
+  margin: 0 0 2.5rem;
+  text-align: left;
+}
+.svc-card {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 2rem 2.25rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ffffff 0%, var(--site-tint) 100%);
+  border-left: 5px solid var(--site-accent);
+  box-shadow: 0 4px 14px rgba(15, 31, 58, 0.08);
+  h3 { margin: 0 0 0.6rem; color: var(--site-navy); font-size: 1.6rem; font-weight: 700; line-height: 1.25; }
+  .svc-sub { margin: 0 0 1rem; color: var(--site-muted); font-size: 1rem; font-style: italic; line-height: 1.5; }
+  .svc-body { margin: 0 0 1.25rem; color: var(--site-text); font-size: 1.05rem; line-height: 1.7; white-space: pre-line; }
+  .svc-link {
+    margin-top: auto;
+    align-self: flex-start;
+    color: var(--site-blue);
+    font-weight: 600;
+    text-decoration: none;
+    span { display: inline-block; transition: transform 0.2s; }
+    &:hover span { transform: translateX(4px); }
+  }
+}
+.svc-card--dark {
+  background: linear-gradient(135deg, var(--site-midnight) 0%, var(--site-navy) 100%);
+  h3 { color: #ffffff; font-size: 1.35rem; }
+  .svc-sub { color: var(--site-accent-soft); font-style: normal; }
+  .svc-body { color: rgba(255, 255, 255, 0.85); font-size: 1rem; }
+  .svc-link { color: var(--site-accent); }
+}
+
+/* Feature cards and audience tiles */
+.features { margin: 0 0 2.5rem; }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem; }
+
+/* How-it-works steps */
+.steps { margin: 0 0 2.5rem; text-align: left; }
+.step-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; }
+.step {
+  padding: 1.5rem;
+  border: 1px solid var(--site-line);
+  border-radius: 14px;
+  background: var(--site-cloud);
+  .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.25rem; height: 2.25rem; border-radius: 50%;
+    background: var(--site-accent); color: var(--site-on-accent); font-weight: 700;
+  }
+  h3 { margin: 0.9rem 0 0.4rem; color: var(--site-navy); font-size: 1.2rem; }
+  p { margin: 0; line-height: 1.65; }
+}
+
+/* Full-width photo banner */
+.photo-banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 320px;
+  margin: 0 0 2.5rem;
+  padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--site-midnight) center / cover no-repeat;
+  color: #fff;
+  text-align: left;
+  &::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 16, 34, 0.88) 0%, rgba(8, 16, 34, 0.6) 45%, rgba(8, 16, 34, 0.15) 100%); }
+  .photo-banner-copy { position: relative; max-width: 520px; }
+  h2 { margin: 0 0 0.6rem; font-size: clamp(1.5rem, 2.4vw, 2.2rem); line-height: 1.2; }
+  p { margin: 0 0 1.4rem; font-size: 1.08rem; line-height: 1.65; color: rgba(255, 255, 255, 0.88); }
+}
+
+/* Closing call-to-action */
+.closing-cta {
+  margin: 0;
+  padding: 2.5rem clamp(1.5rem, 4vw, 3rem);
+  border-radius: 14px;
+  background: var(--site-tint);
+  border: 1px solid var(--site-line);
+  text-align: center;
+  h2 { margin: 0 0 0.6rem; color: var(--site-navy); font-size: clamp(1.5rem, 2.2vw, 2rem); }
+  p { margin: 0 auto 1.5rem; max-width: 60ch; font-size: 1.08rem; line-height: 1.65; }
+  .cta-row { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 600; font-size: 1rem; text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.btn--primary { background: var(--site-accent); color: var(--site-on-accent); box-shadow: 0 6px 20px rgba(246, 176, 46, 0.35); }
+.btn--primary:hover { background: var(--site-accent-hover); transform: translateY(-2px); }
+.btn--ghost { color: var(--site-navy); border: 1px solid var(--site-navy); background: transparent; }
+.btn--ghost:hover { background: rgba(27, 58, 102, 0.06); }
+
+@media (max-width: 900px) {
+  .whyUsData { grid-template-columns: 1fr; }
+  .svc-card { padding: 1.5rem; }
+  .svc-card h3 { font-size: 1.35rem; }
+}

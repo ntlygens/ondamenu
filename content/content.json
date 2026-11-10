@@ -1,0 +1,209 @@
+{
+  "pages": [
+    {
+      "_id": "home",
+      "eyebrow": "Local restaurants · Online ordering",
+      "title": "One place to find local menus and order what you love.",
+      "lede": "OnDaMenu brings the menus of neighborhood restaurants together so you can see what is cooking nearby, build your order and pay online. For restaurants, it is a simple way to take online orders without changing how the kitchen already works.",
+      "panels": [
+        {
+          "title": "Built for the way neighborhoods eat",
+          "subtitle": "Real menus from local kitchens, in one easy place.",
+          "body": "The best food in any neighborhood usually comes from its own restaurants, not a chain. OnDaMenu puts those menus side by side, with every dish and price laid out clearly, so choosing dinner takes minutes instead of a dozen browser tabs.\n\nPick a restaurant, add what you want to your cart and pay online. Your order goes straight to the restaurant, which prepares it the same way it would for a guest at the counter.",
+          "link": {
+            "label": "How ordering works",
+            "route": "/diners"
+          }
+        },
+        {
+          "title": "Own a restaurant?",
+          "subtitle": "Meet diners where they already look.",
+          "body": "List your menu on OnDaMenu and take online orders through the Clover point of sale you run your counter with. One menu, one system, more local customers. Your dishes and prices stay under your control.",
+          "link": {
+            "label": "For restaurants",
+            "route": "/restaurants"
+          }
+        }
+      ],
+      "stepsTitle": "From hungry to ordered in three steps.",
+      "closing": {
+        "title": "Bring your restaurant to OnDaMenu",
+        "text": "Tell us about your restaurant and we will walk you through getting your menu online.",
+        "primary": {
+          "label": "List Your Restaurant",
+          "route": "/contact"
+        },
+        "secondary": {
+          "label": "See how it works",
+          "route": "/restaurants"
+        }
+      }
+    },
+    {
+      "_id": "diners",
+      "eyebrow": "For diners",
+      "title": "Order from the places that make your neighborhood taste like home.",
+      "lede": "OnDaMenu shows you full menus from local restaurants in one place. Browse by restaurant, see every dish with its price, put together exactly the order you want and pay online when you are ready.",
+      "panels": [
+        {
+          "title": "The whole menu, not a shortlist",
+          "subtitle": "See everything the kitchen offers before you decide.",
+          "body": "Each restaurant on OnDaMenu shows its full menu, organized by category the way the restaurant itself arranges it. Dishes, sides and drinks are listed with their prices, so there are no surprises when you reach the checkout.\n\nAdd items to your cart as you go, change quantities, remove what you no longer want and review the total before you pay. The restaurant receives your order the moment you place it.",
+          "link": {
+            "label": "Restaurant owner? Start here",
+            "route": "/restaurants"
+          }
+        },
+        {
+          "title": "Know where you are eating",
+          "subtitle": "Health inspection results, built in.",
+          "body": "For New York City restaurants, OnDaMenu can show the Health Department inspection results published by the city, so you can order with confidence. The results come straight from the city’s open data, not from us."
+        }
+      ],
+      "featuresTitle": "What you can do on OnDaMenu",
+      "banner": {
+        "title": "Good food is closer than you think.",
+        "text": "Neighborhood restaurants, their full menus and a simple way to order, all in one place.",
+        "img": "/assets/backgrounds/kitchen-Bnr.webp",
+        "cta": {
+          "label": "Get in touch",
+          "route": "/contact"
+        }
+      },
+      "closing": {
+        "title": "Is your favorite spot missing?",
+        "text": "Tell us which restaurant you would like to see on OnDaMenu, or let the owner know we would love to have them.",
+        "primary": {
+          "label": "Suggest a Restaurant",
+          "route": "/contact"
+        },
+        "secondary": {
+          "label": "For restaurants",
+          "route": "/restaurants"
+        }
+      }
+    },
+    {
+      "_id": "restaurants",
+      "eyebrow": "For restaurants",
+      "title": "Take online orders without adding another system to run.",
+      "lede": "OnDaMenu puts your menu in front of diners in your area and sends their orders to the Clover point of sale you already use. You keep running your kitchen the way you do today; we bring the online customers.",
+      "panels": [
+        {
+          "title": "Your menu, online and under your control",
+          "subtitle": "Set it up once, then change it whenever the kitchen does.",
+          "body": "Your OnDaMenu page shows your restaurant's profile and your full menu, arranged in the categories you choose. From your merchant account you can add dishes, update prices and take items off the menu when they sell out.\n\nDiners build their order and pay online. Because OnDaMenu connects to Clover, those orders arrive alongside the ones you take in person, so your staff works from a single system.",
+          "link": {
+            "label": "Talk to us about listing",
+            "route": "/contact"
+          }
+        },
+        {
+          "title": "Works with Clover",
+          "subtitle": "The register you know.",
+          "body": "Connect your Clover account when you sign up. OnDaMenu uses it to keep online orders and payments in step with the rest of your business. Your staff keeps working from the screen they already know."
+        }
+      ],
+      "featuresTitle": "What restaurants get",
+      "banner": {
+        "title": "More local diners, same kitchen.",
+        "text": "Show your menu to people nearby who are deciding what to eat right now.",
+        "img": "/assets/backgrounds/plate-Bnr.webp",
+        "cta": {
+          "label": "List Your Restaurant",
+          "route": "/contact"
+        }
+      },
+      "closing": {
+        "title": "Ready to put your restaurant on the menu?",
+        "text": "Send us your restaurant's details and we will help you get your menu online.",
+        "primary": {
+          "label": "List Your Restaurant",
+          "route": "/contact"
+        },
+        "secondary": {
+          "label": "See the diner experience",
+          "route": "/diners"
+        }
+      }
+    }
+  ],
+  "features": [
+    {
+      "_id": "diners-menus",
+      "page": "diners",
+      "icon": "restaurant_menu",
+      "title": "Browse full menus",
+      "text": "Every dish, side and drink a restaurant offers, organized by category with prices shown up front."
+    },
+    {
+      "_id": "diners-cart",
+      "page": "diners",
+      "icon": "shopping_cart",
+      "title": "Build your order",
+      "text": "Add items as you browse, adjust quantities and review your total before you commit to anything."
+    },
+    {
+      "_id": "diners-pay",
+      "page": "diners",
+      "icon": "credit_card",
+      "title": "Pay online",
+      "text": "Check out on your phone or computer. Your order is sent to the restaurant as soon as payment goes through."
+    },
+    {
+      "_id": "diners-grade",
+      "page": "diners",
+      "icon": "verified",
+      "title": "Check inspection results",
+      "text": "See the city's published health inspection results for New York City restaurants before you order."
+    },
+    {
+      "_id": "rest-menu",
+      "page": "restaurants",
+      "icon": "menu_book",
+      "title": "Your menu online",
+      "text": "A clear, organized menu page for your restaurant that diners can browse on any device."
+    },
+    {
+      "_id": "rest-clover",
+      "page": "restaurants",
+      "icon": "point_of_sale",
+      "title": "Orders through Clover",
+      "text": "Online orders and payments connect to your Clover point of sale, next to your in-person sales."
+    },
+    {
+      "_id": "rest-manage",
+      "page": "restaurants",
+      "icon": "edit_note",
+      "title": "Easy menu updates",
+      "text": "Add dishes, change prices or mark items unavailable from your merchant account whenever you need to."
+    },
+    {
+      "_id": "rest-profile",
+      "page": "restaurants",
+      "icon": "storefront",
+      "title": "Your restaurant profile",
+      "text": "Tell diners who you are and what you serve, so your restaurant stands out to people ordering nearby."
+    }
+  ],
+  "steps": [
+    {
+      "_id": "home-1",
+      "page": "home",
+      "title": "Find a restaurant",
+      "text": "Browse local restaurants and open the full menu of any that catch your eye."
+    },
+    {
+      "_id": "home-2",
+      "page": "home",
+      "title": "Build your order",
+      "text": "Add the dishes you want to your cart and check the total as you go."
+    },
+    {
+      "_id": "home-3",
+      "page": "home",
+      "title": "Pay online",
+      "text": "Check out in a few taps. The restaurant receives your order and starts on it."
+    }
+  ]
+}

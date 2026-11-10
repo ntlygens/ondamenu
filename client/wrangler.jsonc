@@ -1,0 +1,43 @@
+{
+  // OnDaMenu: Angular SSR + content API on Cloudflare Workers, content in D1.
+  // Production (main branch):  npm run deploy           -> ondamenu.com
+  // Preview (staging branch):  npm run deploy:staging   -> ondamenu-staging.ntlygens.workers.dev
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ondamenu",
+  "main": "worker/index.mjs",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "dist/client/browser",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ondamenu-content",
+      // Created 2026-11-10 (region: eastern North America)
+      "database_id": "b5bbc4b6-ee0e-4e64-b729-d963621a7fa3",
+      // Local dev (wrangler dev / npm run preview) reads the real Cloudflare database, read-only API.
+      "remote": true
+    }
+  ],
+  "routes": [
+    { "pattern": "ondamenu.com", "custom_domain": true },
+    { "pattern": "www.ondamenu.com", "custom_domain": true }
+  ],
+  // Deployment id, used to key the page cache so each deploy serves fresh pages.
+  "version_metadata": { "binding": "CF_VERSION_METADATA" },
+  "observability": { "enabled": true },
+  "env": {
+    // Preview environment for the staging branch: same content database, workers.dev address only.
+    "staging": {
+      "name": "ondamenu-staging",
+      "routes": [],
+      "workers_dev": true,
+      "d1_databases": [
+        { "binding": "DB", "database_name": "ondamenu-content", "database_id": "b5bbc4b6-ee0e-4e64-b729-d963621a7fa3", "remote": true }
+      ],
+      "version_metadata": { "binding": "CF_VERSION_METADATA" }
+    }
+  }
+}
