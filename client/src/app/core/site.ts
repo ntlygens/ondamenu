@@ -2,11 +2,8 @@
 export const SITE_NAME = 'OnDaMenu';
 export const SITE_URL = 'https://ondamenu.com';
 
-/**
- * Public contact email. Leave empty until the owner confirms the address:
- * the contact page and footer only show an email link when this is set.
- */
-export const CONTACT_EMAIL = '';
+/** Public contact email (confirmed by the owner 2026-11-10). */
+export const CONTACT_EMAIL = 'info@ondamenu.com';
 
 export interface NavLink {
   label: string;

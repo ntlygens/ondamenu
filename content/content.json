@@ -48,7 +48,7 @@
         {
           "title": "The whole menu, not a shortlist",
           "subtitle": "See everything the kitchen offers before you decide.",
-          "body": "Each restaurant on OnDaMenu shows its full menu, organized by category the way the restaurant itself arranges it. Dishes, sides and drinks are listed with their prices, so there are no surprises when you reach the checkout.\n\nAdd items to your cart as you go, change quantities, remove what you no longer want and review the total before you pay. The restaurant receives your order the moment you place it.",
+          "body": "Each restaurant on OnDaMenu shows its full menu, organized by category the way the restaurant itself arranges it. Dishes, sides and drinks are listed with their prices, so there are no surprises when you reach the checkout.\n\nAdd items to your cart as you go, change quantities, remove what you no longer want and review the total before you pay. The restaurant receives your order as soon as your payment is confirmed.",
           "link": {
             "label": "Restaurant owner? Start here",
             "route": "/restaurants"
@@ -56,8 +56,8 @@
         },
         {
           "title": "Know where you are eating",
-          "subtitle": "Health inspection results, built in.",
-          "body": "For New York City restaurants, OnDaMenu can show the Health Department inspection results published by the city, so you can order with confidence. The results come straight from the city’s open data, not from us."
+          "subtitle": "Health inspection grades, built in.",
+          "body": "For New York City restaurants, OnDaMenu shows the Health Department inspection grade published by the city, so you can order with confidence. The grades come straight from the city’s open data, not from us."
         }
       ],
       "featuresTitle": "What you can do on OnDaMenu",
@@ -154,8 +154,8 @@
       "_id": "diners-grade",
       "page": "diners",
       "icon": "verified",
-      "title": "Check inspection results",
-      "text": "See the city's published health inspection results for New York City restaurants before you order."
+      "title": "Check the inspection grade",
+      "text": "See the city's published health inspection grade for New York City restaurants before you order."
     },
     {
       "_id": "rest-menu",
