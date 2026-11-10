@@ -41,17 +41,22 @@ The preview address is kept out of search engines.
 
 ## Accounts and sign-in (app stage 1)
 
-People sign in with a 6-digit code sent to their email address or mobile number; there are no passwords.
+People sign in with a 6-digit code sent to their email address; there are no passwords. (Codes by text
+message are built in but switched off until a text sender is chosen.)
 Account data lives in its own databases, apart from page content:
 
 | Environment | Database | Sign-in codes |
 |---|---|---|
 | Preview (`staging`) and `npm run preview` | `ondamenu-app-staging` | Shown on screen; nothing is sent. Test accounts only |
-| Production (`main`) | `ondamenu-app` | Sent by email or text. Refused until a sender is connected in `client/worker/auth.mjs` |
+| Production (`main`) | `ondamenu-app` | Sent by email through Cloudflare Email Service. Refused until the `EMAIL` binding is added (see below) |
 
 - `npm run preview` now runs the preview environment, so local testing never touches production accounts.
 - Before the first production deploy that should allow sign-in, set the secret once: `npx wrangler secret put AUTH_PEPPER`
   (any long random text; never commit it). Without it, production answers "Accounts are not set up yet".
+- Switching on sign-in emails: the domain's nameservers must be on Cloudflare; onboard ondamenu.com under
+  Compute > Email Service > Email Sending in the Cloudflare dashboard; then add the `send_email` binding
+  noted in `client/wrangler.jsonc` and deploy. Sending to the public needs the Workers Paid plan; sending to
+  your own verified addresses is free, which is enough to test.
 - Table definitions: `client/d1/app-schema.sql` (`npm run db:app-schema` / `npm run db:app-schema:staging`; already applied).
 - To make a test account a restaurant or courier on preview, add a row to `user_roles` in `ondamenu-app-staging`.
 

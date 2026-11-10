@@ -28,6 +28,9 @@
     }
   ],
   // Production also needs a secret, set once with:  npx wrangler secret put AUTH_PEPPER
+  // Sign-in emails: once ondamenu.com is set up for Email Sending in Cloudflare, switch them on by adding
+  //   "send_email": [{ "name": "EMAIL" }],
+  // here. Until then production refuses to issue sign-in codes.
   "routes": [
     { "pattern": "ondamenu.com", "custom_domain": true },
     { "pattern": "www.ondamenu.com", "custom_domain": true }

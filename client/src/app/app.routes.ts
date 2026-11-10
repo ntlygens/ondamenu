@@ -29,7 +29,7 @@ export const ROUTES: Routes = [
   {
     path: 'account',
     title: 'Your Account',
-    data: { description: 'Sign in to OnDaMenu with a one-time code sent by email or text.' },
+    data: { description: 'Sign in to OnDaMenu with a one-time code sent to your email.' },
     loadComponent: () => import('./pages/account-page').then((m) => m.AccountPage),
   },
   { path: '**', redirectTo: '' },

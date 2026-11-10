@@ -47,7 +47,7 @@ export class AuthService {
     }
   }
 
-  /** Sends a code to an email address or mobile number. Throws an Error with a message to show. */
+  /** Sends a code to an email address. Throws an Error with a message to show. */
   async sendCode(destination: string): Promise<CodeSent> {
     return this.post<CodeSent>('start', { destination });
   }

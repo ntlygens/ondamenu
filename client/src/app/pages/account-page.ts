@@ -11,7 +11,7 @@ const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
   admin:    { icon: 'shield_person',   title: 'Administration',  text: 'Restaurant, courier and account management will appear here.' },
 };
 
-/** Sign in with a one-time code sent by email or text, and see your account. */
+/** Sign in with a one-time code sent by email, and see your account. */
 @Component({
   selector: 'odm-account-page',
   imports: [RouterLink, MatIconModule],
@@ -39,17 +39,16 @@ const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
       } @else if (!sentTo()) {
         <p class="eyebrow">Sign in</p>
         <h1>Sign in or create your account</h1>
-        <p class="lede">Enter your email address or mobile number and we'll send you a 6-digit code. No password needed.</p>
+        <p class="lede">Enter your email address and we'll send you a 6-digit code. No password needed.</p>
 
         <form class="card" (submit)="send($event, dest.value)" novalidate>
-          <label for="acct-dest">Email or mobile number</label>
-          <input #dest id="acct-dest" name="destination" type="text" inputmode="email" autocomplete="username"
-                 autocapitalize="none" spellcheck="false" placeholder="you@example.com or (347) 555-0100"
+          <label for="acct-dest">Email address</label>
+          <input #dest id="acct-dest" name="destination" type="email" inputmode="email" autocomplete="email"
+                 autocapitalize="none" spellcheck="false" placeholder="you@example.com"
                  [attr.aria-invalid]="error() ? 'true' : null" aria-describedby="acct-msg" />
           <button class="btn btn--primary" type="submit" [disabled]="busy()">{{ busy() ? 'Sending…' : 'Send my code' }}</button>
           <p id="acct-msg" class="error" role="alert">{{ error() }}</p>
         </form>
-        <p class="fine">US mobile numbers only. Message and data rates may apply to texts.</p>
       } @else {
         <p class="eyebrow">Sign in</p>
         <h1>Enter your code</h1>
@@ -72,7 +71,7 @@ const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
         <p class="fine">
           <button class="link" type="button" [disabled]="busy()" (click)="resend()">Send a new code</button>
           ·
-          <button class="link" type="button" (click)="startOver()">Use a different email or number</button>
+          <button class="link" type="button" (click)="startOver()">Use a different email address</button>
         </p>
       }
 
@@ -172,7 +171,7 @@ export class AccountPage {
   }
 
   private async requestCode(destination: string): Promise<void> {
-    if (!destination) { this.error.set('Enter your email address or mobile number.'); return; }
+    if (!destination) { this.error.set('Enter your email address.'); return; }
     await this.run(async () => {
       const sent = await this.auth.sendCode(destination);
       this.channel.set(sent.channel);

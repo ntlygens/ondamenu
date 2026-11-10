@@ -1,15 +1,21 @@
 /**
- * OnDaMenu sign-in: a one-time code sent by email or text, then a session cookie.
+ * OnDaMenu sign-in: a one-time code sent by email, then a session cookie.
+ * Text-message codes are built in but switched off (see SIGN_IN_CHANNELS) until a text sender is connected.
  *
- *   POST /api/auth/start    { destination }         send a 6-digit code to an email address or US mobile number
+ *   POST /api/auth/start    { destination }         send a 6-digit code to an email address
  *   POST /api/auth/verify   { destination, code }   check the code, sign the person in (creates the account on first use)
  *   GET  /api/auth/me                                who is signed in (or null)
  *   POST /api/auth/signout                           end the session
  *
  * No passwords exist. Codes and session tokens are stored only as hashes.
- * Sending is not connected yet: codes are shown on screen only where DEV_SHOW_CODES is "1"
- * (preview and local), and production refuses to issue codes until a sender is configured in sendCode().
+ * Email goes out through Cloudflare Email Service when the Worker has an EMAIL binding (wrangler.jsonc).
+ * Where DEV_SHOW_CODES is "1" (preview and local) the code is shown on screen and nothing is sent.
+ * Without either, sign-in is refused, so production can never hand out a code it did not deliver.
  */
+/** Ways people may sign in today. Add 'sms' once a text-message sender exists in sendCode(). */
+const SIGN_IN_CHANNELS = ['email'];
+/** Sender shown on sign-in emails. The domain must be set up for Email Sending in Cloudflare. */
+const MAIL_FROM = { email: 'no-reply@ondamenu.com', name: 'OnDaMenu' };
 const CODE_MINUTES = 10;         // how long a code is valid
 const MAX_ATTEMPTS = 5;          // wrong guesses allowed per code
 const MAX_CODES_PER_HOUR = 5;    // codes one address or number may request per hour
@@ -80,19 +86,31 @@ function cookieHeader(url, value, maxAge) {
   return `${COOKIE}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${secure}`;
 }
 
-/**
- * Delivers a code. Returns true once it has been handed to a sender.
- * No sender is connected yet: add the email and text-message providers here.
- */
-async function sendCode(env, channel, destination, code) {
-  void env; void channel; void destination; void code;
-  return false;
-}
-
 /** True when this environment can deliver codes over the given channel. */
 function canSend(env, channel) {
-  void env; void channel;
-  return false;
+  return channel === 'email' && Boolean(env.EMAIL);
+}
+
+/** Delivers a code. Returns true once the sender has accepted it. */
+async function sendCode(env, channel, destination, code) {
+  if (!canSend(env, channel)) return false;
+  const line = `Your OnDaMenu sign-in code is ${code}. It works for ${CODE_MINUTES} minutes.`;
+  const ignore = 'If you did not ask for this code, you can ignore this email.';
+  try {
+    await env.EMAIL.send({
+      from: MAIL_FROM,
+      to: destination,
+      subject: `${code} is your OnDaMenu sign-in code`,
+      text: `${line}\n\n${ignore}\n`,
+      html: `<p>Your OnDaMenu sign-in code is <strong style="font-size:1.4em;letter-spacing:.12em">${code}</strong>.</p>`
+        + `<p>It works for ${CODE_MINUTES} minutes.</p><p style="color:#5f6b7a">${ignore}</p>`,
+    });
+    return true;
+  } catch (error) {
+    // Log the reason, never the code or the address.
+    console.error('[auth] email not sent:', error?.code ?? (error instanceof Error ? error.message : 'unknown error'));
+    return false;
+  }
 }
 
 async function publicUser(db, row) {
@@ -102,12 +120,14 @@ async function publicUser(db, row) {
 
 async function start(body, env, db) {
   const dest = normalizeDestination(body.destination);
-  if (!dest) return json({ error: 'Enter a valid email address or US mobile number.' }, 400);
+  if (!dest) return json({ error: 'Enter a valid email address.' }, 400);
+  if (!SIGN_IN_CHANNELS.includes(dest.channel)) {
+    return json({ error: 'Please sign in with your email address. Sign-in by text message is coming later.' }, 400);
+  }
 
   const showOnScreen = env.DEV_SHOW_CODES === '1';
   if (!showOnScreen && !canSend(env, dest.channel)) {
-    const how = dest.channel === 'email' ? 'email' : 'text message';
-    return json({ error: `Sign-in by ${how} is not switched on yet.` }, 503);
+    return json({ error: 'Sign-in is not switched on yet. Please check back soon.' }, 503);
   }
 
   const t = now();
@@ -133,7 +153,9 @@ async function start(body, env, db) {
 async function verify(body, env, db, url) {
   const dest = normalizeDestination(body.destination);
   const code = String(body.code ?? '').replace(/\D/g, '');
-  if (!dest || code.length !== 6) return json({ error: 'Enter the 6-digit code.' }, 400);
+  if (!dest || !SIGN_IN_CHANNELS.includes(dest.channel) || code.length !== 6) {
+    return json({ error: 'Enter the 6-digit code.' }, 400);
+  }
 
   const t = now();
   const row = await db.prepare(
