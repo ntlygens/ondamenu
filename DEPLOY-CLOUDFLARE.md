@@ -53,10 +53,8 @@ Account data lives in its own databases, apart from page content:
 - `npm run preview` now runs the preview environment, so local testing never touches production accounts.
 - Before the first production deploy that should allow sign-in, set the secret once: `npx wrangler secret put AUTH_PEPPER`
   (any long random text; never commit it). Without it, production answers "Accounts are not set up yet".
-- Switching on sign-in emails: the domain's nameservers must be on Cloudflare; onboard ondamenu.com under
-  Compute > Email Service > Email Sending in the Cloudflare dashboard; then add the `send_email` binding
-  noted in `client/wrangler.jsonc` and deploy. Sending to the public needs the Workers Paid plan; sending to
-  your own verified addresses is free, which is enough to test.
+- Sign-in emails are sent from `no-reply@ondamenu.com` through Cloudflare Email Service (domain onboarded
+  2026-11-10; needs the Workers Paid plan). Email Routing must stay off for ondamenu.com: incoming mail is iCloud's.
 - Table definitions: `client/d1/app-schema.sql` (`npm run db:app-schema` / `npm run db:app-schema:staging`; already applied).
 - To make a test account a restaurant or courier on preview, add a row to `user_roles` in `ondamenu-app-staging`.
 
