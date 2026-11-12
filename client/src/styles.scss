@@ -13,38 +13,51 @@ html {
 }
 
 /* =====================================================================
-   OnDaMenu color palette
-   Trust (deep navy + brand blue) · Vibrance (Saffron) · Ease (few neutrals)
-   Blue, coral and amber come from the original OnDaMenu app.
+   OnDaMenu color palette: the brand of the OnDaMenu app (ondamenu.com).
+   Blue page with a soft glow, pale cards, coral and brick red accents, gold from the logo's serving dome.
    Contrast-checked: every text pairing below meets WCAG AA (4.5:1+).
    Use these variables instead of hard-coded colors.
+
+   Two accent pairs, by surface:
+     light surfaces (cards)  -> --site-accent (brick red) with --site-on-accent (white)
+     dark surfaces (blue)    -> --site-pop (coral) with --site-on-pop (deep blue)
    ===================================================================== */
 :root {
-  /* Brand */
-  --site-midnight:     #0f1f3a;  /* dark surfaces: header, footer, dark cards */
-  --site-navy:         #1b3a66;  /* headings, primary text on light */
-  --site-blue:         #1b579f;  /* brand blue: links on light backgrounds (7.2:1) */
-  --site-accent:       #f6b02e;  /* Saffron: buttons, accents, icons, borders */
-  --site-accent-hover: #e39f1c;  /* hover state for saffron fills */
-  --site-accent-deep:  #8a5a00;  /* saffron text on light backgrounds (5.9:1) */
-  --site-accent-soft:  #ffe2a3;  /* saffron highlights on dark backgrounds */
-  --site-coral:        #ff8a7d;  /* secondary accent on dark */
-  --site-on-accent:    #0f1f3a;  /* text on Saffron (8.7:1); white fails at 1.9:1 */
+  /* Blues */
+  --site-midnight:     #0b2a57;  /* darkest surfaces: header, footer, dark cards */
+  --site-navy:         #123a73;  /* headings and strong text on light cards */
+  --site-blue:         #1b579f;  /* brand blue: page background, links on light cards */
+  --site-blue-deep:    #0e499a;  /* edge of the page background */
+  --site-blue-glow:    #2b68a8;  /* centre of the page glow: kept dark enough for white text to stay readable on it */
+
+  /* Reds */
+  --site-accent:       #bb3523;  /* brick red: buttons, borders and icons on light cards */
+  --site-accent-hover: #a02b1b;
+  --site-accent-deep:  #a8301f;  /* brick red text on light cards */
+  --site-on-accent:    #ffffff;  /* text on brick red (5.8:1) */
+  --site-pop:          #ea6a5e;  /* coral: buttons, icons and highlights on blue */
+  --site-pop-hover:    #f08277;
+  --site-on-pop:       #08214a;  /* text on coral (4.9:1); white fails at 3.1:1 */
+  --site-accent-soft:  #ffc4bc;  /* pale coral text on the darkest blue (header, footer, dark cards) only */
+  --site-gold:         #f5a623;  /* the logo's serving dome: small highlights only */
 
   /* Neutrals */
-  --site-text:         #46505f;  /* body text */
-  --site-muted:        #5f6b7a;  /* secondary text, captions */
-  --site-line:         #e3e8ee;  /* borders, dividers */
-  --site-cloud:        #f8f9fa;  /* light section backgrounds */
-  --site-tint:         #fff7e3;  /* saffron-tinted surfaces */
+  --site-text:         #3d4a5c;  /* body text on light cards */
+  --site-muted:        #5a6678;  /* secondary text, captions */
+  --site-on-blue:      #ffffff;  /* headings on the blue page */
+  --site-on-blue-soft: #e6eefb;  /* running text on the blue page */
+  --site-line:         #d9e3f0;  /* borders, dividers */
+  --site-cloud:        #f9fbff;  /* card background */
+  --site-tint:         #eef5ff;  /* blue-tinted card background */
   --site-white:        #ffffff;
 
   /* Status */
-  --site-alert:        #d93a4a;  /* errors / alerts (text-safe) */
+  --site-alert:        #c62f3f;  /* errors (text-safe) */
   --site-warning:      #ff9a3c;  /* warning indicators */
-  --site-warning-text: #b45309;  /* warning text on light */
+  --site-warning-text: #9a4a05;  /* warning text on light */
+  --site-good:         #198754;  /* confirmations, as in the app's submit button */
 
-  /* Material components follow the brand: Saffron with Midnight text */
+  /* Material components follow the brand */
   --mat-sys-primary: var(--site-accent);
   --mat-sys-on-primary: var(--site-on-accent);
 }
@@ -53,10 +66,15 @@ html, body { height: 100%; }
 body {
   color-scheme: light;
   margin: 0;
-  background-color: var(--site-white);
+  /* The app's blue page with a soft glow behind the content. */
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 38%, var(--site-blue-glow) 0%, rgba(43, 104, 168, 0) 70%),
+    linear-gradient(90deg, var(--site-blue-deep) 0%, var(--site-blue) 22%, var(--site-blue) 78%, var(--site-blue-deep) 100%);
+  background-attachment: fixed;
+  background-color: var(--site-blue);
   color: var(--site-text);
   font: var(--mat-sys-body-medium);
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'Exo 2', Roboto, "Helvetica Neue", sans-serif;
 }
 
 /* ---- "How it works" dropdown (Material menu renders in an overlay, so it's styled globally) ---- */
@@ -80,19 +98,22 @@ body {
 
 .eyebrow {
   margin: 0 0 0.5rem;
-  color: var(--site-accent-deep);
+  color: var(--site-on-blue-soft);   /* sits on the blue page; cards override it */
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+/* a short coral rule ties page-level labels to the brand without relying on coloured text */
+.eyebrow::before { content: ''; display: inline-block; width: 1.6rem; height: 3px; margin-right: 0.6rem; border-radius: 2px; background: var(--site-pop); vertical-align: middle; }
+
 .intro {
   margin: 0 0 2.5rem;
   text-align: left;
-  h2 { margin: 0 0 0.9rem; color: var(--site-navy); font-size: clamp(1.7rem, 2.6vw, 2.5rem); line-height: 1.2; max-width: 26ch; }
-  .lede { margin: 0; max-width: 72ch; font-size: 1.12rem; line-height: 1.75; }
+  h2 { margin: 0 0 0.9rem; color: var(--site-on-blue); font-size: clamp(1.7rem, 2.6vw, 2.5rem); line-height: 1.2; max-width: 26ch; }
+  .lede { margin: 0; max-width: 72ch; color: var(--site-on-blue-soft); font-size: 1.12rem; line-height: 1.75; }
 }
-.section-title { margin: 0 0 1.25rem; color: var(--site-navy); font-size: clamp(1.4rem, 2vw, 1.9rem); line-height: 1.25; text-align: left; }
+.section-title { margin: 0 0 1.25rem; color: var(--site-on-blue); font-size: clamp(1.4rem, 2vw, 1.9rem); line-height: 1.25; text-align: left; }
 
 /* "Why us" panels: wide light + narrow dark */
 .whyUsData {
@@ -108,9 +129,9 @@ body {
   margin: 0;
   padding: 2rem 2.25rem;
   border-radius: 14px;
-  background: linear-gradient(135deg, #ffffff 0%, var(--site-tint) 100%);
+  background: linear-gradient(135deg, var(--site-cloud) 0%, var(--site-tint) 100%);
   border-left: 5px solid var(--site-accent);
-  box-shadow: 0 4px 14px rgba(15, 31, 58, 0.08);
+  box-shadow: 0 6px 18px rgba(7, 24, 54, 0.22);
   h3 { margin: 0 0 0.6rem; color: var(--site-navy); font-size: 1.6rem; font-weight: 700; line-height: 1.25; }
   .svc-sub { margin: 0 0 1rem; color: var(--site-muted); font-size: 1rem; font-style: italic; line-height: 1.5; }
   .svc-body { margin: 0 0 1.25rem; color: var(--site-text); font-size: 1.05rem; line-height: 1.7; white-space: pre-line; }
@@ -126,10 +147,11 @@ body {
 }
 .svc-card--dark {
   background: linear-gradient(135deg, var(--site-midnight) 0%, var(--site-navy) 100%);
+  border-left-color: var(--site-pop);
   h3 { color: #ffffff; font-size: 1.35rem; }
   .svc-sub { color: var(--site-accent-soft); font-style: normal; }
   .svc-body { color: rgba(255, 255, 255, 0.85); font-size: 1rem; }
-  .svc-link { color: var(--site-accent); }
+  .svc-link { color: var(--site-accent-soft); }
 }
 
 /* Feature cards and audience tiles */
@@ -144,6 +166,7 @@ body {
   border: 1px solid var(--site-line);
   border-radius: 14px;
   background: var(--site-cloud);
+  box-shadow: 0 6px 18px rgba(7, 24, 54, 0.18);
   .num {
     display: inline-flex; align-items: center; justify-content: center;
     width: 2.25rem; height: 2.25rem; border-radius: 50%;
@@ -164,9 +187,13 @@ body {
   border-radius: 14px;
   overflow: hidden;
   background: var(--site-midnight) center / cover no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 6px 18px rgba(7, 24, 54, 0.22);
   color: #fff;
   text-align: left;
-  &::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 16, 34, 0.88) 0%, rgba(8, 16, 34, 0.6) 45%, rgba(8, 16, 34, 0.15) 100%); }
+  &::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(7, 24, 54, 0.9) 0%, rgba(7, 24, 54, 0.62) 45%, rgba(7, 24, 54, 0.15) 100%); }
+  .btn--primary { background: var(--site-pop); color: var(--site-on-pop); box-shadow: none; }
+  .btn--primary:hover { background: var(--site-pop-hover); }
   .photo-banner-copy { position: relative; max-width: 520px; }
   h2 { margin: 0 0 0.6rem; font-size: clamp(1.5rem, 2.4vw, 2.2rem); line-height: 1.2; }
   p { margin: 0 0 1.4rem; font-size: 1.08rem; line-height: 1.65; color: rgba(255, 255, 255, 0.88); }
@@ -177,8 +204,9 @@ body {
   margin: 0;
   padding: 2.5rem clamp(1.5rem, 4vw, 3rem);
   border-radius: 14px;
-  background: var(--site-tint);
+  background: linear-gradient(180deg, var(--site-cloud) 0%, var(--site-tint) 100%);
   border: 1px solid var(--site-line);
+  box-shadow: 0 6px 18px rgba(7, 24, 54, 0.22);
   text-align: center;
   h2 { margin: 0 0 0.6rem; color: var(--site-navy); font-size: clamp(1.5rem, 2.2vw, 2rem); }
   p { margin: 0 auto 1.5rem; max-width: 60ch; font-size: 1.08rem; line-height: 1.65; }
@@ -193,7 +221,7 @@ body {
   font-weight: 600; font-size: 1rem; text-decoration: none;
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
-.btn--primary { background: var(--site-accent); color: var(--site-on-accent); box-shadow: 0 6px 20px rgba(246, 176, 46, 0.35); }
+.btn--primary { background: var(--site-accent); color: var(--site-on-accent); box-shadow: 0 6px 18px rgba(187, 53, 35, 0.32); }
 .btn--primary:hover { background: var(--site-accent-hover); transform: translateY(-2px); }
 .btn--ghost { color: var(--site-navy); border: 1px solid var(--site-navy); background: transparent; }
 .btn--ghost:hover { background: rgba(27, 58, 102, 0.06); }

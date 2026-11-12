@@ -79,18 +79,18 @@ import { AUDIENCE_LINKS } from '../core/site';
       border: 1px solid var(--site-line);
       border-radius: 14px;
       background: var(--site-white);
-      box-shadow: 0 4px 14px rgba(15, 31, 58, 0.06);
+      box-shadow: 0 6px 18px rgba(7, 24, 54, 0.2);
       color: inherit;
       text-decoration: none;
       text-align: left;
       transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
     }
-    .tile:hover { transform: translateY(-3px); border-color: var(--site-accent); box-shadow: 0 10px 26px rgba(15, 31, 58, 0.12); }
+    .tile:hover { transform: translateY(-3px); border-color: var(--site-accent); box-shadow: 0 10px 26px rgba(7, 24, 54, 0.32); }
     .tile-icon {
       display: inline-flex; align-items: center; justify-content: center;
       width: 52px; height: 52px; border-radius: 12px;
       background: var(--site-midnight);
-      mat-icon { color: var(--site-accent); }
+      mat-icon { color: var(--site-pop); }
     }
     .tile h3 { margin: 1rem 0 0.4rem; color: var(--site-navy); font-size: 1.3rem; }
     .tile p { margin: 0 0 1rem; line-height: 1.6; }

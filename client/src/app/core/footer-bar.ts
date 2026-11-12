@@ -11,7 +11,7 @@ import { AUDIENCE_LINKS, CONTACT_EMAIL, CONTACT_LINK, HOME_LINK } from './site';
       <div class="footer-grid">
         <div class="col brand-col">
           <a class="brand" routerLink="/">
-            <mat-icon aria-hidden="true">restaurant_menu</mat-icon>
+            <span class="mark"><img src="/assets/core/logo/odm-mark.png" alt="" width="30" height="33" /></span>
             <span>OnDa<strong>Menu</strong></span>
           </a>
           <p>Local restaurant menus in one place, with simple online ordering for diners and restaurants.</p>
@@ -68,14 +68,15 @@ import { AUDIENCE_LINKS, CONTACT_EMAIL, CONTACT_LINK, HOME_LINK } from './site';
       color: rgba(255, 255, 255, 0.78);
       text-decoration: none;
       transition: color 0.2s;
-      mat-icon { font-size: 18px; width: 18px; height: 18px; color: var(--site-accent); }
+      mat-icon { font-size: 18px; width: 18px; height: 18px; color: var(--site-pop); }
     }
-    a:hover { color: var(--site-accent); }
+    a:hover { color: var(--site-accent-soft); }
     .brand {
       color: #fff;
       font-size: 1.35rem;
-      mat-icon { font-size: 26px; width: 26px; height: 26px; }
-      strong { color: var(--site-accent); }
+      .mark { display: inline-flex; padding: 3px 6px; border-radius: 8px; background: var(--site-white); }
+      .mark img { display: block; height: 33px; width: auto; }
+      strong { color: var(--site-pop); }
     }
     .brand-col p { line-height: 1.6; margin: 0.25rem 0 0; max-width: 34ch; }
     .footer-bottom {

@@ -86,14 +86,20 @@ const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
     </section>
   `,
   styles: [`
-    .account { max-width: 520px; margin: 1rem auto 0; text-align: left; }
+    /* a light card on the blue page */
+    .account {
+      max-width: 520px; margin: 1rem auto 0; padding: clamp(1.25rem, 4vw, 2rem); text-align: left;
+      border-radius: 16px; background: var(--site-cloud); box-shadow: 0 10px 30px rgba(7, 24, 54, 0.3);
+    }
+    .eyebrow { color: var(--site-accent-deep); }
+    .lede { color: var(--site-text); }
     h1 { margin: 0 0 0.6rem; color: var(--site-navy); font-size: clamp(1.6rem, 4vw, 2.1rem); line-height: 1.2; }
     .lede { margin: 0 0 1.4rem; font-size: 1.05rem; line-height: 1.65; }
     .status { color: var(--site-muted); }
     .card {
       display: flex; flex-direction: column; gap: 0.7rem;
       padding: 1.5rem; border: 1px solid var(--site-line); border-radius: 14px;
-      background: var(--site-white); box-shadow: 0 4px 14px rgba(15, 31, 58, 0.06);
+      background: var(--site-white);
     }
     label { color: var(--site-navy); font-weight: 600; }
     input {
@@ -101,7 +107,7 @@ const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
       border: 1px solid var(--site-muted); border-radius: 10px;
       font: inherit; font-size: 1.05rem; color: var(--site-navy); background: var(--site-white);
     }
-    input:focus-visible { outline: 3px solid var(--site-accent); outline-offset: 1px; border-color: var(--site-navy); }
+    input:focus-visible { outline: 3px solid var(--site-blue); outline-offset: 1px; border-color: var(--site-navy); }
     input[aria-invalid="true"] { border-color: var(--site-alert); }
     input.code { font-size: 1.6rem; letter-spacing: 0.35em; text-align: center; font-variant-numeric: tabular-nums; }
     .card .btn { justify-content: center; border: 0; cursor: pointer; font-family: inherit; }
@@ -120,11 +126,11 @@ const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
     .who { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 1.5rem; color: var(--site-navy); font-size: 1.1rem; font-weight: 600; overflow-wrap: anywhere; }
     .who mat-icon { color: var(--site-accent-deep); flex: none; }
     .areas { display: grid; gap: 1rem; margin: 0 0 1.5rem; }
-    .area { padding: 1.25rem; border: 1px solid var(--site-line); border-radius: 14px; background: var(--site-cloud); }
+    .area { padding: 1.25rem; border: 1px solid var(--site-line); border-radius: 14px; background: var(--site-tint); }
     .area-icon {
       display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px;
       border-radius: 10px; background: var(--site-midnight);
-      mat-icon { color: var(--site-accent); }
+      mat-icon { color: var(--site-pop); }
     }
     .area h2 { margin: 0.8rem 0 0.3rem; color: var(--site-navy); font-size: 1.15rem; }
     .area p { margin: 0; line-height: 1.6; }

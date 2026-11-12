@@ -20,7 +20,7 @@ const NO_HERO_PATHS = [ACCOUNT_ROUTE];
     <header class="site-nav" [class.scrolled]="scrolled()">
       <div class="nav-inner">
         <a class="brand" routerLink="/" (click)="closeMenu()" aria-label="OnDaMenu home">
-          <mat-icon aria-hidden="true">restaurant_menu</mat-icon>
+          <span class="mark"><img src="/assets/core/logo/odm-mark.png" alt="" width="34" height="38" /></span>
           <span>OnDa<strong>Menu</strong></span>
         </a>
 
@@ -97,13 +97,15 @@ const NO_HERO_PATHS = [ACCOUNT_ROUTE];
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: rgba(15, 31, 58, 0.92);
+      background: rgba(11, 42, 87, 0.94);
+      /* the app's brick-red top edge */
+      border-top: 4px solid var(--site-accent);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       transition: box-shadow 0.25s, background 0.25s;
     }
-    .site-nav.scrolled { background: rgba(15, 31, 58, 0.98); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25); }
+    .site-nav.scrolled { background: rgba(11, 42, 87, 0.99); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25); }
     .nav-inner {
       max-width: 1280px;
       margin: 0 auto;
@@ -123,8 +125,10 @@ const NO_HERO_PATHS = [ACCOUNT_ROUTE];
       font-size: 1.4rem;
       letter-spacing: 0.01em;
       white-space: nowrap;
-      mat-icon { color: var(--site-accent); font-size: 28px; width: 28px; height: 28px; }
-      strong { color: var(--site-accent); font-weight: 700; }
+      /* the logo is drawn for a light background, so it sits on a white tile as it does in the app */
+      .mark { display: inline-flex; padding: 3px 7px; border-radius: 9px; background: var(--site-white); }
+      .mark img { display: block; height: 38px; width: auto; }
+      strong { color: var(--site-pop); font-weight: 700; }
     }
 
     .links { display: flex; align-items: center; gap: 0.25rem; margin-left: auto; }
@@ -136,7 +140,7 @@ const NO_HERO_PATHS = [ACCOUNT_ROUTE];
       padding: 0.55rem 0.9rem;
       color: rgba(255, 255, 255, 0.85);
       text-decoration: none;
-      font: 500 0.98rem/1 Roboto, 'Helvetica Neue', sans-serif;
+      font: 500 0.98rem/1 'Exo 2', Roboto, 'Helvetica Neue', sans-serif;
       background: none;
       border: none;
       border-radius: 8px;
@@ -152,20 +156,20 @@ const NO_HERO_PATHS = [ACCOUNT_ROUTE];
       left: 0.9rem; right: 0.9rem; bottom: 2px;
       height: 2px;
       border-radius: 2px;
-      background: var(--site-accent);
+      background: var(--site-pop);
     }
 
     .cta {
       padding: 0.6rem 1.15rem;
-      background: var(--site-accent);
-      color: var(--site-on-accent);
+      background: var(--site-pop);
+      color: var(--site-on-pop);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
       border-radius: 999px;
       white-space: nowrap;
       transition: background 0.2s, transform 0.2s;
     }
-    .cta:hover { background: var(--site-accent-hover); transform: translateY(-1px); }
+    .cta:hover { background: var(--site-pop-hover); transform: translateY(-1px); }
 
     .burger { display: none; color: #fff; margin-left: auto; }
 
@@ -186,8 +190,8 @@ const NO_HERO_PATHS = [ACCOUNT_ROUTE];
         border-radius: 8px;
       }
       a.sub { padding-left: 1.5rem; font-size: 1rem; }
-      a.active { color: var(--site-accent); background: rgba(246, 176, 46, 0.08); }
-      mat-icon { color: var(--site-accent); }
+      a.active { color: var(--site-accent-soft); background: rgba(234, 106, 94, 0.14); }
+      mat-icon { color: var(--site-pop); }
     }
     .mobile-group {
       margin: 0.75rem 0.5rem 0.25rem;
@@ -196,7 +200,7 @@ const NO_HERO_PATHS = [ACCOUNT_ROUTE];
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
-    .mobile .mobile-cta { justify-content: center; margin-top: 0.75rem; color: var(--site-on-accent); }
+    .mobile .mobile-cta { justify-content: center; margin-top: 0.75rem; color: var(--site-on-pop); }
     @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 
     @media (max-width: 960px) {

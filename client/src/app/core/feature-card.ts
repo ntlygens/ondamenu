@@ -32,11 +32,11 @@ import { FeatureDoc } from '../models/content';
       border-radius: 14px;
       overflow: hidden;
       background: var(--site-white);
-      box-shadow: 0 4px 14px rgba(15, 31, 58, 0.06);
+      box-shadow: 0 6px 18px rgba(7, 24, 54, 0.2);
       text-align: left;
       transition: transform 0.2s, box-shadow 0.2s;
     }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(15, 31, 58, 0.12); }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(7, 24, 54, 0.32); }
     .media { display: block; width: 100%; height: 130px; object-fit: cover; }
     .band {
       position: relative;
@@ -44,11 +44,11 @@ import { FeatureDoc } from '../models/content';
       align-items: center;
       justify-content: center;
       background:
-        radial-gradient(circle at 80% 20%, rgba(246, 176, 46, 0.22), transparent 55%),
+        radial-gradient(circle at 80% 20%, rgba(234, 106, 94, 0.3), transparent 55%),
         linear-gradient(135deg, var(--site-midnight) 0%, var(--site-navy) 100%);
-      mat-icon { position: relative; font-size: 44px; width: 44px; height: 44px; color: var(--site-accent); }
+      mat-icon { position: relative; font-size: 44px; width: 44px; height: 44px; color: var(--site-pop); }
     }
-    .ring { position: absolute; width: 84px; height: 84px; border-radius: 50%; border: 1px dashed rgba(255, 226, 163, 0.45); }
+    .ring { position: absolute; width: 84px; height: 84px; border-radius: 50%; border: 1px dashed rgba(255, 196, 188, 0.5); }
     .body { padding: 1.25rem 1.4rem 1.5rem; }
     h3 { margin: 0 0 0.45rem; color: var(--site-navy); font-size: 1.2rem; line-height: 1.3; }
     p { margin: 0; color: var(--site-text); line-height: 1.65; }
