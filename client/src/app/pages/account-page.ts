@@ -4,12 +4,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { AuthService, Role } from '../services/auth-service';
 import { HumanCheck } from '../core/human-check';
 
-/** What each kind of account will be able to do. Shown on the signed-in page. */
-const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
+/** What each kind of account can do. Shown on the signed-in page; areas with a route are links. */
+const AREAS: Record<Role, { icon: string; title: string; text: string; route?: string }> = {
   diner:    { icon: 'restaurant_menu', title: 'Ordering',        text: 'Your orders and saved details will appear here when ordering opens.' },
-  merchant: { icon: 'storefront',      title: 'Your restaurant', text: 'Menu, prices and incoming orders for your restaurant will appear here.' },
-  courier:  { icon: 'delivery_dining', title: 'Deliveries',      text: 'Delivery jobs and your weekly pay summary will appear here.' },
-  admin:    { icon: 'shield_person',   title: 'Administration',  text: 'Restaurant, courier and account management will appear here.' },
+  merchant: { icon: 'storefront',      title: 'Your restaurant', text: 'Your menu, prices and incoming orders.', route: '/merchant' },
+  courier:  { icon: 'delivery_dining', title: 'Deliveries',      text: 'Delivery jobs and your weekly pay summary.', route: '/courier' },
+  admin:    { icon: 'shield_person',   title: 'Administration',  text: 'Manage accounts, restaurants and couriers.', route: '/admin' },
 };
 
 /** Sign in with a one-time code sent by email, and see your account. */
@@ -26,13 +26,30 @@ const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
         <h1>You're signed in</h1>
         <p class="who"><mat-icon aria-hidden="true">{{ user.email ? 'mail' : 'smartphone' }}</mat-icon>{{ user.email ?? formatPhone(user.phone) }}</p>
 
+        <form class="card name-form" (submit)="saveName($event, name.value)" novalidate>
+          <label for="acct-name">Your name</label>
+          <input #name id="acct-name" name="name" type="text" autocomplete="name" maxlength="80"
+                 [value]="user.name" placeholder="How should we address you?" aria-describedby="acct-name-msg" />
+          <button class="btn btn--primary" type="submit" [disabled]="busy()">Save name</button>
+          <p id="acct-name-msg" class="note" [class.bad]="error()" role="status">{{ error() || saved() }}</p>
+        </form>
+
         <div class="areas">
           @for (area of areas(); track area.title) {
-            <article class="area">
-              <span class="area-icon" aria-hidden="true"><mat-icon>{{ area.icon }}</mat-icon></span>
-              <h2>{{ area.title }}</h2>
-              <p>{{ area.text }}</p>
-            </article>
+            @if (area.route) {
+              <a class="area area--link" [routerLink]="area.route">
+                <span class="area-icon" aria-hidden="true"><mat-icon>{{ area.icon }}</mat-icon></span>
+                <h2>{{ area.title }}</h2>
+                <p>{{ area.text }}</p>
+                <span class="area-open">Open <span aria-hidden="true">→</span></span>
+              </a>
+            } @else {
+              <article class="area">
+                <span class="area-icon" aria-hidden="true"><mat-icon>{{ area.icon }}</mat-icon></span>
+                <h2>{{ area.title }}</h2>
+                <p>{{ area.text }}</p>
+              </article>
+            }
           }
         </div>
 
@@ -132,6 +149,12 @@ const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
       border-radius: 10px; background: var(--site-midnight);
       mat-icon { color: var(--site-pop); }
     }
+    .area--link { display: block; color: inherit; text-decoration: none; transition: border-color 0.2s, transform 0.2s; }
+    .area--link:hover { border-color: var(--site-accent); transform: translateY(-2px); }
+    .area-open { display: inline-block; margin-top: 0.6rem; color: var(--site-blue); font-weight: 600; }
+    .name-form { margin: 0 0 1.5rem; }
+    .note { min-height: 1.3em; margin: 0; color: var(--site-good); font-weight: 600; }
+    .note.bad { color: var(--site-alert); }
     .area h2 { margin: 0.8rem 0 0.3rem; color: var(--site-navy); font-size: 1.15rem; }
     .area p { margin: 0; line-height: 1.6; }
     button.btn--ghost { cursor: pointer; font-family: inherit; background: transparent; }
@@ -147,6 +170,8 @@ export class AccountPage {
   protected readonly channel = signal<'email' | 'sms'>('email');
   protected readonly minutes = signal(10);
   protected readonly devCode = signal('');
+  /** Short confirmation shown after the name is saved. */
+  protected readonly saved = signal('');
 
   /** Site key for the "I am human" check; empty when the check is off (preview, local). */
   protected readonly challengeKey = this.auth.challengeKey;
@@ -172,6 +197,15 @@ export class AccountPage {
     await this.run(async () => {
       await this.auth.verify(this.sentTo(), digits);
       this.startOver();
+    });
+  }
+
+  protected async saveName(event: Event, name: string): Promise<void> {
+    event.preventDefault();
+    this.saved.set('');
+    await this.run(async () => {
+      await this.auth.saveName(name);
+      this.saved.set('Name saved.');
     });
   }
 

@@ -61,6 +61,10 @@ Account data lives in its own databases, apart from page content:
   the widget's Site Key as `TURNSTILE_SITE_KEY` under `vars` in `client/wrangler.jsonc` (public, safe to commit),
   and its Secret Key set once with `npx wrangler secret put TURNSTILE_SECRET` (never commit it).
   Create the widget in the Cloudflare dashboard under Turnstile, for the hostname ondamenu.com.
+- Account areas: `/account` (everyone), `/merchant` (restaurant accounts), `/courier` (couriers), `/admin` (administrators).
+  An administrator marks accounts as restaurant, courier or administrator on `/admin`.
+- The first administrator: an email address listed in `ADMIN_EMAILS` (under `vars` in `client/wrangler.jsonc`) gets the
+  administrator role when it signs in. Preview uses info@ondamenu.com; production has none until the owner chooses one.
 - Table definitions: `client/d1/app-schema.sql` (`npm run db:app-schema` / `npm run db:app-schema:staging`; already applied).
 - To make a test account a restaurant or courier on preview, add a row to `user_roles` in `ondamenu-app-staging`.
 

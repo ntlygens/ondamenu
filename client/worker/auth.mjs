@@ -6,6 +6,7 @@
  *   POST /api/auth/verify   { destination, code }   check the code, sign the person in (creates the account on first use)
  *   GET  /api/auth/me                                who is signed in (or null)
  *   POST /api/auth/signout                           end the session
+ *   POST /api/auth/profile  { name }                 change the signed-in person's name
  *
  * No passwords exist. Codes and session tokens are stored only as hashes.
  * Email goes out through Cloudflare Email Service when the Worker has an EMAIL binding (wrangler.jsonc).
@@ -31,12 +32,22 @@ const COOKIE = 'odm_session';
 
 const now = () => Math.floor(Date.now() / 1000);
 
-function json(body, status = 200, headers = {}) {
+export function json(body, status = 200, headers = {}) {
   return new Response(JSON.stringify(body), {
     status,
     headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...headers },
   });
 }
+
+/** True when a change request comes from this site's own pages (or from a non-browser client). */
+export function sameOrigin(request, url) {
+  const origin = request.headers.get('origin');
+  if (!origin) return true;
+  try { return new URL(origin).host === url.host; } catch { return false; }
+}
+
+/** Email addresses that become administrators when they sign in (ADMIN_EMAILS, comma-separated). */
+const adminEmails = (env) => String(env.ADMIN_EMAILS ?? '').toLowerCase().split(',').map((s) => s.trim()).filter(Boolean);
 
 /** Returns { channel: 'email' | 'sms', value } for a valid email address or US mobile number, else null. */
 export function normalizeDestination(raw) {
@@ -228,6 +239,10 @@ async function verify(body, env, db, url) {
   } else {
     await db.prepare('UPDATE users SET last_login = ?2 WHERE id = ?1').bind(user.id, t).run();
   }
+  // The owner's address(es) get the administrator role, which is how the first admin comes to exist.
+  if (dest.channel === 'email' && adminEmails(env).includes(dest.value)) {
+    await db.prepare("INSERT OR IGNORE INTO user_roles (user_id, role, granted) VALUES (?1, 'admin', ?2)").bind(user.id, t).run();
+  }
 
   const token = randomToken();
   const lifetime = SESSION_DAYS * 86400;
@@ -244,6 +259,15 @@ export async function currentUser(request, env) {
     'SELECT u.id, u.name, u.email, u.phone FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token_hash = ?1 AND s.expires > ?2',
   ).bind(await sha256(token), now()).first();
   return row ? publicUser(env.APP_DB, row) : null;
+}
+
+async function profile(request, body, env, db) {
+  const user = await currentUser(request, env);
+  if (!user) return json({ error: 'Please sign in first.' }, 401);
+  const name = String(body.name ?? '').replace(/[\u0000-\u001f\u007f]/g, '').trim();
+  if (name.length > 80) return json({ error: 'Please keep your name under 80 characters.' }, 400);
+  await db.prepare('UPDATE users SET name = ?2 WHERE id = ?1').bind(user.id, name).run();
+  return json({ user: { ...user, name } });
 }
 
 async function signout(request, db, url) {
@@ -267,18 +291,14 @@ export async function handleAuth(request, env) {
     if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405, { allow: 'POST' });
 
     // Only this site's own pages may make changes.
-    const origin = request.headers.get('origin');
-    if (origin) {
-      let host = '';
-      try { host = new URL(origin).host; } catch { /* not a URL */ }
-      if (host !== url.host) return json({ error: 'Request not allowed.' }, 403);
-    }
+    if (!sameOrigin(request, url)) return json({ error: 'Request not allowed.' }, 403);
 
     let body = {};
     try { body = (await request.json()) ?? {}; } catch { /* empty or invalid body */ }
     if (action === 'start') return await start(body, env, db, request);
     if (action === 'verify') return await verify(body, env, db, url);
     if (action === 'signout') return await signout(request, db, url);
+    if (action === 'profile') return await profile(request, body, env, db);
     return json({ error: 'Not found' }, 404);
   } catch (error) {
     console.error('[auth]', error instanceof Error ? error.message : error);

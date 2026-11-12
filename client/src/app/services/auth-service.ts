@@ -61,6 +61,16 @@ export class AuthService {
     this.user.set(res.user);
   }
 
+  /** Saves the person's name. Throws an Error with a message to show. */
+  async saveName(name: string): Promise<void> {
+    const res = await this.post<{ user: AccountUser }>('profile', { name });
+    this.user.set(res.user);
+  }
+
+  hasRole(role: Role): boolean {
+    return this.user()?.roles.includes(role) ?? false;
+  }
+
   async signOut(): Promise<void> {
     try { await this.post('signout', {}); } finally { this.user.set(null); }
   }
