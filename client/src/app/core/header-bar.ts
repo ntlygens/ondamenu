@@ -11,6 +11,8 @@ import { HeroBanner } from './hero-banner';
 import { HERO_PAGES, HeroPage } from './hero-scenes';
 
 /** Task pages skip the marketing banner. */
+/** Pages that show the full logo themselves, so the header leaves its small one out. */
+const NO_BRAND_PATHS = ['/order'];
 const NO_HERO_PATHS = [ACCOUNT_ROUTE, '/order', '/merchant', '/courier', '/admin'];
 
 /** Sticky site header (desktop links, dropdown, mobile menu) plus the page's animated banner. */
@@ -20,10 +22,12 @@ const NO_HERO_PATHS = [ACCOUNT_ROUTE, '/order', '/merchant', '/courier', '/admin
   template: `
     <header class="site-nav" [class.scrolled]="scrolled()">
       <div class="nav-inner">
-        <a class="brand" routerLink="/" (click)="closeMenu()" aria-label="OnDaMenu home">
-          <span class="mark"><img src="/assets/core/logo/odm-mark.png" alt="" width="34" height="38" /></span>
-          <span>OnDa<strong>Menu</strong></span>
-        </a>
+@if (showBrand()) {
+          <a class="brand" routerLink="/" (click)="closeMenu()" aria-label="OnDaMenu home">
+            <span class="mark"><img src="/assets/core/logo/odm-mark.png" alt="" width="34" height="38" /></span>
+            <span>OnDa<strong>Menu</strong></span>
+          </a>
+        }
 
         <!-- Desktop links -->
         <nav class="links" aria-label="Main">
@@ -228,6 +232,8 @@ export class HeaderBar implements OnInit {
   protected readonly accountLabel = computed(() => (this.auth.user() ? 'Account' : 'Sign in'));
   /** Task pages (the account page) skip the banner. */
   protected readonly showHero = signal(true);
+  /** The header logo; hidden on the ordering splash, which carries the full logo. Home stays in the menu. */
+  protected readonly showBrand = signal(true);
 
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -241,6 +247,7 @@ export class HeaderBar implements OnInit {
         this.audienceActive.set(AUDIENCE_LINKS.some((a) => path.startsWith(a.route)));
         this.heroPage.set(HERO_PAGES[path] ?? HERO_PAGES['/']);
         this.showHero.set(!NO_HERO_PATHS.includes(path));
+        this.showBrand.set(!NO_BRAND_PATHS.includes(path));
       });
   }
 
