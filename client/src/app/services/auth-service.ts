@@ -29,6 +29,8 @@ export class AuthService {
 
   /** The signed-in user, or null. */
   readonly user = signal<AccountUser | null>(null);
+  /** Cloudflare Turnstile site key when the "I am human" check is on, otherwise ''. */
+  readonly challengeKey = signal('');
   /** False until the first check with the server has finished. */
   readonly ready = signal(false);
 
@@ -38,8 +40,9 @@ export class AuthService {
 
   async refresh(): Promise<void> {
     try {
-      const res = await firstValueFrom(this.http.get<{ user: AccountUser | null }>(`${this.api}/me`));
+      const res = await firstValueFrom(this.http.get<{ user: AccountUser | null; challengeKey?: string }>(`${this.api}/me`));
       this.user.set(res.user);
+      this.challengeKey.set(res.challengeKey ?? '');
     } catch {
       this.user.set(null);
     } finally {
@@ -48,8 +51,8 @@ export class AuthService {
   }
 
   /** Sends a code to an email address. Throws an Error with a message to show. */
-  async sendCode(destination: string): Promise<CodeSent> {
-    return this.post<CodeSent>('start', { destination });
+  async sendCode(destination: string, humanToken = ''): Promise<CodeSent> {
+    return this.post<CodeSent>('start', { destination, humanToken });
   }
 
   /** Checks the code and signs the person in. Throws an Error with a message to show. */

@@ -1,7 +1,8 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, viewChildren } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService, Role } from '../services/auth-service';
+import { HumanCheck } from '../core/human-check';
 
 /** What each kind of account will be able to do. Shown on the signed-in page. */
 const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
@@ -14,7 +15,7 @@ const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
 /** Sign in with a one-time code sent by email, and see your account. */
 @Component({
   selector: 'odm-account-page',
-  imports: [RouterLink, MatIconModule],
+  imports: [RouterLink, MatIconModule, HumanCheck],
   host: { class: 'page' },
   template: `
     <section class="account">
@@ -46,6 +47,9 @@ const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
           <input #dest id="acct-dest" name="destination" type="email" inputmode="email" autocomplete="email"
                  autocapitalize="none" spellcheck="false" placeholder="you@example.com"
                  [attr.aria-invalid]="error() ? 'true' : null" aria-describedby="acct-msg" />
+          @if (challengeKey()) {
+            <odm-human-check [siteKey]="challengeKey()" (token)="humanToken.set($event)" />
+          }
           <button class="btn btn--primary" type="submit" [disabled]="busy()">{{ busy() ? 'Sending…' : 'Send my code' }}</button>
           <p id="acct-msg" class="error" role="alert">{{ error() }}</p>
         </form>
@@ -68,6 +72,9 @@ const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
           <button class="btn btn--primary" type="submit" [disabled]="busy()">{{ busy() ? 'Checking…' : 'Sign in' }}</button>
           <p id="acct-code-msg" class="error" role="alert">{{ error() }}</p>
         </form>
+        @if (challengeKey()) {
+          <odm-human-check class="resend-check" [siteKey]="challengeKey()" (token)="humanToken.set($event)" />
+        }
         <p class="fine">
           <button class="link" type="button" [disabled]="busy()" (click)="resend()">Send a new code</button>
           ·
@@ -105,6 +112,7 @@ const AREAS: Record<Role, { icon: string; title: string; text: string }> = {
       background: var(--site-tint); color: var(--site-warning-text); border: 1px dashed var(--site-warning-text);
       strong { font-size: 1.15rem; letter-spacing: 0.12em; }
     }
+    .resend-check { margin-top: 1rem; }
     .fine { margin: 1rem 0 0; color: var(--site-muted); font-size: 0.92rem; }
     .fine a, .link { color: var(--site-blue); font-weight: 600; }
     .link { padding: 0; border: 0; background: none; font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
@@ -133,6 +141,12 @@ export class AccountPage {
   protected readonly channel = signal<'email' | 'sms'>('email');
   protected readonly minutes = signal(10);
   protected readonly devCode = signal('');
+
+  /** Site key for the "I am human" check; empty when the check is off (preview, local). */
+  protected readonly challengeKey = this.auth.challengeKey;
+  /** Proof from the check. Each one can be used for a single code request. */
+  protected readonly humanToken = signal('');
+  private readonly checks = viewChildren(HumanCheck);
 
   protected readonly areas = computed(() => (this.auth.user()?.roles ?? []).map((role) => AREAS[role]));
 
@@ -172,12 +186,19 @@ export class AccountPage {
 
   private async requestCode(destination: string): Promise<void> {
     if (!destination) { this.error.set('Enter your email address.'); return; }
+    if (this.challengeKey() && !this.humanToken()) { this.error.set('Please complete the "I am human" check first.'); return; }
     await this.run(async () => {
-      const sent = await this.auth.sendCode(destination);
-      this.channel.set(sent.channel);
-      this.minutes.set(sent.minutes);
-      this.devCode.set(sent.devCode ?? '');
-      this.sentTo.set(destination);
+      try {
+        const sent = await this.auth.sendCode(destination, this.humanToken());
+        this.channel.set(sent.channel);
+        this.minutes.set(sent.minutes);
+        this.devCode.set(sent.devCode ?? '');
+        this.sentTo.set(destination);
+      } finally {
+        // The proof is spent either way: clear it and ask the check for a fresh one.
+        this.humanToken.set('');
+        this.checks().forEach((check) => check.reset());
+      }
     });
   }
 

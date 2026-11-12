@@ -30,9 +30,12 @@ CREATE TABLE IF NOT EXISTS login_codes (
   created     INTEGER NOT NULL,
   expires     INTEGER NOT NULL,
   attempts    INTEGER NOT NULL DEFAULT 0,
-  consumed    INTEGER NOT NULL DEFAULT 0
+  consumed    INTEGER NOT NULL DEFAULT 0,
+  ip_hash     TEXT                        -- hash of the requester's network address, for abuse limits
 );
 CREATE INDEX IF NOT EXISTS login_codes_dest ON login_codes (destination, created);
+CREATE INDEX IF NOT EXISTS login_codes_ip ON login_codes (ip_hash, created);
+CREATE INDEX IF NOT EXISTS login_codes_created ON login_codes (created);
 
 -- Signed-in sessions. Only a hash of the cookie value is stored.
 CREATE TABLE IF NOT EXISTS sessions (

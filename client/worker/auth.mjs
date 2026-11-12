@@ -11,6 +11,10 @@
  * Email goes out through Cloudflare Email Service when the Worker has an EMAIL binding (wrangler.jsonc).
  * Where DEV_SHOW_CODES is "1" (preview and local) the code is shown on screen and nothing is sent.
  * Without either, sign-in is refused, so production can never hand out a code it did not deliver.
+ *
+ * Abuse protection on requesting codes:
+ *   - limits per email address, per network address and for the whole site (constants below);
+ *   - a Cloudflare Turnstile "are you human" check, enforced whenever TURNSTILE_SECRET and TURNSTILE_SITE_KEY are set.
  */
 /** Ways people may sign in today. Add 'sms' once a text-message sender exists in sendCode(). */
 const SIGN_IN_CHANNELS = ['email'];
@@ -19,6 +23,9 @@ const MAIL_FROM = { email: 'no-reply@ondamenu.com', name: 'OnDaMenu' };
 const CODE_MINUTES = 10;         // how long a code is valid
 const MAX_ATTEMPTS = 5;          // wrong guesses allowed per code
 const MAX_CODES_PER_HOUR = 5;    // codes one address or number may request per hour
+const MAX_CODES_PER_IP_HOUR = 10;   // codes one network address may request per hour, across all email addresses
+const MAX_CODES_SITE_HOUR = 200;    // codes the whole site may issue per hour (protects the daily email allowance)
+const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const SESSION_DAYS = 30;
 const COOKIE = 'odm_session';
 
@@ -113,12 +120,30 @@ async function sendCode(env, channel, destination, code) {
   }
 }
 
+/** The Turnstile site key to show on the sign-in page, or '' when the human check is off. */
+const challengeKey = (env) => (env.TURNSTILE_SECRET && env.TURNSTILE_SITE_KEY ? env.TURNSTILE_SITE_KEY : '');
+
+/** Asks Cloudflare whether a Turnstile token is genuine. Any failure counts as "not confirmed". */
+async function passedHumanCheck(env, token, ip) {
+  if (typeof token !== 'string' || !token || token.length > 2048) return false;
+  try {
+    const res = await fetch(TURNSTILE_VERIFY_URL, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ secret: env.TURNSTILE_SECRET, response: token, ...(ip ? { remoteip: ip } : {}) }),
+    });
+    return res.ok && (await res.json()).success === true;
+  } catch {
+    return false;
+  }
+}
+
 async function publicUser(db, row) {
   const { results } = await db.prepare('SELECT role FROM user_roles WHERE user_id = ?1 ORDER BY role').bind(row.id).all();
   return { id: row.id, name: row.name, email: row.email, phone: row.phone, roles: results.map((r) => r.role) };
 }
 
-async function start(body, env, db) {
+async function start(body, env, db, request) {
   const dest = normalizeDestination(body.destination);
   if (!dest) return json({ error: 'Enter a valid email address.' }, 400);
   if (!SIGN_IN_CHANNELS.includes(dest.channel)) {
@@ -130,18 +155,38 @@ async function start(body, env, db) {
     return json({ error: 'Sign-in is not switched on yet. Please check back soon.' }, 503);
   }
 
+  const ip = request.headers.get('cf-connecting-ip') ?? '';
+  if (challengeKey(env) && !(await passedHumanCheck(env, body.humanToken, ip))) {
+    return json({ error: 'Please complete the "I am human" check and try again.' }, 400);
+  }
+
   const t = now();
+  const hourAgo = t - 3600;
   const recent = await db.prepare('SELECT COUNT(*) AS n FROM login_codes WHERE destination = ?1 AND created > ?2')
-    .bind(dest.value, t - 3600).first();
+    .bind(dest.value, hourAgo).first();
   if (recent.n >= MAX_CODES_PER_HOUR) {
     return json({ error: 'Too many codes requested. Please try again in an hour.' }, 429);
+  }
+  // The network address is stored only as a hash.
+  const ipHash = ip ? await sha256(`${env.AUTH_PEPPER}:ip:${ip}`) : null;
+  if (ipHash) {
+    const fromIp = await db.prepare('SELECT COUNT(*) AS n FROM login_codes WHERE ip_hash = ?1 AND created > ?2')
+      .bind(ipHash, hourAgo).first();
+    if (fromIp.n >= MAX_CODES_PER_IP_HOUR) {
+      return json({ error: 'Too many sign-in requests from this connection. Please try again in an hour.' }, 429);
+    }
+  }
+  const siteWide = await db.prepare('SELECT COUNT(*) AS n FROM login_codes WHERE created > ?1').bind(hourAgo).first();
+  if (siteWide.n >= MAX_CODES_SITE_HOUR) {
+    console.error('[auth] site-wide sign-in limit reached:', siteWide.n, 'codes in the last hour');
+    return json({ error: 'Sign-in is very busy right now. Please try again in a few minutes.' }, 503);
   }
 
   const code = randomCode();
   // A new code replaces any earlier one.
   await db.prepare('UPDATE login_codes SET consumed = 1 WHERE destination = ?1 AND consumed = 0').bind(dest.value).run();
-  await db.prepare('INSERT INTO login_codes (destination, channel, code_hash, created, expires) VALUES (?1, ?2, ?3, ?4, ?5)')
-    .bind(dest.value, dest.channel, await codeHash(env, dest.value, code), t, t + CODE_MINUTES * 60).run();
+  await db.prepare('INSERT INTO login_codes (destination, channel, code_hash, created, expires, ip_hash) VALUES (?1, ?2, ?3, ?4, ?5, ?6)')
+    .bind(dest.value, dest.channel, await codeHash(env, dest.value, code), t, t + CODE_MINUTES * 60, ipHash).run();
 
   if (showOnScreen) return json({ ok: true, channel: dest.channel, minutes: CODE_MINUTES, devCode: code });
   if (!(await sendCode(env, dest.channel, dest.value, code))) {
@@ -216,7 +261,9 @@ export async function handleAuth(request, env) {
 
   const action = url.pathname.slice('/api/auth/'.length);
   try {
-    if (action === 'me' && request.method === 'GET') return json({ user: await currentUser(request, env) });
+    if (action === 'me' && request.method === 'GET') {
+      return json({ user: await currentUser(request, env), challengeKey: challengeKey(env) });
+    }
     if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405, { allow: 'POST' });
 
     // Only this site's own pages may make changes.
@@ -229,7 +276,7 @@ export async function handleAuth(request, env) {
 
     let body = {};
     try { body = (await request.json()) ?? {}; } catch { /* empty or invalid body */ }
-    if (action === 'start') return await start(body, env, db);
+    if (action === 'start') return await start(body, env, db, request);
     if (action === 'verify') return await verify(body, env, db, url);
     if (action === 'signout') return await signout(request, db, url);
     return json({ error: 'Not found' }, 404);

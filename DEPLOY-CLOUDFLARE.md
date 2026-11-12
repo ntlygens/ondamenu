@@ -55,6 +55,12 @@ Account data lives in its own databases, apart from page content:
   (any long random text; never commit it). Without it, production answers "Accounts are not set up yet".
 - Sign-in emails are sent from `no-reply@ondamenu.com` through Cloudflare Email Service (domain onboarded
   2026-11-10; needs the Workers Paid plan). Email Routing must stay off for ondamenu.com: incoming mail is iCloud's.
+- Abuse protection on requesting codes: 5 an hour per email address, 10 an hour per network address and
+  200 an hour for the whole site (constants at the top of `client/worker/auth.mjs`).
+- "I am human" check (Cloudflare Turnstile), production only. It switches on when both of these exist:
+  the widget's Site Key as `TURNSTILE_SITE_KEY` under `vars` in `client/wrangler.jsonc` (public, safe to commit),
+  and its Secret Key set once with `npx wrangler secret put TURNSTILE_SECRET` (never commit it).
+  Create the widget in the Cloudflare dashboard under Turnstile, for the hostname ondamenu.com.
 - Table definitions: `client/d1/app-schema.sql` (`npm run db:app-schema` / `npm run db:app-schema:staging`; already applied).
 - To make a test account a restaurant or courier on preview, add a row to `user_roles` in `ondamenu-app-staging`.
 
