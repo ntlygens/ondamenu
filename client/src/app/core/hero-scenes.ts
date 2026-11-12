@@ -68,6 +68,7 @@ export const HERO_SCENES: Record<string, HeroScene> = {
 };
 
 const LIST_RESTAURANT: HeroLink = { label: 'List Your Restaurant', route: '/contact' };
+const ORDER_NOW: HeroLink = { label: 'Order Now', route: '/order' };
 
 export const HERO_PAGES: Record<string, HeroPage> = {
   '/': {
@@ -77,7 +78,7 @@ export const HERO_PAGES: Record<string, HeroPage> = {
     titleAccent: 'on the menu.',
     text: 'Browse menus from local restaurants, build your order and pay online in a few taps.',
     chip: 'LOCAL MENUS',
-    primary: LIST_RESTAURANT,
+    primary: ORDER_NOW,
     secondary: { label: 'How it works', route: '/diners' },
   },
   '/diners': {
@@ -87,7 +88,7 @@ export const HERO_PAGES: Record<string, HeroPage> = {
     titleAccent: 'Enjoy it.',
     text: 'See the full menu from restaurants near you, order exactly what you want and pay online.',
     chip: 'FOR DINERS',
-    primary: { label: 'See how ordering works', route: '/diners' },
+    primary: ORDER_NOW,
     secondary: { label: 'For restaurants', route: '/restaurants' },
   },
   '/restaurants': {
@@ -107,6 +108,7 @@ export const HERO_PAGES: Record<string, HeroPage> = {
     titleAccent: 'on the menu.',
     text: 'Questions about ordering, or about listing your restaurant? We are glad to help.',
     chip: 'CONTACT',
-    primary: LIST_RESTAURANT,
+    primary: ORDER_NOW,
+    secondary: LIST_RESTAURANT,
   },
 };

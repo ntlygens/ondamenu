@@ -34,10 +34,10 @@
   "vars": {
     // Cloudflare Turnstile widget "OnDaMenu sign-in" (hostname ondamenu.com). The Site Key is public.
     // The human check switches on once its Secret Key is also set:  npx wrangler secret put TURNSTILE_SECRET
-    "TURNSTILE_SITE_KEY": "0x4AAAAAAF-hjSmW1SArd8ED"
-    // To create the first administrator in production, add the owner's sign-in address here, for example:
-    //   "ADMIN_EMAILS": "name@example.com"
-    // (comma-separated for several). That address gets the administrator role when it signs in.
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAF-hjSmW1SArd8ED",
+    // This address becomes an administrator when it signs in (comma-separated for several).
+    // It must be able to receive email, because the sign-in code is sent to it.
+    "ADMIN_EMAILS": "admin@ondamenu.com"
   },
   "routes": [
     { "pattern": "ondamenu.com", "custom_domain": true },
@@ -61,7 +61,7 @@
         // Preview only: show sign-in codes on screen instead of sending them. Never set in production.
         "DEV_SHOW_CODES": "1",
         // Preview only: this address becomes an administrator when it signs in (test data; codes show on screen).
-        "ADMIN_EMAILS": "info@ondamenu.com",
+        "ADMIN_EMAILS": "admin@ondamenu.com",
         // Preview only, not a real secret: production uses the AUTH_PEPPER secret.
         "AUTH_PEPPER": "preview-only-not-secret"
       },

@@ -66,8 +66,8 @@
         "text": "Neighborhood restaurants, their full menus and a simple way to order, all in one place.",
         "img": "/assets/backgrounds/kitchen-Bnr.webp",
         "cta": {
-          "label": "Get in touch",
-          "route": "/contact"
+          "label": "Order Now",
+          "route": "/order"
         }
       },
       "closing": {

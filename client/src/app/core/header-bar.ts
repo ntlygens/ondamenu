@@ -11,7 +11,7 @@ import { HeroBanner } from './hero-banner';
 import { HERO_PAGES, HeroPage } from './hero-scenes';
 
 /** Task pages skip the marketing banner. */
-const NO_HERO_PATHS = [ACCOUNT_ROUTE, '/merchant', '/courier', '/admin'];
+const NO_HERO_PATHS = [ACCOUNT_ROUTE, '/order', '/merchant', '/courier', '/admin'];
 
 /** Sticky site header (desktop links, dropdown, mobile menu) plus the page's animated banner. */
 @Component({

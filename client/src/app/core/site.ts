@@ -22,5 +22,7 @@ export const HOME_LINK: NavLink = { label: 'Home', route: '/', icon: 'home' };
 export const CONTACT_LINK: NavLink = { label: 'Contact', route: '/contact', icon: 'mail' };
 export const ACCOUNT_ROUTE = '/account';
 
-/** Header button. Points at the contact page until online ordering is live. */
-export const HEADER_CTA = { label: 'List Your Restaurant', route: '/contact' };
+/** Where the ordering app starts: its splash screen. */
+export const ORDER_ROUTE = '/order';
+/** The site's main button: sends visitors from the marketing pages into the ordering app. */
+export const HEADER_CTA = { label: 'Order Now', route: ORDER_ROUTE };

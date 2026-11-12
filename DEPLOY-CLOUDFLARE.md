@@ -64,7 +64,7 @@ Account data lives in its own databases, apart from page content:
 - Account areas: `/account` (everyone), `/merchant` (restaurant accounts), `/courier` (couriers), `/admin` (administrators).
   An administrator marks accounts as restaurant, courier or administrator on `/admin`.
 - The first administrator: an email address listed in `ADMIN_EMAILS` (under `vars` in `client/wrangler.jsonc`) gets the
-  administrator role when it signs in. Preview uses info@ondamenu.com; production has none until the owner chooses one.
+  administrator role when it signs in. Both preview and production use admin@ondamenu.com, which must be a working mailbox for production sign-in.
 - Table definitions: `client/d1/app-schema.sql` (`npm run db:app-schema` / `npm run db:app-schema:staging`; already applied).
 - To make a test account a restaurant or courier on preview, add a row to `user_roles` in `ondamenu-app-staging`.
 

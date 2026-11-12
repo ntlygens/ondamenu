@@ -70,7 +70,7 @@ globalThis.fetch = async (input, init) => {
 };
 
 /** Paths the Angular app serves. Anything else redirects home without rendering (saves CPU on bot scans). */
-const PAGE_PATHS = new Set(['/', '/diners', '/restaurants', '/contact', '/account', '/merchant', '/courier', '/admin']);
+const PAGE_PATHS = new Set(['/', '/diners', '/restaurants', '/contact', '/order', '/account', '/merchant', '/courier', '/admin']);
 
 /** Rendered pages are cached at Cloudflare's edge for this long (seconds). Content edits show within this window.
  *  One hour keeps page builds rare on the Workers Free plan (10 ms CPU per request; a build takes ~300 ms). */
