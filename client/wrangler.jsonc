@@ -31,6 +31,11 @@
   // Sign-in emails go out through Cloudflare Email Service (ondamenu.com onboarded 2026-11-10, Workers Paid).
   // Production only: the preview environment has no EMAIL binding, so it shows codes on screen instead.
   "send_email": [{ "name": "EMAIL" }],
+  "vars": {
+    // Cloudflare Turnstile widget "OnDaMenu sign-in" (hostname ondamenu.com). The Site Key is public.
+    // The human check switches on once its Secret Key is also set:  npx wrangler secret put TURNSTILE_SECRET
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAF-hjSmW1SArd8ED"
+  },
   "routes": [
     { "pattern": "ondamenu.com", "custom_domain": true },
     { "pattern": "www.ondamenu.com", "custom_domain": true }
