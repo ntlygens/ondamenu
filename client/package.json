@@ -14,6 +14,7 @@
     "db:schema": "wrangler d1 execute ondamenu-content --remote --file=d1/schema.sql",
     "db:app-schema": "wrangler d1 execute ondamenu-app --remote --file=d1/app-schema.sql",
     "db:app-schema:staging": "wrangler d1 execute ondamenu-app-staging --remote --file=d1/app-schema.sql",
+    "db:test-menu": "wrangler d1 execute ondamenu-app-staging --remote --file=d1/test-menu.sql",
     "db:schema:local": "wrangler d1 execute ondamenu-content --local --file=d1/schema.sql",
     "deploy:staging": "node ../scripts/require-branch.mjs staging && ng build && wrangler deploy --env staging"
   },

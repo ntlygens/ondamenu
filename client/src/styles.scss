@@ -230,6 +230,34 @@ body {
 }
 .panel--wide { max-width: 900px; }
 
+/* ------------------------------------------------------------------
+   Ordering app screens (restaurant list, menus): a phone-width column, as in the original app.
+   ------------------------------------------------------------------ */
+.app-screen { max-width: 760px; margin-top: 1rem; }
+/* The app's coral tab with its brick-red top edge: the screen title, or the way back. */
+.app-tab {
+  display: inline-flex; align-items: center; gap: 0.5rem; margin: 0 0 1rem; padding: 0.7rem 1.5rem 0.75rem;
+  border-top: 5px solid var(--site-accent); border-radius: 0 0 8px 8px;
+  background: var(--site-pop); color: var(--site-on-pop);
+  font-size: 1.15rem; font-weight: 700; letter-spacing: 0.06em; line-height: 1; text-transform: uppercase; text-decoration: none;
+  box-shadow: 0 4px 10px rgba(7, 24, 54, 0.3);
+}
+.app-tab--link:hover { background: var(--site-pop-hover); }
+.app-tab--link span { font-size: 1.5rem; line-height: 0.6; }
+.app-note { padding: 1.5rem; border-radius: 12px; background: var(--site-cloud); box-shadow: 0 8px 22px rgba(7, 24, 54, 0.3); text-align: left; }
+.app-note p { margin: 0 0 1rem; font-size: 1.05rem; line-height: 1.6; }
+.app-note p:last-child { margin: 0; }
+.app-loading { color: var(--site-on-blue-soft); font-size: 1.05rem; }
+.app-back { margin: 1.5rem 0 0; }
+.app-back a { color: var(--site-on-blue); font-weight: 600; }
+/* Status tags on restaurant cards and menu headers */
+.tag { padding: 0.3rem 0.65rem; border-radius: 5px; background: #e4e8ee; color: var(--site-midnight); font-size: 0.85rem; font-weight: 700; font-style: italic; line-height: 1.2; }
+.tag--open { background: var(--site-good); color: var(--site-white); }
+.tag--delivery { background: var(--site-blue); color: var(--site-white); }
+/* The restaurant photo keeps its shape while it grows from a list card into the menu header. */
+::view-transition-group(*) { animation-duration: 0.45s; }
+@media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
+
 /* Buttons */
 .btn {
   display: inline-flex; align-items: center; gap: 0.5rem;

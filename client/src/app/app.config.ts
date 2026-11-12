@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
-import { provideRouter, withInMemoryScrolling, TitleStrategy } from '@angular/router';
+import { provideRouter, withInMemoryScrolling, withViewTransitions, TitleStrategy } from '@angular/router';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 
@@ -11,7 +11,8 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideHttpClient(withFetch()),
-    provideRouter(ROUTES, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' })),
+    // View transitions let a tapped restaurant card grow into its menu header (browsers without them just switch pages).
+    provideRouter(ROUTES, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }), withViewTransitions()),
     { provide: TitleStrategy, useClass: SiteTitleStrategy },
     provideClientHydration(withEventReplay()),
   ],

@@ -46,3 +46,6 @@ Thumbs.db
 # Cloudflare local state
 .wrangler/
 d1/seed.sql
+
+# Preview test menu: built from a real restaurant's old menu, so it stays out of the repository
+d1/test-menu.sql

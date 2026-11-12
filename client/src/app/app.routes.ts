@@ -33,6 +33,18 @@ export const ROUTES: Routes = [
     loadComponent: () => import('./pages/order-page').then((m) => m.OrderPage),
   },
   {
+    path: 'order/restaurants',
+    title: 'Restaurants',
+    data: { description: 'Choose a local restaurant and order online with OnDaMenu.' },
+    loadComponent: () => import('./pages/restaurants-page').then((m) => m.RestaurantsPage),
+  },
+  {
+    path: 'order/r/:slug',
+    title: 'Menu',
+    data: { description: 'Browse the menu and order online with OnDaMenu.' },
+    loadComponent: () => import('./pages/menu-page').then((m) => m.MenuPage),
+  },
+  {
     path: 'account',
     title: 'Your Account',
     data: { description: 'Sign in to OnDaMenu with a one-time code sent to your email.' },
