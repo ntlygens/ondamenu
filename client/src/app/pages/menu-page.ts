@@ -40,7 +40,6 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
           <span class="rest-tags">
             <span class="tag" [class.tag--open]="r.isOpen">{{ r.isOpen ? 'Open' : 'Closed' }}</span>
             @if (r.delivery) { <span class="tag tag--delivery">Delivery</span> }
-            @if (r.pickup) { <span class="tag">Pickup</span> }
           </span>
         </header>
         @if (menu(); as m) {
