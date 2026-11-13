@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { DELIVERY_SHARE_PERCENT, PLANS, TRIAL_DAYS } from './plans';
 
-/** Plans and pricing for restaurants: the three promises up top, one card per plan, the fine print below. */
+/** Plans and pricing for restaurants: the promises up top, one card per plan, the fine print below. */
 @Component({
   selector: 'odm-plans-section',
   imports: [RouterLink, MatIconModule],
@@ -14,11 +14,16 @@ import { DELIVERY_SHARE_PERCENT, PLANS, TRIAL_DAYS } from './plans';
         Delivery apps take 15% to 30% of every delivery order.
         <strong>OnDaMenu takes {{ share }}%, and nothing at all on pickup.</strong>
       </p>
+      <p class="pitch pitch--second">
+        Other online ordering services start at $149 to $249 a month, and some charge up to $499 to set you up.
+        <strong>OnDaMenu starts at \${{ plans[0].price }} a month.</strong>
+      </p>
 
       <ul class="promises">
-        <li><mat-icon aria-hidden="true">event_available</mat-icon><span><strong>First {{ trialWeeks }} weeks free</strong> on every plan</span></li>
+        <li><mat-icon aria-hidden="true">event_available</mat-icon><span><strong>First {{ trialWeeks }} weeks free</strong> on every plan; cancel any time in the trial</span></li>
         <li><mat-icon aria-hidden="true">shopping_bag</mat-icon><span><strong>No commission</strong> on pickup orders</span></li>
         <li><mat-icon aria-hidden="true">delivery_dining</mat-icon><span><strong>{{ share }}% on delivery orders</strong>, not 15% to 30%</span></li>
+        <li><mat-icon aria-hidden="true">sync</mat-icon><span><strong>No setup fee with Clover:</strong> sign in and we bring in your menu, categories and prices</span></li>
       </ul>
 
       <div class="grid">
@@ -42,8 +47,9 @@ import { DELIVERY_SHARE_PERCENT, PLANS, TRIAL_DAYS } from './plans';
 
       <p class="fine">
         Every plan: {{ share }}% of the food and drink total on delivery orders, no commission on pickup orders.
-        Monthly price is per restaurant and starts after the {{ trialWeeks }}-week trial.
-        Delivery app rates are the commission plans those apps publish, as of November 2026.
+        Monthly price is per restaurant and starts after the {{ trialWeeks }}-week trial; cancel any time during the trial and pay nothing.
+        No setup fee applies to restaurants that run on Clover.
+        Delivery app rates and other services' prices are the ones they publish (four US online ordering services checked), as of November 2026.
       </p>
     </section>
   `,
@@ -51,11 +57,12 @@ import { DELIVERY_SHARE_PERCENT, PLANS, TRIAL_DAYS } from './plans';
     :host { display: block; }
     .plans { margin: 0 0 2.5rem; text-align: left; }
     .section-title { margin-bottom: 0.6rem; }
-    .pitch { margin: 0 0 1.25rem; max-width: 60ch; color: var(--site-on-blue-soft); font-size: 1.12rem; line-height: 1.6; }
+    .pitch { margin: 0 0 0.6rem; max-width: 60ch; color: var(--site-on-blue-soft); font-size: 1.12rem; line-height: 1.6; }
     .pitch strong { color: var(--site-on-blue); }
+    .pitch--second { font-size: 1rem; }
 
     /* The three promises: one row on a wide screen, stacked on a phone. */
-    .promises { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.6rem; margin: 0 0 1.5rem; padding: 0; list-style: none; }
+    .promises { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.6rem; margin: 1.25rem 0 1.5rem; padding: 0; list-style: none; }
     .promises li {
       display: flex; align-items: center; gap: 0.7rem; min-width: 0;
       padding: 0.8rem 1rem; border-radius: 10px; border-left: 4px solid var(--site-pop);

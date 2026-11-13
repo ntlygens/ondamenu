@@ -1,7 +1,7 @@
 /**
  * OnDaMenu's plans for restaurants. Prices and terms were set by the owner on 2026-11-13:
  * $100 / $150 / $200 a month, 5% of the order on delivery orders (every plan), nothing on pickup orders,
- * first two weeks free. Change them here only; the For Restaurants page reads this file.
+ * first two weeks free (cancel any time in the trial), no setup fee for restaurants on Clover. Change them here only; the For Restaurants page reads this file.
  */
 export interface Plan {
   id: string;
