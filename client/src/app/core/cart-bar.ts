@@ -4,7 +4,7 @@ import { money } from '../services/order-service';
 
 /**
  * The shopping cart on a restaurant's menu.
- * Closed, it is a bar at the bottom of the screen with the item count and running total.
+ * Closed, it is a bar across the full width of the bottom of the screen with the item count and running total.
  * Pressed, it rises to just under the category buttons and lists everything in the cart to scroll through,
  * with the total and Submit at the end. Checkout itself is not built yet, so Submit says it opens soon.
  */
@@ -55,16 +55,18 @@ import { money } from '../services/order-service';
     }
   `,
   styles: [`
-    /* Closed: sticks to the bottom of the screen while the menu is in view, then rests at the end of the menu. */
-    :host { position: sticky; bottom: 0; z-index: 20; display: block; margin-top: 1rem; padding-bottom: env(safe-area-inset-bottom, 0px); }
+    /* Closed: the foot of the screen, edge to edge. The page leaves --cart-bar-h of room under its last row (menu-page.ts). */
+    :host { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: block; padding-bottom: env(safe-area-inset-bottom, 0px); background: var(--site-pop); }
     .bar {
       display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 0.9rem; width: 100%;
-      padding: 0.7rem 1rem; border: 0; border-top: 4px solid var(--site-accent); border-radius: 10px 10px 0 0;
+      box-sizing: border-box; min-height: var(--cart-bar-h, 4.5rem);
+      /* Same as the site header: colour edge to edge, contents inside the 1280px column with 20px at the sides. */
+      padding: 0.7rem max(20px, calc((100% - 1280px) / 2 + 20px)); border: 0; border-top: 4px solid var(--site-accent); border-radius: 0;
       background: var(--site-pop); color: var(--site-on-pop); font: inherit; text-align: left; cursor: pointer;
       box-shadow: 0 -6px 18px rgba(7, 24, 54, 0.35);
     }
     .bar:hover { background: var(--site-pop-hover); }
-    .title { min-width: 0; font-weight: 700; }
+    .title { min-width: 0; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .count { display: block; font-size: 0.82rem; font-weight: 600; }
     .total { font-size: 1.25rem; font-weight: 800; font-variant-numeric: tabular-nums; }
     .view { padding: 0.55rem 0.9rem; border-radius: 6px; background: var(--site-on-pop); color: var(--site-white); font-weight: 700; letter-spacing: 0.04em; }

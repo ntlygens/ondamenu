@@ -125,11 +125,9 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
     }
   `,
   styles: [`
-    /* No site footer on this screen (see app.ts): the screen fills the rest of the window and the cart bar is its foot,
-       resting on the bottom edge even when the menu is short. */
-    :host(.app-screen) { flex: 1 0 auto; display: flex; flex-direction: column; }
-    :host(.app-screen) > .app-tab { align-self: flex-start; }
-    :host(.app-screen) > odm-cart-bar { margin-top: auto; }
+    /* No site footer on this screen (see app.ts): the cart bar is fixed across the bottom of the window as its foot,
+       so the screen keeps that much room under its last row. */
+    :host { --cart-bar-h: 4.5rem; padding-bottom: calc(var(--cart-bar-h) + env(safe-area-inset-bottom, 0px)); }
     .app-note { margin-bottom: 1rem; }
     /* The photo scrolls away; the name strip and category buttons below it stay under the site header. */
     .photo { position: relative; display: block; aspect-ratio: 16 / 8; max-height: 320px; width: 100%; overflow: hidden; border-radius: 12px 12px 0 0; background: var(--site-midnight); }
