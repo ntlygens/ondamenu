@@ -154,6 +154,8 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
     .row {
       display: grid; grid-template-columns: minmax(0, 1fr) auto 84px; grid-template-areas: "text buy pic";
       gap: 0.75rem; align-items: center; padding: 0.7rem 0.75rem; border-radius: 8px;
+      /* Every dish card is the same height, however long its name or description. */
+      height: 7.25rem; box-sizing: border-box; overflow: hidden;
       background: linear-gradient(to bottom right, var(--site-white), var(--site-tint));
     }
     .row:nth-child(even) { grid-template-columns: 84px auto minmax(0, 1fr); grid-template-areas: "pic buy text"; background: linear-gradient(to bottom left, var(--site-white), var(--site-tint)); }
@@ -161,6 +163,8 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
     .row:nth-child(even) .text { text-align: left; }
     h2 { margin: 0; color: var(--site-midnight); font-size: 1rem; font-weight: 800; line-height: 1.25; text-transform: uppercase; overflow-wrap: anywhere; }
     .text p { margin: 0.25rem 0 0; color: var(--site-text); font-size: 0.92rem; line-height: 1.4; }
+    /* Names and descriptions show two lines at most; anything longer ends in three dots. */
+    h2, .text p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; padding-inline: 0.2em; }
     .buy { grid-area: buy; display: flex; flex-direction: column; align-items: stretch; gap: 0.4rem; min-width: 5.4rem; }
     .price { padding: 0.3rem 0.6rem; border: 1.5px solid var(--site-blue); border-radius: 8px; background: var(--site-white); color: var(--site-navy); font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; }
     .order { padding: 0.6rem 0.8rem; border: 1.5px solid var(--site-navy); border-radius: 6px; background: var(--site-white); color: var(--site-midnight); font: 700 1rem/1 'Exo 2', Roboto, sans-serif; letter-spacing: 0.06em; cursor: pointer; }
