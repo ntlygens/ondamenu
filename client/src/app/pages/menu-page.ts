@@ -43,9 +43,15 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
         @if (menu(); as m) {
           @if (m.items.length) {
             <div class="cats" role="group" aria-label="Menu categories">
-              <button type="button" class="cat" [class.on]="category() === ''" [attr.aria-pressed]="category() === ''" (click)="category.set('')">All</button>
+              <button type="button" class="cat" [class.on]="category() === ''" [class.has]="cartTotal()" [attr.aria-pressed]="category() === ''" (click)="category.set('')">
+                All
+                @if (cartTotal(); as n) { <span class="badge"><span class="visually-hidden">, </span>{{ n }}<span class="visually-hidden"> in cart</span></span> }
+              </button>
               @for (c of m.categories; track c.id) {
-                <button type="button" class="cat" [class.on]="category() === c.id" [attr.aria-pressed]="category() === c.id" (click)="category.set(c.id)">{{ c.name }}</button>
+                <button type="button" class="cat" [class.on]="category() === c.id" [class.has]="inCart().get(c.id)" [attr.aria-pressed]="category() === c.id" (click)="category.set(c.id)">
+                  {{ c.name }}
+                  @if (inCart().get(c.id); as n) { <span class="badge"><span class="visually-hidden">, </span>{{ n }}<span class="visually-hidden"> in cart</span></span> }
+                </button>
               }
             </div>
           }
@@ -126,6 +132,17 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
       letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; cursor: pointer;
     }
     .cat.on { background: var(--site-accent); color: var(--site-on-accent); }
+    /* A category holding something from the cart: coral edge plus a count, so it shows at a glance. */
+    .cat { display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; }
+    .cat.has { box-shadow: inset 0 -4px 0 var(--site-pop); }
+    .cat.has.on { box-shadow: inset 0 -4px 0 var(--site-accent-soft); }
+    .badge {
+      display: inline-flex; align-items: center; justify-content: center; min-width: 1.35rem; height: 1.35rem; padding: 0 0.3rem;
+      border-radius: 999px; background: var(--site-accent); color: var(--site-on-accent);
+      font-size: 0.78rem; font-weight: 800; letter-spacing: 0; line-height: 1; font-variant-numeric: tabular-nums;
+    }
+    .cat.on .badge { background: var(--site-white); color: var(--site-accent-deep); }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
     .cat:focus-visible, .order:focus-visible, .stepper button:focus-visible, .app-tab--link:focus-visible { outline: 3px solid var(--site-white); outline-offset: 2px; }
 
     /* Dishes. The photo sits on the right, then on the left, row after row. The text column takes
@@ -185,6 +202,19 @@ export class MenuPage {
   private readonly backTab = viewChild<ElementRef<HTMLElement>>('backTab');
   private readonly stuckMark = viewChild<ElementRef<HTMLElement>>('stuckMark');
   private readonly chrome = inject(ChromeService);
+
+  /** How many cart items sit in each category (by category id), for the marks on the category buttons. */
+  protected readonly inCart = computed(() => {
+    const perCategory = new Map<string, number>();
+    const items = new Map((this.menu()?.items ?? []).map((i) => [i.id, i] as const));
+    for (const line of this.cart.lines(this.slug())) {
+      for (const categoryId of items.get(line.id)?.categoryIds ?? []) {
+        perCategory.set(categoryId, (perCategory.get(categoryId) ?? 0) + line.qty);
+      }
+    }
+    return perCategory;
+  });
+  protected readonly cartTotal = computed(() => this.cart.count(this.slug()));
 
   constructor() {
     this.watchScroll();
