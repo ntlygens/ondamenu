@@ -33,6 +33,8 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
       <span #stuckMark class="stuck-mark" aria-hidden="true"></span>
       <div #stack class="stack" [class.stuck]="stuck()">
         <header class="info rest-label" [style.--strip-photo]="r.photo ? 'url(' + r.photo + ')' : 'none'">
+          <!-- The health grade moves here from the photo once the photo has scrolled away. -->
+          <odm-grade-badge class="mini-grade" [compact]="true" [grade]="r.grade" />
           <h1 class="rest-name">{{ r.name }}</h1>
           <span class="rest-place">{{ place(r) }}</span>
           <span class="rest-tags">
@@ -141,6 +143,16 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
     /* The restaurant's photo, faded into the strip once the photo itself has scrolled away. */
     .info::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--strip-photo) center / cover no-repeat; opacity: 0; transition: opacity 0.35s ease; }
     .stuck .info::before { opacity: 0.22; }
+    /* The small health grade: hidden while the photo (and its badge) is in view; slides in at the left once the strip is stuck. */
+    .info { transition: padding 0.3s ease; }
+    .rest-name, .rest-place { transition: font-size 0.3s ease; }
+    .mini-grade { position: absolute; left: 0.6rem; top: 50%; opacity: 0; visibility: hidden; transform: translateY(-50%) scale(0.6); transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s; }
+    /* The text gives up a little size so the name still fits beside the grade on a phone. */
+    .stuck .info { padding-left: calc(0.6rem + 2.5rem + 0.55rem); padding-right: 0.7rem; }
+    .stuck .rest-name { font-size: 1.15rem; }
+    .stuck .rest-place { font-size: 0.72rem; }
+    .stuck .mini-grade { opacity: 1; visibility: visible; transform: translateY(-50%) scale(1); transition-delay: 0s; }
+    @media (prefers-reduced-motion: reduce) { .info, .mini-grade, .rest-name, .rest-place { transition: none; } }
 
     /* Category buttons: one row that scrolls sideways when there are many. */
     .cats { display: flex; gap: 0.4rem; margin: 0; padding: 2px 2px 6px; overflow-x: auto; scrollbar-width: thin; }
