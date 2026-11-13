@@ -136,7 +136,10 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
     .cat { display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; }
     .cat.has { box-shadow: inset 0 -4px 0 var(--site-pop); }
     .cat.has.on { box-shadow: inset 0 -4px 0 var(--site-accent-soft); }
+    /* position: relative keeps the badge's screen-reader-only text inside the scrolling category bar.
+       Without it that hidden text sat outside the bar and made the whole page wider than the screen. */
     .badge {
+      position: relative;
       display: inline-flex; align-items: center; justify-content: center; min-width: 1.35rem; height: 1.35rem; padding: 0 0.3rem;
       border-radius: 999px; background: var(--site-accent); color: var(--site-on-accent);
       font-size: 0.78rem; font-weight: 800; letter-spacing: 0; line-height: 1; font-variant-numeric: tabular-nums;
