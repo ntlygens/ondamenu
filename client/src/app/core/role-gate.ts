@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { AuthService, Role } from '../services/auth-service';
 
 /**
- * Shows its content only to a signed-in person who holds the given role.
+ * Shows its content only to a signed-in person who holds the given role (or any one of several).
  * This only decides what the page displays: the server checks the role again on every request for data.
  */
 @Component({
@@ -26,10 +26,13 @@ import { AuthService, Role } from '../services/auth-service';
   `,
 })
 export class RoleGate {
-  readonly role = input.required<Role>();
+  readonly role = input.required<Role | Role[]>();
   /** Shown to a signed-in person who lacks the role. */
   readonly denied = input('This area is not part of your account.');
 
   protected readonly auth = inject(AuthService);
-  protected readonly allowed = computed(() => this.auth.user()?.roles.includes(this.role()) ?? false);
+  protected readonly allowed = computed(() => {
+    const roles = this.auth.user()?.roles ?? [];
+    return [this.role()].flat().some((role) => roles.includes(role));
+  });
 }

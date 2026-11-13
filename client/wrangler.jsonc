@@ -31,6 +31,11 @@
   // Sign-in emails go out through Cloudflare Email Service (ondamenu.com onboarded 2026-11-10, Workers Paid).
   // Production only: the preview environment has no EMAIL binding, so it shows codes on screen instead.
   "send_email": [{ "name": "EMAIL" }],
+  // Dish and restaurant photos (worker/merchant.mjs): one R2 bucket, a folder per restaurant.
+  // NOT switched on yet: R2 must first be enabled on the Cloudflare account and the two buckets created.
+  // Then add this line here:            "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "ondamenu-media" }],
+  // and this one inside env.staging:    "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "ondamenu-media-staging", "remote": true }],
+  // Until then the menu editor works and photo uploads answer "Photo storage is not switched on yet."
   "vars": {
     // Cloudflare Turnstile widget "OnDaMenu sign-in" (hostname ondamenu.com). The Site Key is public.
     // The human check switches on once its Secret Key is also set:  npx wrangler secret put TURNSTILE_SECRET

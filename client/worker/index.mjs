@@ -6,6 +6,8 @@
  *  - /api/auth/... handles sign-in by one-time code and sessions (worker/auth.mjs, app database).
  *  - /api/admin/... lets administrators manage accounts and roles (worker/admin.mjs).
  *  - /api/order/... serves the restaurant list and menus to the ordering app (worker/order.mjs).
+ *  - /api/merchant/... lets a restaurant's own people edit its menu and photos (worker/merchant.mjs).
+ *  - /media/... serves the uploaded photos from the R2 bucket (worker/merchant.mjs).
  *  - Everything else is server-rendered by Angular (dist/client/server/server.mjs).
  *
  * During server rendering Angular fetches /api/... on this same site. A Worker can't make a
@@ -15,6 +17,7 @@ import { renderPage } from '../dist/client/server/server.mjs';
 import { handleAuth } from './auth.mjs';
 import { handleAdmin } from './admin.mjs';
 import { handleOrder } from './order.mjs';
+import { handleMedia, handleMerchant } from './merchant.mjs';
 
 /** Content collections the public site may read. */
 const COLLECTIONS = new Set(['pages', 'features', 'steps']);
@@ -34,6 +37,8 @@ async function handleApi(request, env) {
   if (admin) return admin;
   const order = await handleOrder(request, env);
   if (order) return order;
+  const merchant = await handleMerchant(request, env);
+  if (merchant) return merchant;
 
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     return new Response('Method not allowed', { status: 405, headers: { allow: 'GET, HEAD' } });
@@ -118,6 +123,8 @@ export default {
 
     const api = await handleApi(request, env);
     if (api) return withSecurityHeaders(api);
+    const media = await handleMedia(request, env);
+    if (media) return withSecurityHeaders(media);
 
     // Unknown paths (including bot probes for .env, wp-admin, etc.) go home without rendering.
     const path = url.pathname.length > 1 ? url.pathname.replace(/\/+$/, '') : '/';

@@ -53,13 +53,8 @@ export const ROUTES: Routes = [
   {
     path: 'merchant',
     title: 'Your Restaurant',
-    data: {
-      role: 'merchant', eyebrow: 'Restaurant account', heading: 'Your restaurant',
-      text: 'This is where you will manage your menu, prices and incoming orders. Menu tools arrive in the next stage of the build.',
-      denied: 'This area is for restaurant accounts. If you run a restaurant and want to join OnDaMenu, get in touch and we will set you up.',
-      description: 'Restaurant account area for OnDaMenu merchants.',
-    },
-    loadComponent: () => import('./pages/area-page').then((m) => m.AreaPage),
+    data: { description: 'Restaurant account area for OnDaMenu merchants.' },
+    loadComponent: () => import('./pages/merchant-page').then((m) => m.MerchantPage),
   },
   {
     path: 'courier',
