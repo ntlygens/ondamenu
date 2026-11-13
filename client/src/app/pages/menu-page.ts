@@ -1,4 +1,5 @@
 import { Component, DestroyRef, ElementRef, computed, effect, inject, signal, viewChild } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,7 +19,7 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
  */
 @Component({
   selector: 'odm-menu-page',
-  imports: [RouterLink, MatIconModule, CartBar, GradeBadge],
+  imports: [RouterLink, NgTemplateOutlet, MatIconModule, CartBar, GradeBadge],
   host: { class: 'page app-screen' },
   template: `
     <a #backTab class="app-tab app-tab--link" routerLink="/order/restaurants"><span aria-hidden="true">‹</span> Restaurants</a>
@@ -33,7 +34,7 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
       <div #stack class="stack" [class.stuck]="stuck()">
         <header class="info" [style.--strip-photo]="r.photo ? 'url(' + r.photo + ')' : 'none'">
           <h1>{{ r.name }}</h1>
-          <span class="cuisine">{{ r.cuisine }}@if (r.city) { · {{ r.city }} }</span>
+          <span class="cuisine">{{ place(r) }}</span>
           <span class="tags">
             <span class="tag" [class.tag--open]="r.isOpen">{{ r.isOpen ? 'Open' : 'Closed' }}</span>
             @if (r.delivery) { <span class="tag tag--delivery">Delivery</span> }
@@ -43,12 +44,12 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
         @if (menu(); as m) {
           @if (m.items.length) {
             <div class="cats" role="group" aria-label="Menu categories">
-              <button type="button" class="cat" [class.on]="category() === ''" [class.has]="cartTotal()" [attr.aria-pressed]="category() === ''" (click)="category.set('')">
+              <button type="button" class="cat" [class.on]="category() === ''" [class.has]="cartTotal()" [attr.aria-pressed]="category() === ''" (click)="pick('')">
                 All
                 @if (cartTotal(); as n) { <span class="badge"><span class="visually-hidden">, </span>{{ n }}<span class="visually-hidden"> in cart</span></span> }
               </button>
               @for (c of m.categories; track c.id) {
-                <button type="button" class="cat" [class.on]="category() === c.id" [class.has]="inCart().get(c.id)" [attr.aria-pressed]="category() === c.id" (click)="category.set(c.id)">
+                <button type="button" class="cat" [class.on]="category() === c.id" [class.has]="inCart().get(c.id)" [attr.aria-pressed]="category() === c.id" (click)="pick(c.id)">
                   {{ c.name }}
                   @if (inCart().get(c.id); as n) { <span class="badge"><span class="visually-hidden">, </span>{{ n }}<span class="visually-hidden"> in cart</span></span> }
                 </button>
@@ -68,28 +69,30 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
       @if (m.items.length) {
         <ul class="rows">
           @for (item of visible(); track item.id) {
-            <li class="row" [class.row--out]="!item.available">
-              <div class="text">
-                <h2>{{ item.name }}</h2>
-                @if (item.description) { <p>{{ item.description }}</p> }
-              </div>
-              <div class="buy">
-                <span class="price">{{ price(item) }}</span>
-                @if (!item.available) {
-                  <span class="soldout">Sold out</span>
-                } @else if (qty(item); as n) {
-                  <span class="stepper">
-                    <button type="button" (click)="cart.remove(slug(), item.id)" [attr.aria-label]="'Remove one ' + item.name">−</button>
-                    <span aria-live="polite">{{ n }}</span>
-                    <button type="button" (click)="cart.add(slug(), item)" [attr.aria-label]="'Add one more ' + item.name">+</button>
-                  </span>
-                } @else {
-                  <button class="order" type="button" (click)="cart.add(slug(), item)" [attr.aria-label]="'Order ' + item.name">Order</button>
-                }
-              </div>
-              <span class="pic" aria-hidden="true">
-                @if (item.photo) { <img [src]="item.photo" alt="" loading="lazy" /> } @else { <mat-icon>restaurant</mat-icon> }
-              </span>
+            <li class="row" [id]="'dish-' + item.id" [class.row--out]="!item.available" [class.row--open]="openId() === item.id">
+              @if (openId() === item.id) {
+                <!-- Opened: two cards tall, laid out like the restaurant card (photo above, details below). -->
+                <div class="big-pic" (click)="toggle(item.id)">
+                  @if (item.photo) { <img [src]="item.photo" alt="" /> } @else { <mat-icon aria-hidden="true">restaurant</mat-icon> }
+                  <button class="less" type="button" (click)="toggle(item.id); $event.stopPropagation()">Close <span aria-hidden="true">▴</span></button>
+                </div>
+                <div class="big-info">
+                  <div class="text" (click)="toggle(item.id)">
+                    <h2><button type="button" class="name" aria-expanded="true">{{ item.name }}</button></h2>
+                    @if (item.description) { <p>{{ item.description }}</p> }
+                  </div>
+                  <ng-container *ngTemplateOutlet="buy; context: { $implicit: item }" />
+                </div>
+              } @else {
+                <div class="text" (click)="toggle(item.id)">
+                  <h2><button type="button" class="name" aria-expanded="false">{{ item.name }}</button></h2>
+                  @if (item.description) { <p>{{ item.description }}</p> }
+                </div>
+                <ng-container *ngTemplateOutlet="buy; context: { $implicit: item }" />
+                <span class="pic" aria-hidden="true" (click)="toggle(item.id)">
+                  @if (item.photo) { <img [src]="item.photo" alt="" loading="lazy" /> } @else { <mat-icon>restaurant</mat-icon> }
+                </span>
+              }
             </li>
           }
         </ul>
@@ -98,6 +101,24 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
       }
 
       <odm-cart-bar [slug]="slug()" [anchor]="stackEl()?.nativeElement" />
+
+      <!-- Price and Order control, shared by the small and the opened dish card. -->
+      <ng-template #buy let-item>
+        <div class="buy">
+          <span class="price">{{ price(item) }}</span>
+          @if (!item.available) {
+            <span class="soldout">Sold out</span>
+          } @else if (qty(item); as n) {
+            <span class="stepper">
+              <button type="button" (click)="cart.remove(slug(), item.id)" [attr.aria-label]="'Remove one ' + item.name">−</button>
+              <span aria-live="polite">{{ n }}</span>
+              <button type="button" (click)="cart.add(slug(), item)" [attr.aria-label]="'Add one more ' + item.name">+</button>
+            </span>
+          } @else {
+            <button class="order" type="button" (click)="cart.add(slug(), item)" [attr.aria-label]="'Order ' + item.name">Order</button>
+          }
+        </div>
+      </ng-template>
     } @else {
       <p class="app-loading" role="status">Loading the menu…</p>
     }
@@ -111,18 +132,20 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
     .stack { position: sticky; top: var(--site-header-h); z-index: 15; margin: 0 0 0.5rem; }
     /* Once stuck, a blue backing hides the dishes passing underneath. */
     .stack.stuck { margin-inline: -6px; padding: 0 6px 2px; border-radius: 0 0 12px 12px; background: rgba(27, 87, 159, 0.94); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: 0 10px 18px -8px rgba(7, 24, 54, 0.6); }
+    /* Name and cuisine on the left, status tags on the right in up to two short rows: compact at any width. */
     .info {
       position: relative; isolation: isolate; overflow: hidden;
-      display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.15rem 0.75rem; align-items: end;
-      margin: 0 0 0.6rem; padding: 0.8rem 1rem 0.9rem; border-radius: 0 0 12px 12px;
+      display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.2rem 0.6rem; align-items: center;
+      margin: 0 0 0.6rem; padding: 0.65rem 1rem 0.75rem; border-radius: 0 0 12px 12px;
       background: var(--site-cloud); box-shadow: 0 8px 22px rgba(7, 24, 54, 0.35);
     }
     /* The restaurant's photo, faded into the strip once the photo itself has scrolled away. */
     .info::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--strip-photo) center / cover no-repeat; opacity: 0; transition: opacity 0.35s ease; }
     .stuck .info::before { opacity: 0.22; }
-    h1 { grid-column: 1 / -1; margin: 0; color: var(--site-navy); font-size: 1.5rem; line-height: 1.2; overflow-wrap: anywhere; }
-    .cuisine { color: var(--site-accent-deep); font-style: italic; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; }
-    .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: flex-end; }
+    h1 { grid-column: 1; margin: 0; color: var(--site-navy); font-size: 1.4rem; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cuisine { grid-column: 1; min-width: 0; color: var(--site-accent-deep); font-size: 0.8rem; font-style: italic; font-weight: 600; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tags { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-wrap: wrap; gap: 0.3rem; justify-content: flex-end; max-width: 8.4rem; }
+    .info .tag { padding: 0.22rem 0.45rem; font-size: 0.74rem; white-space: nowrap; }
 
     /* Category buttons: one row that scrolls sideways when there are many. */
     .cats { display: flex; gap: 0.4rem; margin: 0; padding: 2px 2px 6px; overflow-x: auto; scrollbar-width: thin; }
@@ -159,12 +182,26 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
       background: linear-gradient(to bottom right, var(--site-white), var(--site-tint));
     }
     .row:nth-child(even) { grid-template-columns: 84px auto minmax(0, 1fr); grid-template-areas: "pic buy text"; background: linear-gradient(to bottom left, var(--site-white), var(--site-tint)); }
-    .text { grid-area: text; min-width: 0; text-align: right; }
+    .text { grid-area: text; min-width: 0; text-align: right; cursor: pointer; }
     .row:nth-child(even) .text { text-align: left; }
     h2 { margin: 0; color: var(--site-midnight); font-size: 1rem; font-weight: 800; line-height: 1.25; text-transform: uppercase; overflow-wrap: anywhere; }
     .text p { margin: 0.25rem 0 0; color: var(--site-text); font-size: 0.92rem; line-height: 1.4; }
-    /* Names and descriptions show two lines at most; anything longer ends in three dots. */
-    h2, .text p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; padding-inline: 0.2em; }
+    /* Names and descriptions show two lines at most; anything longer ends in three dots. Pressing a dish opens it. */
+    .name { all: unset; cursor: pointer; }
+    .name:focus-visible { outline: 3px solid var(--site-blue); outline-offset: 2px; border-radius: 3px; }
+    .name, .text p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; padding-inline: 0.2em; }
+
+    /* An opened dish: exactly two cards tall (plus the gap between them), photo above and details below, like the restaurant card. */
+    .row.row--open, .row.row--open:nth-child(even) { display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 0; height: calc(14.5rem + 4px); box-shadow: 0 8px 20px rgba(7, 24, 54, 0.4); }
+    .big-pic { position: relative; flex: 0 0 6rem; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #dfe6ef; cursor: pointer; }
+    .big-pic img { width: 100%; height: 100%; object-fit: cover; }
+    .big-pic mat-icon { color: var(--site-muted); font-size: 40px; width: 40px; height: 40px; }
+    .less { position: absolute; top: 8px; right: 8px; padding: 0.35rem 0.65rem; border: 0; border-radius: 6px; background: var(--site-midnight); color: var(--site-white); font: 700 0.8rem/1 'Exo 2', Roboto, sans-serif; cursor: pointer; }
+    .less:focus-visible { outline: 3px solid var(--site-white); outline-offset: 2px; }
+    .big-info { flex: 1 1 auto; min-height: 0; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.75rem; align-items: center; padding: 0.6rem 0.75rem 0.7rem; }
+    .row--open .text, .row.row--open:nth-child(even) .text { grid-area: auto; text-align: left; }
+    .row--open .buy { grid-area: auto; }
+    .row--open .text p { -webkit-line-clamp: 3; line-clamp: 3; }
     .buy { grid-area: buy; display: flex; flex-direction: column; align-items: stretch; gap: 0.4rem; min-width: 5.4rem; }
     .price { padding: 0.3rem 0.6rem; border: 1.5px solid var(--site-blue); border-radius: 8px; background: var(--site-white); color: var(--site-navy); font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; }
     .order { padding: 0.6rem 0.8rem; border: 1.5px solid var(--site-navy); border-radius: 6px; background: var(--site-white); color: var(--site-midnight); font: 700 1rem/1 'Exo 2', Roboto, sans-serif; letter-spacing: 0.06em; cursor: pointer; }
@@ -174,7 +211,7 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
     .stepper button { height: 2.3rem; border: 0; background: var(--site-accent); color: var(--site-on-accent); font-size: 1.2rem; font-weight: 700; line-height: 1; cursor: pointer; }
     .soldout { color: var(--site-muted); font-size: 0.85rem; font-weight: 700; text-align: center; }
     .row--out h2, .row--out .price { color: var(--site-muted); }
-    .pic { grid-area: pic; display: flex; align-items: center; justify-content: center; width: 84px; height: 64px; overflow: hidden; border-radius: 8px; background: #dfe6ef; box-shadow: 0 3px 8px rgba(7, 24, 54, 0.25); }
+    .pic { grid-area: pic; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 84px; height: 64px; overflow: hidden; border-radius: 8px; background: #dfe6ef; box-shadow: 0 3px 8px rgba(7, 24, 54, 0.25); }
     .pic img { width: 100%; height: 100%; object-fit: cover; }
     .pic mat-icon { color: var(--site-muted); }
     @media (max-width: 380px) {
@@ -202,6 +239,9 @@ export class MenuPage {
     const chosen = this.category();
     return chosen ? items.filter((i) => i.categoryIds.includes(chosen)) : items;
   });
+
+  /** The dish whose card is opened (two cards tall); '' when none is. */
+  protected readonly openId = signal('');
 
   /** True once the name strip has reached the site header and is staying there. */
   protected readonly stuck = signal(false);
@@ -231,6 +271,7 @@ export class MenuPage {
       this.menu.set(undefined);
       this.error.set('');
       this.category.set('');
+      this.openId.set('');
       if (slug) void this.load(slug);
     });
   }
@@ -238,7 +279,8 @@ export class MenuPage {
   /**
    * Follows two points as the page scrolls (browser only):
    *  - the "Restaurants" button: once it is 10px past the site header, the header shows "Restaurants" instead;
-   *  - the top of the name strip: once it reaches the header, the strip is "stuck" and takes on the faded photo.
+   *  - the top of the name strip: once it reaches the header, the strip is "stuck" and takes on the faded photo;
+   *  - an opened dish: once it has gone 10px past the category buttons, it closes.
    */
   private watchScroll(): void {
     inject(DestroyRef).onDestroy(() => this.chrome.title.set(null));
@@ -266,6 +308,40 @@ export class MenuPage {
       watcher.observe(mark);
       onCleanup(() => watcher.disconnect());
     });
+    // An opened dish closes by itself once it has scrolled 10px out of sight under the category buttons.
+    effect((onCleanup) => {
+      const row = this.openId() ? document.getElementById('dish-' + this.openId()) : null;
+      if (!row) return;
+      const underButtons = HEADER + Math.round(this.stackEl()?.nativeElement.getBoundingClientRect().height ?? 0);
+      const watcher = passed(underButtons - 10, (isPast) => { if (isPast) this.closeAbove(row); });
+      watcher.observe(row);
+      onCleanup(() => watcher.disconnect());
+    });
+  }
+
+  /** "Caribbean · Brooklyn": the line under the restaurant's name. */
+  protected place(r: Restaurant): string {
+    return [r.cuisine, r.city].filter(Boolean).join(' · ');
+  }
+
+  /** Opens a dish card, or closes it if it is the open one. Only one is open at a time. */
+  protected toggle(itemId: string): void {
+    this.openId.update((open) => (open === itemId ? '' : itemId));
+  }
+
+  /** Shows one category ('' = all) and closes any open dish, since it may not be in the new list. */
+  protected pick(categoryId: string): void {
+    this.category.set(categoryId);
+    this.openId.set('');
+  }
+
+  /** Closes an open dish that has scrolled out above the screen, without letting the page jump. */
+  private closeAbove(row: HTMLElement): void {
+    const before = row.getBoundingClientRect().height;
+    this.openId.set('');
+    // Most browsers hold the view steady when something above it shrinks; for those that don't, do it by hand.
+    if (typeof CSS !== 'undefined' && CSS.supports('overflow-anchor', 'auto')) return;
+    requestAnimationFrame(() => window.scrollBy(0, row.getBoundingClientRect().height - before));
   }
 
   protected price(item: MenuItem): string {

@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GradeBadge } from '../core/grade-badge';
-import { OrderService } from '../services/order-service';
+import { OrderService, Restaurant } from '../services/order-service';
 
 /** The restaurant list: a photo card per restaurant. Tapping one opens its menu. */
 @Component({
@@ -28,7 +28,7 @@ import { OrderService } from '../services/order-service';
                 </span>
                 <span class="info">
                   <span class="name">{{ r.name }}</span>
-                  <span class="cuisine">{{ r.cuisine }}@if (r.city) { · {{ r.city }} }</span>
+                  <span class="cuisine">{{ place(r) }}</span>
                   <span class="tags">
                     <span class="tag" [class.tag--open]="r.isOpen">{{ r.isOpen ? 'Open' : 'Closed' }}</span>
                     @if (r.delivery) { <span class="tag tag--delivery">Delivery</span> }
@@ -71,6 +71,11 @@ export class RestaurantsPage {
 
   constructor() {
     void this.load();
+  }
+
+  /** "Caribbean · Brooklyn": the line under the restaurant's name. */
+  protected place(r: Restaurant): string {
+    return [r.cuisine, r.city].filter(Boolean).join(' · ');
   }
 
   protected async load(): Promise<void> {
