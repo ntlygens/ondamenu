@@ -26,10 +26,10 @@ import { OrderService, Restaurant } from '../services/order-service';
                   @if (r.photo) { <img [src]="r.photo" alt="" loading="lazy" /> }
                   <odm-grade-badge class="grade" [grade]="r.grade" />
                 </span>
-                <span class="info">
-                  <span class="name">{{ r.name }}</span>
-                  <span class="cuisine">{{ place(r) }}</span>
-                  <span class="tags">
+                <span class="info rest-label">
+                  <span class="rest-name">{{ r.name }}</span>
+                  <span class="rest-place">{{ place(r) }}</span>
+                  <span class="rest-tags">
                     <span class="tag" [class.tag--open]="r.isOpen">{{ r.isOpen ? 'Open' : 'Closed' }}</span>
                     @if (r.delivery) { <span class="tag tag--delivery">Delivery</span> }
                     @if (r.pickup) { <span class="tag">Pickup</span> }
@@ -59,10 +59,7 @@ import { OrderService, Restaurant } from '../services/order-service';
     .photo { position: relative; display: block; aspect-ratio: 16 / 7; background: var(--site-midnight); }
     .photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
     .grade { position: absolute; top: 10px; right: 10px; }
-    .info { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.15rem 0.75rem; align-items: end; padding: 0.8rem 1rem 0.9rem; }
-    .name { grid-column: 1 / -1; color: var(--site-navy); font-size: 1.35rem; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
-    .cuisine { color: var(--site-accent-deep); font-style: italic; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; }
-    .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: flex-end; }
+    /* The label under the photo is the shared .rest-label (styles.scss). */
   `],
 })
 export class RestaurantsPage {

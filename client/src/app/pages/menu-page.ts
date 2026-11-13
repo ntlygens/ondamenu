@@ -32,10 +32,10 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
       <!-- Marks the point where the strip below reaches the site header and stays there. -->
       <span #stuckMark class="stuck-mark" aria-hidden="true"></span>
       <div #stack class="stack" [class.stuck]="stuck()">
-        <header class="info" [style.--strip-photo]="r.photo ? 'url(' + r.photo + ')' : 'none'">
-          <h1>{{ r.name }}</h1>
-          <span class="cuisine">{{ place(r) }}</span>
-          <span class="tags">
+        <header class="info rest-label" [style.--strip-photo]="r.photo ? 'url(' + r.photo + ')' : 'none'">
+          <h1 class="rest-name">{{ r.name }}</h1>
+          <span class="rest-place">{{ place(r) }}</span>
+          <span class="rest-tags">
             <span class="tag" [class.tag--open]="r.isOpen">{{ r.isOpen ? 'Open' : 'Closed' }}</span>
             @if (r.delivery) { <span class="tag tag--delivery">Delivery</span> }
             @if (r.pickup) { <span class="tag">Pickup</span> }
@@ -132,20 +132,15 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
     .stack { position: sticky; top: var(--site-header-h); z-index: 15; margin: 0 0 0.5rem; }
     /* Once stuck, a blue backing hides the dishes passing underneath. */
     .stack.stuck { margin-inline: -6px; padding: 0 6px 2px; border-radius: 0 0 12px 12px; background: rgba(27, 87, 159, 0.94); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: 0 10px 18px -8px rgba(7, 24, 54, 0.6); }
-    /* Name and cuisine on the left, status tags on the right in up to two short rows: compact at any width. */
+    /* The strip's layout is the shared .rest-label (styles.scss), the same as on the restaurant list cards. */
     .info {
       position: relative; isolation: isolate; overflow: hidden;
-      display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.2rem 0.6rem; align-items: center;
-      margin: 0 0 0.6rem; padding: 0.65rem 1rem 0.75rem; border-radius: 0 0 12px 12px;
+      margin: 0 0 0.6rem; border-radius: 0 0 12px 12px;
       background: var(--site-cloud); box-shadow: 0 8px 22px rgba(7, 24, 54, 0.35);
     }
     /* The restaurant's photo, faded into the strip once the photo itself has scrolled away. */
     .info::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--strip-photo) center / cover no-repeat; opacity: 0; transition: opacity 0.35s ease; }
     .stuck .info::before { opacity: 0.22; }
-    h1 { grid-column: 1; margin: 0; color: var(--site-navy); font-size: 1.4rem; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .cuisine { grid-column: 1; min-width: 0; color: var(--site-accent-deep); font-size: 0.8rem; font-style: italic; font-weight: 600; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .tags { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-wrap: wrap; gap: 0.3rem; justify-content: flex-end; max-width: 8.4rem; }
-    .info .tag { padding: 0.22rem 0.45rem; font-size: 0.74rem; white-space: nowrap; }
 
     /* Category buttons: one row that scrolls sideways when there are many. */
     .cats { display: flex; gap: 0.4rem; margin: 0; padding: 2px 2px 6px; overflow-x: auto; scrollbar-width: thin; }
