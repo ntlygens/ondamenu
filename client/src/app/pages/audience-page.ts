@@ -3,14 +3,15 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ContentService } from '../services/content-service';
 import { FeatureCard } from '../core/feature-card';
+import { PlansSection } from '../core/plans-section';
 
 /**
  * One layout for the sibling pages (For Diners, For Restaurants); the route's data.page picks the content:
- * intro, "why us" panels, feature cards, photo banner, closing call-to-action.
+ * intro, "why us" panels, feature cards, plans and pricing (restaurants only), photo banner, closing call-to-action.
  */
 @Component({
   selector: 'odm-audience-page',
-  imports: [RouterLink, FeatureCard],
+  imports: [RouterLink, FeatureCard, PlansSection],
   host: { class: 'page' },
   template: `
     @if (page(); as p) {
@@ -44,6 +45,8 @@ import { FeatureCard } from '../core/feature-card';
         </section>
       }
 
+      @if (hasPlans()) { <odm-plans-section /> }
+
       @if (p.banner; as b) {
         <section class="photo-banner" [style.background-image]="'url(' + b.img + ')'">
           <div class="photo-banner-copy">
@@ -76,4 +79,6 @@ export class AudiencePage {
 
   protected readonly page = this.content.page(this.pageId);
   protected readonly features = this.content.featuresFor(this.pageId);
+  /** Plans and pricing are for restaurants only. */
+  protected readonly hasPlans = computed(() => this.pageId() === 'restaurants');
 }
