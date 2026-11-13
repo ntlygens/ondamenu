@@ -1,7 +1,10 @@
 /**
  * OnDaMenu's plans for restaurants. Prices and terms were set by the owner on 2026-11-13:
  * $100 / $150 / $200 a month, 5% of the order on delivery orders (every plan), nothing on pickup orders,
- * first two weeks free (cancel any time in the trial), no setup fee for restaurants on Clover. Change them here only; the For Restaurants page reads this file.
+ * first two weeks free (cancel any time in the trial), no setup fee for restaurants on Clover.
+ * Leaving (owner approved 2026-11-13, to be confirmed by a lawyer before launch): monthly plans end with 30 days' notice
+ * and no fee; yearly plans cost two months less, and leaving early re-prices the months used at the monthly rate.
+ * Change them here only; the For Restaurants page reads this file.
  */
 export interface Plan {
   id: string;
@@ -22,6 +25,12 @@ export interface Plan {
 export const TRIAL_DAYS = 14;
 /** Percent of the food and drink total a restaurant pays on a delivery order. Pickup orders pay nothing. */
 export const DELIVERY_SHARE_PERCENT = 5;
+/** Paying by the year costs this many months less than paying monthly. */
+export const ANNUAL_MONTHS_FREE = 2;
+/** Written notice needed to end a monthly plan, in days. There is no fee for leaving. */
+export const NOTICE_DAYS = 30;
+/** After a plan ends, account data is deleted within this many days (records the law requires are kept). */
+export const DATA_REMOVAL_DAYS = 30;
 /** The flat fee a diner pays for delivery, in dollars. */
 export const DINER_DELIVERY_FEE = 7.5;
 

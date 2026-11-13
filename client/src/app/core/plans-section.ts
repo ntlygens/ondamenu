@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { DELIVERY_SHARE_PERCENT, PLANS, TRIAL_DAYS } from './plans';
+import { ANNUAL_MONTHS_FREE, DATA_REMOVAL_DAYS, DELIVERY_SHARE_PERCENT, NOTICE_DAYS, PLANS, TRIAL_DAYS } from './plans';
 
 /** Plans and pricing for restaurants: the promises up top, one card per plan, the fine print below. */
 @Component({
@@ -32,6 +32,7 @@ import { DELIVERY_SHARE_PERCENT, PLANS, TRIAL_DAYS } from './plans';
             @if (plan.featured) { <span class="flag">Recommended</span> }
             <h3>{{ plan.name }}</h3>
             <p class="price"><span class="amount">\${{ plan.price }}</span> <span class="per">a month</span></p>
+            <p class="yearly">or \${{ yearly(plan.price) }} a year: {{ monthsFree }} months free</p>
             <p class="trial">First {{ trialWeeks }} weeks free</p>
             <p class="fit">{{ plan.fit }}</p>
             <p class="delivery"><mat-icon aria-hidden="true">delivery_dining</mat-icon><span>{{ plan.delivery }}</span></p>
@@ -43,6 +44,16 @@ import { DELIVERY_SHARE_PERCENT, PLANS, TRIAL_DAYS } from './plans';
             <a class="btn btn--primary" routerLink="/contact" [attr.aria-label]="'Start with the ' + plan.name + ' plan'">Start free</a>
           </article>
         }
+      </div>
+
+      <div class="terms" aria-labelledby="termsTitle">
+        <h3 id="termsTitle">No lock-in, no exit fees</h3>
+        <dl>
+          <div><dt>During the trial</dt><dd>Cancel any time in the first {{ trialWeeks }} weeks and pay nothing.</dd></div>
+          <div><dt>Paying monthly</dt><dd>Leave with {{ noticeDays }} days' written notice. There is no fee for leaving.</dd></div>
+          <div><dt>Paying yearly</dt><dd>Get {{ monthsFree }} months free. If you leave early we refund the unused part, with the months you used charged at the monthly price.</dd></div>
+          <div><dt>Your data</dt><dd>Your page and menu come down when your plan ends, and your account data is deleted within {{ removalDays }} days. Order and payment records are kept only as long as the law requires.</dd></div>
+        </dl>
       </div>
 
       <p class="fine">
@@ -82,6 +93,8 @@ import { DELIVERY_SHARE_PERCENT, PLANS, TRIAL_DAYS } from './plans';
     .price { margin: 0; color: var(--site-midnight); line-height: 1; }
     .amount { font-size: 2.6rem; font-weight: 800; }
     .per { color: var(--site-muted); font-size: 1rem; font-weight: 600; }
+    .yearly { margin: 0.45rem 0 0; color: var(--site-muted); font-size: 0.95rem; font-weight: 600; }
+    .plan--featured .yearly { color: var(--site-accent-soft); }
     .trial { align-self: flex-start; margin: 0.6rem 0 0; padding: 0.25rem 0.6rem; border-radius: 5px; background: var(--site-good); color: var(--site-white); font-size: 0.85rem; font-weight: 700; font-style: italic; }
     .fit { margin: 0.9rem 0 0; line-height: 1.5; }
     .delivery {
@@ -110,6 +123,14 @@ import { DELIVERY_SHARE_PERCENT, PLANS, TRIAL_DAYS } from './plans';
     .plan--featured .btn--primary:hover { background: var(--site-pop-hover); }
     .flag { position: absolute; top: 0.9rem; right: 1rem; padding: 0.2rem 0.55rem; border-radius: 5px; background: var(--site-pop); color: var(--site-on-pop); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
 
+    /* How leaving works: one light card under the plans. */
+    .terms { margin: 1.25rem 0 0; padding: 1.5rem; border-radius: 14px; border-left: 5px solid var(--site-accent); background: linear-gradient(135deg, var(--site-cloud) 0%, var(--site-tint) 100%); box-shadow: 0 6px 18px rgba(7, 24, 54, 0.22); }
+    .terms h3 { margin: 0 0 1rem; font-size: 1.15rem; }
+    .terms dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem 1.5rem; margin: 0; }
+    .terms div { min-width: 0; }
+    .terms dt { margin: 0 0 0.3rem; color: var(--site-accent-deep); font-size: 0.85rem; font-weight: 800; font-style: italic; text-transform: uppercase; letter-spacing: 0.03em; }
+    .terms dd { margin: 0; color: var(--site-text); line-height: 1.55; }
+
     .fine { margin: 1rem 0 0; max-width: 90ch; color: var(--site-on-blue-soft); font-size: 0.9rem; line-height: 1.55; }
   `],
 })
@@ -117,4 +138,12 @@ export class PlansSection {
   protected readonly plans = PLANS;
   protected readonly share = DELIVERY_SHARE_PERCENT;
   protected readonly trialWeeks = TRIAL_DAYS / 7;
+  protected readonly monthsFree = ANNUAL_MONTHS_FREE;
+  protected readonly noticeDays = NOTICE_DAYS;
+  protected readonly removalDays = DATA_REMOVAL_DAYS;
+
+  /** A year's price with the free months taken off, with a thousands comma: 100 a month -> "1,000". */
+  protected yearly(monthly: number): string {
+    return (monthly * (12 - ANNUAL_MONTHS_FREE)).toLocaleString('en-US');
+  }
 }
