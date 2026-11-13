@@ -125,6 +125,12 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
     }
   `,
   styles: [`
+    /* No site footer on this screen (see app.ts): the screen fills the rest of the window and the cart bar is its foot,
+       resting on the bottom edge even when the menu is short. */
+    :host(.app-screen) { flex: 1 0 auto; display: flex; flex-direction: column; }
+    :host(.app-screen) > .app-tab { align-self: flex-start; }
+    :host(.app-screen) > odm-cart-bar { margin-top: auto; }
+    .app-note { margin-bottom: 1rem; }
     /* The photo scrolls away; the name strip and category buttons below it stay under the site header. */
     .photo { position: relative; display: block; aspect-ratio: 16 / 8; max-height: 320px; width: 100%; overflow: hidden; border-radius: 12px 12px 0 0; background: var(--site-midnight); }
     .photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -179,7 +185,7 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
 
     /* Dishes. The photo sits on the right, then on the left, row after row. The text column takes
        whatever width is left and wraps, so nothing runs off a narrow screen. */
-    .rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+    .rows { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: 4px; }
     .row {
       display: grid; grid-template-columns: minmax(0, 1fr) auto 84px; grid-template-areas: "text buy pic";
       gap: 0.75rem; align-items: center; padding: 0.7rem 0.75rem; border-radius: 8px;
