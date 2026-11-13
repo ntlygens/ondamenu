@@ -7,6 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { filter } from 'rxjs/operators';
 import { ACCOUNT_ROUTE, AUDIENCE_LINKS, CONTACT_LINK, HEADER_CTA, HOME_LINK } from './site';
 import { AuthService } from '../services/auth-service';
+import { ChromeService, HeaderTitle } from '../services/chrome-service';
 import { HeroBanner } from './hero-banner';
 import { HERO_PAGES, HeroPage } from './hero-scenes';
 
@@ -22,11 +23,15 @@ const NO_HERO_PATHS = [ACCOUNT_ROUTE, '/order', '/merchant', '/courier', '/admin
   template: `
     <header class="site-nav" [class.scrolled]="scrolled()">
       <div class="nav-inner">
-<a class="brand" routerLink="/" (click)="closeMenu()" aria-label="OnDaMenu home">
-          @if (showMark()) {
+<a class="brand" [routerLink]="swap()?.route ?? '/'" (click)="closeMenu()" [attr.aria-label]="swap()?.label ?? 'OnDaMenu home'">
+          @if (showMark() || swap()) {
             <span class="mark"><img src="/assets/core/logo/odm-mark.png" alt="" width="34" height="38" /></span>
           }
-          <span>OnDa<strong>Menu</strong></span>
+          <!-- The OnDaMenu name, and a screen's own title that fades in over it (set through ChromeService). -->
+          <span class="names" aria-hidden="true">
+            <span class="name" [class.gone]="swap()">OnDa<strong>Menu</strong></span>
+            <span class="name" [class.gone]="!swap()">{{ shown().lead }}<strong>{{ shown().accent }}</strong></span>
+          </span>
         </a>
 
         <!-- Desktop links -->
@@ -134,6 +139,10 @@ const NO_HERO_PATHS = [ACCOUNT_ROUTE, '/order', '/merchant', '/courier', '/admin
       .mark { display: inline-flex; padding: 3px 7px; border-radius: 9px; background: var(--site-white); }
       .mark img { display: block; height: 38px; width: auto; }
       strong { color: var(--site-pop); font-weight: 700; }
+      /* both names share one spot and cross-fade */
+      .names { display: grid; }
+      .name { grid-area: 1 / 1; transition: opacity 0.35s ease; }
+      .name.gone { opacity: 0; }
     }
 
     .links { display: flex; align-items: center; gap: 0.25rem; margin-left: auto; }
@@ -228,6 +237,12 @@ export class HeaderBar implements OnInit {
   protected readonly accountRoute = ACCOUNT_ROUTE;
 
   private readonly auth = inject(AuthService);
+
+  /** A screen's own title shown in place of the OnDaMenu name (for example "Restaurants" on a menu). */
+  protected readonly swap = inject(ChromeService).title;
+  /** Keeps the last title's letters on screen while it fades out. */
+  private lastTitle: HeaderTitle = { lead: '', accent: '', route: '/', label: '' };
+  protected readonly shown = computed(() => (this.lastTitle = this.swap() ?? this.lastTitle));
   /** "Sign in" until the browser has confirmed a session, then "Account". */
   protected readonly accountLabel = computed(() => (this.auth.user() ? 'Account' : 'Sign in'));
   /** Task pages (the account page) skip the banner. */

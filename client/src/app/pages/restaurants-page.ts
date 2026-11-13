@@ -9,7 +9,7 @@ import { OrderService } from '../services/order-service';
   imports: [RouterLink, GradeBadge],
   host: { class: 'page app-screen' },
   template: `
-    <h1 class="app-tab">Restaurants</h1>
+    <h1 class="app-tab app-tab--sticky">Restaurants</h1>
 
     @if (error()) {
       <div class="app-note" role="alert">

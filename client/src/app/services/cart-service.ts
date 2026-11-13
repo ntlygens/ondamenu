@@ -40,6 +40,11 @@ export class CartService {
       : [...lines, { id: item.id, name: item.name, priceCents: item.priceCents, qty: 1 }]);
   }
 
+  /** Adds one more of a dish that is already in the cart. */
+  increment(slug: string, itemId: string): void {
+    this.save(slug, this.lines(slug).map((l) => (l.id === itemId && l.qty < MAX_PER_DISH ? { ...l, qty: l.qty + 1 } : l)));
+  }
+
   /** Takes one of a dish out; the line goes when none are left. */
   remove(slug: string, itemId: string): void {
     this.save(slug, this.lines(slug)

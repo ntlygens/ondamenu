@@ -23,6 +23,9 @@ html {
      dark surfaces (blue)    -> --site-pop (coral) with --site-on-pop (deep blue)
    ===================================================================== */
 :root {
+  /* Height of the sticky site header (bar + its coloured top edge); things that stick below it use this. */
+  --site-header-h: 73px;
+
   /* Blues */
   --site-midnight:     #0b2a57;  /* darkest surfaces: header, footer, dark cards */
   --site-navy:         #123a73;  /* headings and strong text on light cards */
@@ -243,6 +246,12 @@ body {
   box-shadow: 0 4px 10px rgba(7, 24, 54, 0.3);
 }
 .app-tab--link:hover { background: var(--site-pop-hover); }
+/* Stays under the site header while the list scrolls beneath it, see-through enough to show the list passing. */
+.app-tab--sticky {
+  position: sticky; top: var(--site-header-h); z-index: 15;
+  background: rgba(234, 106, 94, 0.8);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
 .app-tab--link span { font-size: 1.5rem; line-height: 0.6; }
 .app-note { padding: 1.5rem; border-radius: 12px; background: var(--site-cloud); box-shadow: 0 8px 22px rgba(7, 24, 54, 0.3); text-align: left; }
 .app-note p { margin: 0 0 1rem; font-size: 1.05rem; line-height: 1.6; }
