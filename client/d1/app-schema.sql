@@ -111,3 +111,9 @@ CREATE TABLE IF NOT EXISTS menu_item_categories (
   category_id TEXT NOT NULL REFERENCES menu_categories(id) ON DELETE CASCADE,
   PRIMARY KEY (item_id, category_id)
 );
+
+-- Small key/value store for background jobs (e.g. the NYC health grade refresh).
+CREATE TABLE IF NOT EXISTS job_state (
+  key   TEXT PRIMARY KEY,
+  value TEXT
+);

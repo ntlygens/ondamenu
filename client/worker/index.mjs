@@ -18,6 +18,7 @@ import { handleAuth } from './auth.mjs';
 import { handleAdmin } from './admin.mjs';
 import { handleOrder } from './order.mjs';
 import { handleMedia, handleMerchant } from './merchant.mjs';
+import { runGradeJob } from './grades.mjs';
 
 /** Content collections the public site may read. */
 const COLLECTIONS = new Set(['pages', 'features', 'steps']);
@@ -109,6 +110,9 @@ function withSecurityHeaders(response) {
 }
 
 export default {
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(runGradeJob(env).catch((e) => console.error('grade job failed', e)));
+  },
   async fetch(request, env, ctx) {
     apiEnv = env;
     const url = new URL(request.url);

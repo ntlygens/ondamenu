@@ -48,6 +48,8 @@
   ],
   // Deployment id, used to key the page cache so each deploy serves fresh pages.
   "version_metadata": { "binding": "CF_VERSION_METADATA" },
+  // NYC health grades: hourly 09:00-14:00 UTC covers 5am New York in EDT and EST (worker/grades.mjs decides when to act).
+  "triggers": { "crons": ["0 9-14 * * *"] },
   "observability": { "enabled": true },
   "env": {
     // Preview environment for the staging branch: same content database, workers.dev address only.
