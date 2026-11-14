@@ -6,6 +6,8 @@
  *
  * Only restaurants with status 'live' are ever returned, and hidden dishes are left out.
  */
+import { loadOptions } from './till.mjs';
+
 const CACHE = 'public, max-age=60';   // menus may be up to a minute old
 
 function json(body, status = 200, cache = 'no-store') {
@@ -40,7 +42,7 @@ async function listRestaurants(db) {
   return json({ restaurants: results.map(restaurantView) }, 200, CACHE);
 }
 
-async function getRestaurant(db, slug) {
+async function getRestaurant(env, db, slug) {
   const r = await db.prepare(`SELECT ${RESTAURANT_COLUMNS} FROM restaurants WHERE slug = ?1 AND status = 'live'`).bind(slug).first();
   if (!r) return json({ error: 'We could not find that restaurant.' }, 404);
 
@@ -59,21 +61,30 @@ async function getRestaurant(db, slug) {
     if (!byItem.has(l.item_id)) byItem.set(l.item_id, []);
     byItem.get(l.item_id).push(l.category_id);
   }
-  const menu = items.results.map((i) => ({
-    id: i.id,
-    name: i.name,
-    description: i.description,
-    priceCents: i.price_cents,
-    photo: i.photo,
-    available: i.available === 1,
-    categoryIds: byItem.get(i.id) ?? [],
-  }));
+  // Dish options (Clover modifiers). Empty whenever they are switched off or unavailable: the menu then works exactly as before.
+  const options = await loadOptions(env, db, r.id);
+  const groupOrder = new Map(options.groups.map((g, n) => [g.id, n]));
+  const menu = items.results.map((i) => {
+    const groupIds = [...(options.byItem.get(i.id) ?? [])].sort((a, b) => groupOrder.get(a) - groupOrder.get(b));
+    return {
+      id: i.id,
+      name: i.name,
+      description: i.description,
+      priceCents: i.price_cents,
+      photo: i.photo,
+      available: i.available === 1,
+      categoryIds: byItem.get(i.id) ?? [],
+      ...(groupIds.length ? { groupIds } : {}),
+    };
+  });
+  const usedGroups = new Set(menu.flatMap((i) => i.groupIds ?? []));
   // Leave out categories with nothing in them.
   const used = new Set(menu.flatMap((i) => i.categoryIds));
   return json({
     restaurant: restaurantView(r),
     categories: categories.results.filter((c) => used.has(c.id)),
     items: menu,
+    ...(usedGroups.size ? { groups: options.groups.filter((g) => usedGroups.has(g.id)) } : {}),
   }, 200, CACHE);
 }
 
@@ -91,7 +102,7 @@ export async function handleOrder(request, env) {
   try {
     if (parts[0] === 'restaurants' && parts.length === 1) return await listRestaurants(db);
     if (parts[0] === 'restaurants' && parts.length === 2 && /^[a-z0-9-]{1,64}$/.test(parts[1])) {
-      return await getRestaurant(db, parts[1]);
+      return await getRestaurant(env, db, parts[1]);
     }
     return json({ error: 'Not found' }, 404);
   } catch (error) {

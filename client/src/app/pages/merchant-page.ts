@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { CloverCard } from '../core/clover-card';
 import { RoleGate } from '../core/role-gate';
 import { shrinkPhoto } from '../core/shrink-photo';
 import { AuthService, Role } from '../services/auth-service';
@@ -21,7 +22,7 @@ interface Draft { description: string; price: string; soldOut: boolean; hidden: 
  */
 @Component({
   selector: 'odm-merchant-page',
-  imports: [RouterLink, MatIconModule, RoleGate],
+  imports: [RouterLink, MatIconModule, RoleGate, CloverCard],
   host: { class: 'page' },
   template: `
     <section class="panel panel--wide">
@@ -64,6 +65,7 @@ interface Draft { description: string; price: string; soldOut: boolean; hidden: 
                 </div>
               </div>
               <p class="msg" role="status">{{ message() }}</p>
+              <odm-clover-card [restaurantId]="m.restaurant.id" (menuChanged)="reloadMenu()" />
 
               <div class="filters">
                 <label>Find a dish
@@ -283,6 +285,12 @@ export class MerchantPage {
     if (r.status === 'draft') return 'Not yet listed: diners cannot see this restaurant.';
     if (r.status === 'paused') return 'Listing paused: diners cannot see this restaurant.';
     return r.isOpen ? 'Diners can see your menu and order.' : 'Diners can see your menu and that you are closed.';
+  }
+
+  /** Reloads the dish list after the till brought in changes. */
+  protected async reloadMenu(): Promise<void> {
+    const id = this.currentId();
+    if (id) await this.run(this.message, async () => this.menu.set(await this.api.menu(id)));
   }
 
   protected async choose(id: string): Promise<void> {

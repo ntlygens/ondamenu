@@ -117,3 +117,76 @@ CREATE TABLE IF NOT EXISTS job_state (
   key   TEXT PRIMARY KEY,
   value TEXT
 );
+
+-- ---------------------------------------------------------------------------
+-- Stage 3: till connection (Clover first) and dish options (Clover "modifiers").
+-- Everything here is new tables only, so nothing above changes and any of it can be switched off
+-- (see worker/till.mjs: MODIFIERS=off, or per restaurant in restaurant_settings) or dropped.
+-- ---------------------------------------------------------------------------
+
+-- One connection per restaurant. Tokens are stored encrypted (AES-GCM, key = CLOVER_TOKEN_KEY secret).
+CREATE TABLE IF NOT EXISTS till_connections (
+  restaurant_id TEXT PRIMARY KEY REFERENCES restaurants(id) ON DELETE CASCADE,
+  till          TEXT NOT NULL DEFAULT 'clover',
+  merchant_id   TEXT NOT NULL,                   -- the till's own id for this restaurant
+  access_enc    TEXT NOT NULL,
+  refresh_enc   TEXT,                            -- NULL for a long-lived test token
+  access_exp    INTEGER,                         -- unix seconds; NULL = does not expire
+  refresh_exp   INTEGER,
+  lease_until   INTEGER NOT NULL DEFAULT 0,      -- stops two refreshes at once (a refresh token works only once)
+  status        TEXT NOT NULL DEFAULT 'connected' CHECK (status IN ('connected','needs_reconnect')),
+  connected     INTEGER NOT NULL,
+  last_sync     INTEGER,
+  last_note     TEXT NOT NULL DEFAULT ''        -- short plain summary of the last sync, shown to the restaurant
+);
+
+-- A started "connect to Clover" visit; proves the answer comes back to the same person and restaurant.
+CREATE TABLE IF NOT EXISTS till_oauth_state (
+  state_hash    TEXT PRIMARY KEY,
+  restaurant_id TEXT NOT NULL,
+  user_id       TEXT NOT NULL,
+  expires       INTEGER NOT NULL
+);
+
+-- Which till category / item belongs to which of our categories (items use menu_items.clover_item_id).
+CREATE TABLE IF NOT EXISTS till_category_map (
+  restaurant_id TEXT NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
+  external_id   TEXT NOT NULL,
+  category_id   TEXT NOT NULL REFERENCES menu_categories(id) ON DELETE CASCADE,
+  PRIMARY KEY (restaurant_id, external_id)
+);
+
+-- Per-restaurant switches. No row = defaults (options on).
+CREATE TABLE IF NOT EXISTS restaurant_settings (
+  restaurant_id TEXT PRIMARY KEY REFERENCES restaurants(id) ON DELETE CASCADE,
+  options_on    INTEGER NOT NULL DEFAULT 1
+);
+
+-- Dish options: groups ("Choose a side", min/max picks) holding options (name + extra price).
+CREATE TABLE IF NOT EXISTS option_groups (
+  id            TEXT PRIMARY KEY,
+  restaurant_id TEXT NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
+  external_id   TEXT NOT NULL,
+  name          TEXT NOT NULL,
+  min_required  INTEGER NOT NULL DEFAULT 0,
+  max_allowed   INTEGER NOT NULL DEFAULT 0,      -- 0 = no limit
+  position      INTEGER NOT NULL DEFAULT 0
+);
+CREATE UNIQUE INDEX IF NOT EXISTS option_groups_external ON option_groups (restaurant_id, external_id);
+
+CREATE TABLE IF NOT EXISTS options (
+  id          TEXT PRIMARY KEY,
+  group_id    TEXT NOT NULL REFERENCES option_groups(id) ON DELETE CASCADE,
+  external_id TEXT NOT NULL,
+  name        TEXT NOT NULL,
+  price_cents INTEGER NOT NULL DEFAULT 0 CHECK (price_cents >= 0),
+  available   INTEGER NOT NULL DEFAULT 1,
+  position    INTEGER NOT NULL DEFAULT 0
+);
+CREATE UNIQUE INDEX IF NOT EXISTS options_external ON options (group_id, external_id);
+
+CREATE TABLE IF NOT EXISTS item_option_groups (
+  item_id  TEXT NOT NULL REFERENCES menu_items(id) ON DELETE CASCADE,
+  group_id TEXT NOT NULL REFERENCES option_groups(id) ON DELETE CASCADE,
+  PRIMARY KEY (item_id, group_id)
+);

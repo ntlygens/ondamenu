@@ -40,7 +40,13 @@
     "TURNSTILE_SITE_KEY": "0x4AAAAAAF-hjSmW1SArd8ED",
     // This address becomes an administrator when it signs in (comma-separated for several).
     // It must be able to receive email, because the sign-in code is sent to it.
-    "ADMIN_EMAILS": "admin@ondamenu.com"
+    "ADMIN_EMAILS": "admin@ondamenu.com",
+    // Clover (worker/clover.mjs). Sandbox until Clover approves the live app (their review freeze runs to 2027-01-03).
+    // Secrets, set once with `npx wrangler secret put <NAME>`: CLOVER_APP_SECRET, CLOVER_TOKEN_KEY (long random text), CLOVER_WEBHOOK_CODE.
+    "CLOVER_ENV": "sandbox",
+    "CLOVER_APP_ID": "0Y7P6V3S3EV6W"
+    // To hide every dish option (Clover modifiers) on the whole site in one step, add:  "MODIFIERS": "off"  and deploy.
+    // To hide them for one restaurant without a deploy: Admin > the restaurant > Dish options.
   },
   "routes": [
     { "pattern": "ondamenu.com", "custom_domain": true },
@@ -65,6 +71,10 @@
       ],
       "vars": {
         // Preview only: show sign-in codes on screen instead of sending them. Never set in production.
+        "CLOVER_ENV": "sandbox",
+        "CLOVER_APP_ID": "0Y7P6V3S3EV6W",
+        // Preview only, not a real secret (test restaurants only): locks the stored Clover tokens. Production uses the CLOVER_TOKEN_KEY secret.
+        "CLOVER_TOKEN_KEY": "preview-a1f0942aac274106fd041145eb4e5be7ae18ffce15fb23e4",
         "DEV_SHOW_CODES": "1",
         // Preview only: this address becomes an administrator when it signs in (test data; codes show on screen).
         "ADMIN_EMAILS": "admin@ondamenu.com",

@@ -23,7 +23,7 @@ import { money } from '../services/order-service';
           <ul class="lines">
             @for (line of lines(); track line.id) {
               <li class="line">
-                <span class="dish">{{ line.name }}<small>{{ price(line.priceCents) }} each</small></span>
+                <span class="dish">{{ line.name }}@if (line.extra) { <span class="extra">{{ line.extra }}</span> }<small>{{ price(line.priceCents) }} each</small></span>
                 <span class="stepper">
                   <button type="button" (click)="cart.remove(slug(), line.id)" [attr.aria-label]="'Remove one ' + line.name">−</button>
                   <span aria-live="polite">{{ line.qty }}</span>
@@ -85,6 +85,7 @@ import { money } from '../services/order-service';
     .lines { flex: 1 1 auto; min-height: 0; margin: 0; padding: 0.4rem 0.75rem; list-style: none; overflow-y: auto; overscroll-behavior: contain; }
     .line { display: grid; grid-template-columns: minmax(0, 1fr) auto 4.6rem; align-items: center; gap: 0.75rem; padding: 0.7rem 0.25rem; border-bottom: 1px solid var(--site-line); }
     .line:last-child { border-bottom: 0; }
+    .extra { display: block; margin-top: 0.15rem; color: var(--site-text); font-size: 0.8rem; font-weight: 600; text-transform: none; letter-spacing: 0; }
     .dish { min-width: 0; color: var(--site-midnight); font-weight: 800; text-transform: uppercase; overflow-wrap: anywhere; line-height: 1.25; }
     .dish small, .total-label small { display: block; color: var(--site-muted); font-size: 0.8rem; font-weight: 600; text-transform: none; }
     .sum { color: var(--site-navy); font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; }

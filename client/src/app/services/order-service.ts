@@ -17,6 +17,10 @@ export interface Restaurant {
   grade: string | null;
 }
 export interface MenuCategory { id: string; name: string; }
+/** One choice inside a dish option group ("Large", "Extra cheese") and what it adds to the price. */
+export interface OptionChoice { id: string; name: string; priceCents: number; }
+/** A set of choices for a dish ("Choose a size"): at least `min`, at most `max` (0 = no limit). */
+export interface OptionGroup { id: string; name: string; min: number; max: number; options: OptionChoice[]; }
 export interface MenuItem {
   id: string;
   name: string;
@@ -26,8 +30,10 @@ export interface MenuItem {
   /** False when the dish is sold out for now: shown, but it cannot be ordered. */
   available: boolean;
   categoryIds: string[];
+  /** Ids of the option groups this dish offers. Absent when it has none (or options are switched off): then it orders as a plain dish. */
+  groupIds?: string[];
 }
-export interface Menu { restaurant: Restaurant; categories: MenuCategory[]; items: MenuItem[]; }
+export interface Menu { restaurant: Restaurant; categories: MenuCategory[]; items: MenuItem[]; /** Absent when no dish has options. */ groups?: OptionGroup[]; }
 
 /** "$4.00" from 400. */
 export const money = (cents: number): string => `$${(cents / 100).toFixed(2)}`;

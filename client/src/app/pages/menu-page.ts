@@ -5,10 +5,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { map } from 'rxjs/operators';
 import { CartBar } from '../core/cart-bar';
+import { OptionSheet } from '../core/option-sheet';
 import { GradeBadge } from '../core/grade-badge';
 import { CartService } from '../services/cart-service';
 import { ChromeService } from '../services/chrome-service';
-import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/order-service';
+import { Menu, MenuItem, OptionChoice, OptionGroup, OrderService, Restaurant, money } from '../services/order-service';
 
 /**
  * A restaurant's menu: photo header, category buttons, dishes in alternating rows
@@ -19,7 +20,7 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
  */
 @Component({
   selector: 'odm-menu-page',
-  imports: [RouterLink, NgTemplateOutlet, MatIconModule, CartBar, GradeBadge],
+  imports: [RouterLink, NgTemplateOutlet, MatIconModule, CartBar, GradeBadge, OptionSheet],
   host: { class: 'page app-screen' },
   template: `
     <a #backTab class="app-tab app-tab--link" routerLink="/order/restaurants"><span aria-hidden="true">‹</span> Restaurants</a>
@@ -101,6 +102,9 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
         <div class="app-note"><p>This restaurant's menu is on its way. Please check back soon.</p></div>
       }
 
+      @if (choosing(); as item) {
+        <odm-option-sheet [item]="item" [groups]="groupsFor(item)" (chosen)="addChosen(item, $event)" (closed)="choosing.set(null)" />
+      }
       <odm-cart-bar [slug]="slug()" [anchor]="stackEl()?.nativeElement" />
 
       <!-- Price and Order control, shared by the small and the opened dish card. -->
@@ -109,6 +113,8 @@ import { Menu, MenuItem, OrderService, Restaurant, money } from '../services/ord
           <span class="price">{{ price(item) }}</span>
           @if (!item.available) {
             <span class="soldout">Sold out</span>
+          } @else if (item.groupIds?.length) {
+            <button class="order" type="button" (click)="choosing.set(item)" [attr.aria-label]="'Choose options for ' + item.name">{{ qty(item) ? qty(item) + ' · Choose' : 'Choose' }}</button>
           } @else if (qty(item); as n) {
             <span class="stepper">
               <button type="button" (click)="cart.remove(slug(), item.id)" [attr.aria-label]="'Remove one ' + item.name">−</button>
@@ -265,7 +271,7 @@ export class MenuPage {
     const perCategory = new Map<string, number>();
     const items = new Map((this.menu()?.items ?? []).map((i) => [i.id, i] as const));
     for (const line of this.cart.lines(this.slug())) {
-      for (const categoryId of items.get(line.id)?.categoryIds ?? []) {
+      for (const categoryId of items.get(line.itemId ?? line.id)?.categoryIds ?? []) {
         perCategory.set(categoryId, (perCategory.get(categoryId) ?? 0) + line.qty);
       }
     }
@@ -357,6 +363,17 @@ export class MenuPage {
   protected price(item: MenuItem): string {
     return money(item.priceCents);
   }
+  /** The dish whose option sheet is open, if any. */
+  protected readonly choosing = signal<MenuItem | null>(null);
+
+  protected groupsFor(item: MenuItem): OptionGroup[] {
+    const all = new Map((this.menu()?.groups ?? []).map((g) => [g.id, g] as const));
+    return (item.groupIds ?? []).map((id) => all.get(id)).filter((g): g is OptionGroup => !!g);
+  }
+  protected addChosen(item: MenuItem, chosen: OptionChoice[]): void {
+    this.cart.addWithOptions(this.slug(), item, chosen);
+    this.choosing.set(null);
+  }
   protected qty(item: MenuItem): number {
     return this.cart.qty(this.slug(), item.id);
   }
@@ -364,7 +381,10 @@ export class MenuPage {
   private async load(slug: string): Promise<void> {
     try {
       const menu = await this.order.loadMenu(slug);
-      if (slug === this.slug()) this.menu.set(menu);
+      if (slug === this.slug()) {
+        this.menu.set(menu);
+        if (menu) this.cart.reconcile(slug, menu);
+      }
     } catch (e) {
       if (slug === this.slug()) this.error.set(e instanceof Error ? e.message : 'Something went wrong. Please try again.');
     }

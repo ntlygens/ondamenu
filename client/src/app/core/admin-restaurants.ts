@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
+import { CloverCard } from './clover-card';
 import { firstValueFrom } from 'rxjs';
 
 type Status = 'draft' | 'live' | 'paused';
@@ -37,7 +38,7 @@ const STATUS_LABEL: Record<Status, string> = { draft: 'Draft', live: 'Live', pau
  */
 @Component({
   selector: 'odm-admin-restaurants',
-  imports: [RouterLink],
+  imports: [RouterLink, CloverCard],
   template: `
     <h2>Restaurants</h2>
     <p class="lede">Add a restaurant, set whether diners can see it, and choose who may manage its menu.</p>
@@ -104,6 +105,8 @@ const STATUS_LABEL: Record<Status, string> = { draft: 'Draft', live: 'Live', pau
                 <button class="btn btn--primary" type="submit" [disabled]="busy()">Save</button>
                 <a class="btn btn--ghost" routerLink="/merchant">Menu tools</a>
               </div>
+
+              <odm-clover-card [restaurantId]="r.id" />
 
               <h3>Who may manage this restaurant</h3>
               <ul class="staff">

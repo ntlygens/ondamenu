@@ -19,6 +19,7 @@ import { handleAdmin } from './admin.mjs';
 import { handleOrder } from './order.mjs';
 import { handleMedia, handleMerchant } from './merchant.mjs';
 import { runGradeJob } from './grades.mjs';
+import { handleClover } from './clover.mjs';
 
 /** Content collections the public site may read. */
 const COLLECTIONS = new Set(['pages', 'features', 'steps']);
@@ -26,7 +27,7 @@ const COLLECTIONS = new Set(['pages', 'features', 'steps']);
 const JSON_HEADERS = { 'content-type': 'application/json; charset=utf-8' };
 
 /** Answers /api requests from D1. Returns null for paths that aren't API paths. */
-async function handleApi(request, env) {
+async function handleApi(request, env, ctx) {
   const url = new URL(request.url);
   const parts = url.pathname.replace(/^\/api\/?/, '').split('/').filter(Boolean);
   if (!url.pathname.startsWith('/api/') && url.pathname !== '/api') return null;
@@ -40,6 +41,8 @@ async function handleApi(request, env) {
   if (order) return order;
   const merchant = await handleMerchant(request, env);
   if (merchant) return merchant;
+  const clover = await handleClover(request, env, ctx);
+  if (clover) return clover;
 
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     return new Response('Method not allowed', { status: 405, headers: { allow: 'GET, HEAD' } });
@@ -125,7 +128,7 @@ export default {
       return Response.redirect(url.toString(), 301);
     }
 
-    const api = await handleApi(request, env);
+    const api = await handleApi(request, env, ctx);
     if (api) return withSecurityHeaders(api);
     const media = await handleMedia(request, env);
     if (media) return withSecurityHeaders(media);
