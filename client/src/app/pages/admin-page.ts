@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { AdminRestaurants } from '../core/admin-restaurants';
 import { RoleGate } from '../core/role-gate';
 import { AuthService, Role } from '../services/auth-service';
 
@@ -23,16 +24,20 @@ const GRANTABLE: { role: Role; label: string }[] = [
   { role: 'admin', label: 'Administrator' },
 ];
 
-/** Administrators find accounts and mark them as restaurant, courier or administrator. */
+/** Administrators manage restaurants (core/admin-restaurants.ts), find accounts and mark them as restaurant, courier or administrator. */
 @Component({
   selector: 'odm-admin-page',
-  imports: [RouterLink, RoleGate, DatePipe],
+  imports: [RouterLink, RoleGate, DatePipe, AdminRestaurants],
   host: { class: 'page' },
   template: `
     <section class="panel panel--wide">
       <odm-role-gate role="admin" denied="This area is for OnDaMenu administrators.">
         <p class="eyebrow">Administration</p>
-        <h1>Accounts</h1>
+        <h1>Administration</h1>
+        <!-- Created only for a confirmed administrator: content inside the gate would otherwise start loading for anyone. -->
+        @if (isAdmin()) { <odm-admin-restaurants class="block" /> }
+
+        <h2>Accounts</h2>
         <p class="lede">Find an account, then switch on what it may do. Changes apply the next time that person loads a page.</p>
 
         <form class="search" (submit)="search($event, q.value)" novalidate>
@@ -71,6 +76,8 @@ const GRANTABLE: { role: Role; label: string }[] = [
     </section>
   `,
   styles: [`
+    .block { display: block; margin: 0 0 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--site-line); }
+    h2 { margin: 0 0 0.4rem; color: var(--site-navy); font-size: 1.5rem; }
     .search { display: flex; flex-direction: column; gap: 0.5rem; }
     .search label { color: var(--site-navy); font-weight: 600; }
     .search-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
@@ -112,6 +119,7 @@ export class AdminPage {
   protected readonly busy = signal(false);
   protected readonly message = signal('');
   protected readonly myId = () => this.auth.user()?.id ?? '';
+  protected readonly isAdmin = () => this.auth.hasRole('admin');
 
   constructor() {
     // Load the most recent accounts once an administrator is confirmed.
