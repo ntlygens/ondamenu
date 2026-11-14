@@ -32,10 +32,8 @@
   // Production only: the preview environment has no EMAIL binding, so it shows codes on screen instead.
   "send_email": [{ "name": "EMAIL" }],
   // Dish and restaurant photos (worker/merchant.mjs): one R2 bucket, a folder per restaurant.
-  // NOT switched on yet: R2 must first be enabled on the Cloudflare account and the two buckets created.
-  // Then add this line here:            "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "ondamenu-media" }],
-  // and this one inside env.staging:    "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "ondamenu-media-staging", "remote": true }],
-  // Until then the menu editor works and photo uploads answer "Photo storage is not switched on yet."
+  // R2 enabled and buckets created 2026-11-14 (ondamenu-media, ondamenu-media-staging).
+  "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "ondamenu-media" }],
   "vars": {
     // Cloudflare Turnstile widget "OnDaMenu sign-in" (hostname ondamenu.com). The Site Key is public.
     // The human check switches on once its Secret Key is also set:  npx wrangler secret put TURNSTILE_SECRET
@@ -57,6 +55,7 @@
       "name": "ondamenu-staging",
       "routes": [],
       "workers_dev": true,
+      "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "ondamenu-media-staging", "remote": true }],
       "d1_databases": [
         { "binding": "DB", "database_name": "ondamenu-content", "database_id": "b5bbc4b6-ee0e-4e64-b729-d963621a7fa3", "remote": true },
         // Test accounts only. Local runs (npm run preview) use this database too.
